@@ -14,6 +14,7 @@ jobs:
       - run: node preview/network-check.mjs
       - run: node tools/generate-assets.mjs --check
       - run: node tools/check-docs.mjs
+      - run: node tools/build-library.mjs --check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/touch-check.c -o /tmp/touch-check && /tmp/touch-check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/portal-check.c -o /tmp/portal-check && /tmp/portal-check

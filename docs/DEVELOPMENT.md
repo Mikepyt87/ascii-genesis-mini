@@ -33,6 +33,7 @@ No npm packages are required:
 node preview/check.mjs
 node preview/network-check.mjs
 node tools/generate-assets.mjs --check
+node tools/build-library.mjs --check
 node tools/check-docs.mjs
 ```
 
@@ -69,8 +70,18 @@ node tools/generate-assets.mjs
 
 Commit the source, generated `art/fish-art.js`, and `firmware/main/assets.h` together. Do not edit the generated header alone. Keep color masks aligned with the drawing and keep license notices. Mini firmware supports at most ten ASCII rows per creature; update the renderer and checks if expanding that limit.
 
+The [Ocean Library](OCEAN-LIBRARY.md) and SVG illustrations are also generated from the artwork and browser renderer. Update the descriptions in `tools/build-library.mjs`, then run:
+
+```text
+node tools/build-library.mjs
+```
+
+Commit the catalog and `docs/images/` with the source changes. The illustrations record a staged preview frame, not the physical LCD. `--check` checks that they still match their sources.
+
 Display: JD9853 SPI, SCLK38, MOSI39, CS21, DC45, RESET40, backlight46. Touch: AXS5106L at I2C address 0x63, SDA42, SCL41, RESET47, INT48. Landscape uses the vendor display initialization and the tested separate I2C select/read sequence. Do not substitute an ordinary ST7789 setup.
 
 Normal camera speed is 3.6 pixels/second. Parade timing/placement is in `firmware/main/parade.h` and mirrored in `preview/ocean.js`. Keep both implementations and their tests in agreement. The firmware project name remains `ascii_genesis_147` for installed-board compatibility.
+
+Regular swimmers use 9–18 pixels/second in both renderers, three times the pre-v0.1.7 range. This does not change scenery speed or parade timing. The long simulation checks new arrivals at that range and retains the full-drawing separation checks.
 
 CI and browser checks do not emulate the radio, LCD, touch controller, physical power, flash writes, or bootloader. Record actual hardware verification separately.

@@ -4,10 +4,18 @@ A small, touch-controlled ASCII aquarium for the **Waveshare ESP32-S3-Touch-LCD-
 
 **This repository is for the Mini only.** The larger Raspberry Pi aquarium has its own [repository and instructions](https://github.com/Mikepyt87/ascii-genesis).
 
+![ASCII Genesis - Mini ocean with a fish, peacock mantis shrimp, and turtle](docs/images/ocean.svg)
+
+A pocket-sized ocean made from colored text: fish cross the water, bubbles rise, and plants sway above a slowly traveling seabed. Plug the board into USB power and it starts on its own. It runs offline; Wi-Fi is optional for updates.
+
+**Explore it:** [Complete Ocean Library](docs/OCEAN-LIBRARY.md) · [Visual tour](docs/SCREENSHOTS.md) · [About the Mini and Pi comparison](docs/PROJECT.md) · [Version history](CHANGELOG.md)
+
 ## Start here
 
 | What you want to do | Follow this guide |
 | --- | --- |
+| Browse every creature, drawing, color, and behavior | [Mini Ocean Library: all 28 designs in both directions](docs/OCEAN-LIBRARY.md) |
+| See the screen and understand the project | [Visual tour](docs/SCREENSHOTS.md) and [project description](docs/PROJECT.md) |
 | Put the aquarium on a new board | [First installation: download, USB port, flash, and first startup](docs/INSTALL.md) |
 | Update an aquarium that already works | [Wireless updates and version checks](docs/UPDATES.md) |
 | Connect home Wi-Fi or a phone hotspot | [Wi-Fi setup, step by step](docs/WIFI.md) |
@@ -15,6 +23,7 @@ A small, touch-controlled ASCII aquarium for the **Waveshare ESP32-S3-Touch-LCD-
 | Fix a blank screen, connection problem, or failed update | [Troubleshooting and USB recovery](docs/TROUBLESHOOTING.md) |
 | Preview it or build from source | [Developer setup and checks](docs/DEVELOPMENT.md) |
 | Understand the move from the original repository | [Repository transition and existing boards](docs/MIGRATION.md) |
+| Report a problem or help improve it | [Contributing and issue information](CONTRIBUTING.md) |
 
 ## Required hardware
 
@@ -27,11 +36,19 @@ No microSD card, soldered headers, API key, Raspberry Pi OS, or Pi desktop insta
 
 ## What it does
 
-The ocean includes 28 colored creature and vehicle designs, plants rooted to the scrolling ground, bubbles, six habitat labels, and space between full creature drawings. It keeps content away from the screen's rounded corners. The Mini is a decorative aquarium; the larger Pi edition has its own food web and other features.
+The ocean includes **28 colored creature and vehicle designs**, each facing both directions. Tiny reef fish share the collection with a puffer, ray, eel, squid, octopus, turtle, jellyfish, crab, lobster, shark, whale, yellow submarine, lionfish, and peacock mantis shrimp. The [Ocean Library](docs/OCEAN-LIBRARY.md) includes every drawing, its dimensions, palette, origin, and behavior.
+
+Up to three creatures swim in separate vertical bands, leaving room for their whole drawings and gentle bobbing. In v0.1.7 regular swimmers move at **9–18 pixels per second**, three times the previous range. Plants remain rooted to the seabed as both scroll together at **3.6 pixels per second**. Bubbles rise through the water, and the habitat label changes every 45 seconds. Coral garden adds pink branches; rocky reef and wreck depths add small rock outlines. [Exact scenery and movement rules](docs/OCEAN-LIBRARY.md#habitats-and-scenery).
+
+The layout keeps text and foreground content away from the screen's rounded corners. The Mini is a decorative aquarium with static ASCII drawings and simple motion. The larger Pi edition has its own food web, schools, visitors, lighting, and other features; see [the edition comparison](docs/PROJECT.md#mini-and-raspberry-pi-editions).
 
 Tap the water to reveal **Pause · New World · Parade · Settings**. Controls fade after eight seconds. The parade shows all 28 designs in order, one at a time, then returns to the ocean you left. A full parade takes about **3 minutes 44 seconds**. [Full controls guide](docs/CONTROLS.md).
 
-Source firmware version: **0.1.6**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published.
+![Mini controls: Pause, New World, Parade, Settings](docs/images/controls.svg)
+
+These images come from the Mini browser renderer; they are software previews rather than board photographs. See the [visual tour](docs/SCREENSHOTS.md) for the parade, coral garden, and complete collection.
+
+Source firmware version: **0.1.7**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published. [Changes by version](CHANGELOG.md).
 
 ## Quick update for an existing board
 
@@ -51,6 +68,22 @@ Boards on **v0.1.2 or v0.1.3 need USB recovery first** because those versions ca
 | `art/` | Shared-source ASCII drawings, original additions, and artwork license |
 | `tools/` | Asset generator, manifest generator, and software checks |
 | `docs/` | Installation, Wi-Fi, controls, updates, recovery, and development guides |
+
+## Preview before installing
+
+With Node.js 20 or newer installed, clone or download this repository, open a terminal in its folder, and run:
+
+```text
+node preview/serve.mjs
+```
+
+Open **http://127.0.0.1:4174** on that computer. The preview includes the ocean, touch controls, and parade, with a labeled simulation of Wi-Fi/update screens. Leave the terminal running while using it; Ctrl+C stops it. It cannot flash or provision a real board. [Complete preview and development instructions](docs/DEVELOPMENT.md).
+
+## Build, checks, and contributions
+
+The actual firmware builds with **ESP-IDF 5.5.2** for ESP32-S3. The JD9853 LCD and AXS5106L touch controller are configured in the supplied source; no separate display-library setup is needed. The browser preview has no npm dependencies. Automated checks cover a simulated hour, creature separation, rounded-corner margins, scenery movement, touch/update policies, the complete parade, generated assets, catalog freshness, and documentation links. GitHub Actions also compiles the device firmware. Hardware behavior still needs a real board.
+
+Use [Development](docs/DEVELOPMENT.md) for exact commands, [Contributing](CONTRIBUTING.md) for changes and reports, and [Maintainer releases](docs/RELEASES.md) for publishing a device update.
 
 ## Credits and licenses
 
