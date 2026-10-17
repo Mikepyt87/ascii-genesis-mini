@@ -1,0 +1,36 @@
+name: Check Mini
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node preview/check.mjs
+      - run: node preview/network-check.mjs
+      - run: node tools/generate-assets.mjs --check
+      - run: node tools/check-docs.mjs
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/touch-check.c -o /tmp/touch-check && /tmp/touch-check
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/portal-check.c -o /tmp/portal-check && /tmp/portal-check
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/geometry-check.c -lm -o /tmp/geometry-check && /tmp/geometry-check
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/parade-check.c -lm -o /tmp/parade-check && /tmp/parade-check
+      - uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.2
+          target: esp32s3
+          path: firmware
+          command: idf.py build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mini-test-build
+          path: |
+            firmware/build/ascii_genesis_147.bin
+            firmware/build/bootloader/bootloader.bin
+            firmware/build/partition_table/partition-table.bin
+            firmware/build/ota_data_initial.bin
+            firmware/build/flasher_args.json
