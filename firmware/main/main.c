@@ -37,7 +37,7 @@ static void text_large(const char *s,int x,int y,uint16_t c){
         for(int col=0;col<5;col++)for(int row=0;row<8;row++)if(mini_font[n*5+col]&(1<<row))rect(x+i*12+col*2,y+row*2,2,2,c);}
 }
 static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
-static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=3+rnd()*3,.phase=rnd()*6.28f,.active=true};}
+static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=9+rnd()*9,.phase=rnd()*6.28f,.active=true};}
 static void new_world(void){time_s=0;pending_art=-1;parade_active=false;parade_elapsed=0;spawn(0,6,1,28,23);spawn(1,MINI_MANTIS_INDEX,-1,156,55);spawn(2,38,-1,180,103);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=23+rnd()*120;}paused=false;}
 static void toggle_parade(void){parade_active=!parade_active;parade_elapsed=0;}
 static int free_y(int height){

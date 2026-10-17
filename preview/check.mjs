@@ -9,10 +9,13 @@ const ocean = new MiniOcean(sprites);
 assert.equal(sprites.length, 56);
 assert.equal(sprites[ocean.fish[1].index].name,'peacock mantis shrimp');
 assert.equal(ocean.fish.length, 3);
+for(const fish of ocean.fish)assert.ok(fish.speed>=9&&fish.speed<18,'Regular swimmers use the faster 9–18 px/s range');
 const start = ocean.fish[0].x;
+const speed = ocean.fish[0].speed;
 ocean.step(0.1);
 assert.equal(ocean.scroll,.1*3.6,'Mini scrolling is twice the previous speed');
 assert.ok(ocean.fish[0].x > start, 'Fish must actually swim');
+assert.ok(Math.abs(ocean.fish[0].x-start-speed*.1)<1e-10,'Swimming advances at the selected speed');
 ocean.paused = true;
 const paused = JSON.stringify(ocean);
 ocean.step(0.25);
@@ -27,6 +30,7 @@ for (let frame = 0; frame < 36000; frame++) {
   assert.ok(ocean.bubbles.length <= 4);
   visited.add(ocean.habitat);
   for (const fish of ocean.fish) {
+    assert.ok(fish.speed>=9&&fish.speed<18,'New arrivals retain the faster swimming range');
     assert.ok(Number.isFinite(fish.x) && Number.isFinite(fish.y));
     assert.ok(fish.y >= 23 && fish.y + fish.height + 2 <= 145);
   }

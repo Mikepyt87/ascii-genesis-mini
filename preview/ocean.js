@@ -34,7 +34,7 @@
       const width = Math.max(...sprite.rows.map(r => r.length)) * 6;
       const height = sprite.rows.length * 8;
       this.fish.push({index: (index & ~1) + (direction < 0 ? 1 : 0), x, y,
-        width, height, direction, speed: 3 + this.random() * 3,
+        width, height, direction, speed: 9 + this.random() * 9,
         phase: this.random() * Math.PI * 2});
     }
     freeY(height) {

@@ -32,6 +32,7 @@ jobs:
       - run: node preview/check.mjs && node preview/network-check.mjs
       - run: node tools/generate-assets.mjs --check
       - run: node tools/check-docs.mjs
+      - run: node tools/build-library.mjs --check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/touch-check.c -o /tmp/touch-check && /tmp/touch-check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/geometry-check.c -lm -o /tmp/geometry-check && /tmp/geometry-check
@@ -51,6 +52,7 @@ jobs:
           cp firmware/build/ascii_genesis_147.bin release/ascii-genesis-147.bin
           cp firmware/build/aquarium-usb.bin release/aquarium-usb.bin
           node tools/make-manifest.mjs "$VERSION" release/ascii-genesis-147.bin release/manifest.json
+          node tools/make-release-notes.mjs "$VERSION" release/RELEASE-NOTES.md
       - uses: actions/upload-artifact@v4
         with:
           name: esp32-147-${{ inputs.version }}
@@ -77,7 +79,7 @@ jobs:
             echo 'This version already exists. Use a new version number.'
             exit 1
           fi
-          gh release create "$tag" release/* --target "$GITHUB_SHA" --title "ASCII Genesis - Mini v$VERSION" --notes 'For Waveshare ESP32-S3-Touch-LCD-1.47 only. Use aquarium-usb.bin for first USB installation; wireless updates use ascii-genesis-147.bin.' --latest=false
+          gh release create "$tag" release/* --target "$GITHUB_SHA" --title "ASCII Genesis - Mini v$VERSION" --notes-file release/RELEASE-NOTES.md --latest=false
           if ! gh release view esp32-147-stable >/dev/null 2>&1; then
             gh release create esp32-147-stable --target "$GITHUB_SHA" --title 'ESP32 1.47-inch wireless update channel' --notes 'The manifest points to the current tested ESP32 1.47-inch version. Raspberry Pi is a separate project in Mikepyt87/ascii-genesis.' --latest=false
           fi

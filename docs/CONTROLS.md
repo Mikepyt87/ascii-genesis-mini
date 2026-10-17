@@ -11,6 +11,8 @@ Tap the ocean and lift your finger. Four buttons appear along the bottom. They f
 
 ## Parade
 
+For the collection’s drawings, colors, and movement rules, see the [Mini Ocean Library](OCEAN-LIBRARY.md). Normal swimmers move at 9–18 pixels per second in v0.1.7; the parade keeps its own timing below.
+
 The Mini shows **all 28 designs in order**, facing right, one at a time. A design takes eight seconds to enter, cross, and fully leave the safe viewing area. The full sequence lasts **224 seconds: 3 minutes 44 seconds**. The counter at the top right shows the current design, such as `PARADE 1/28`.
 
 One creature at a time leaves room for the largest drawings without overlap. The regular ocean is held in place during the parade: its creatures, camera position, bubbles, pending arrivals, and random state are preserved. It resumes automatically at the end. Return ends the parade early without resetting that ocean.

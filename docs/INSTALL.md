@@ -11,7 +11,7 @@ Put the board on a dry, nonconductive surface. Use a known USB data cable connec
 ## 2. Download the right file
 
 1. Open [ASCII Genesis - Mini releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases).
-2. Open the newest **numbered** release, such as `esp32-147-v0.1.6`.
+2. Open the newest **numbered** release, such as `esp32-147-v0.1.7`.
 3. Expand **Assets** if necessary.
 4. Download **aquarium-usb.bin**. This is the complete first-install image.
 5. Create `ASCII-Genesis-Mini` inside your Windows Downloads folder and put the file there. Check that the filename is exactly `aquarium-usb.bin`, without a second `.bin` or a download suffix.

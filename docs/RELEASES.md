@@ -6,6 +6,7 @@ Publishing commits does not publish a device update. A release must include a co
 
 1. Merge the intended changes into main and wait for **Check Mini** to pass.
 2. Make sure source and generated artwork match, documentation links pass, and the version is a new numeric `X.Y.Z` value.
+   Add that version's changes to `CHANGELOG.md`; the workflow requires its entry and uses it to write the public release description, including installation and migration links.
 3. Open **Actions → Prepare Mini release → Run workflow**.
 4. Select **main**, enter the intended version, and leave **Publish unchecked** for a test package.
 5. Wait for success. Download the `esp32-147-X.Y.Z` workflow artifact and extract it.
