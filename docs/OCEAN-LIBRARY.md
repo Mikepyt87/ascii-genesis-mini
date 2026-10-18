@@ -1,6 +1,6 @@
 # Mini Ocean Library
 
-The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 320 × 172 ESP32 aquarium. This page describes the Mini’s implementation. The [Raspberry Pi library](https://github.com/Mikepyt87/ascii-genesis/blob/main/docs/OCEAN-LIBRARY.md) describes a different program.
+The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 320 × 172 ESP32 ocean. This page describes the Mini’s implementation. The [Raspberry Pi library](https://github.com/Mikepyt87/ascii-genesis/blob/main/docs/OCEAN-LIBRARY.md) describes a different program.
 
 There are **28 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **56 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
 

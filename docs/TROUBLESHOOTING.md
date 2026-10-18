@@ -26,7 +26,7 @@ Start by opening Settings and recording the installed version. Describe what app
 
 Use the [complete installation instructions](INSTALL.md), with the newest numbered release's **aquarium-usb.bin** at **0x0**. Expect to enter Wi-Fi settings again when using a complete merged image. Do not flash the application-only file at 0x0.
 
-Normal recovery does not require erasing the entire flash first. Only perform a full erase when deliberately removing all settings and both application slots, and when a known-good complete image and working USB connection are ready. An erase by itself leaves no aquarium to boot.
+Normal recovery does not require erasing the entire flash first. Only perform a full erase when deliberately removing all settings and both application slots, and when a known-good complete image and working USB connection are ready. An erase by itself leaves no ocean to boot.
 
 ## Collect a startup log
 

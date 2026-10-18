@@ -2,6 +2,12 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.9
+
+- Makes Asciiquarium and its creators, along with OpenGhost's display inspiration, prominent near the top of the GitHub README.
+- Uses ocean consistently in the project description, guides, device status messages, and phone Wi-Fi setup. Original project names and historical credits are preserved.
+- Keeps the display layout, creatures, ordered parade, touch controls, and Wi-Fi update behavior unchanged.
+
 ## 0.1.8
 
 - Faster parade: six-second crossings, with up to two creatures in separate bands. Tall neighbors wait when needed. The full parade takes 1 minute 45 seconds, down from 3 minutes 44 seconds.
@@ -44,4 +50,4 @@ Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii
 
 ## 0.1.0
 
-- Initial device firmware with the configured JD9853 LCD, aquarium rendering, phone Wi-Fi setup, and update support.
+- Initial device firmware with the configured JD9853 LCD, ocean rendering, phone Wi-Fi setup, and update support.

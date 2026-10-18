@@ -11,14 +11,14 @@ Put the board on a dry, nonconductive surface. Use a known USB data cable connec
 ## 2. Download the right file
 
 1. Open [ASCII Genesis - Mini releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases).
-2. Open the newest **numbered** release, such as `esp32-147-v0.1.7`.
+2. Open the newest **numbered** release, such as `esp32-147-v0.1.9`.
 3. Expand **Assets** if necessary.
-4. Download **aquarium-usb.bin**. This is the complete first-install image.
-5. Create `ASCII-Genesis-Mini` inside your Windows Downloads folder and put the file there. Check that the filename is exactly `aquarium-usb.bin`, without a second `.bin` or a download suffix.
+4. Download **ocean-usb.bin**. This is the complete first-install image.
+5. Create `ASCII-Genesis-Mini` inside your Windows Downloads folder and put the file there. Check that the filename is exactly `ocean-usb.bin`, without a second `.bin` or a download suffix.
 
 | Download | Purpose |
 | --- | --- |
-| **aquarium-usb.bin** | Complete USB image; write at **0x0** |
+| **ocean-usb.bin** | Complete USB image; write at **0x0** |
 | `ascii-genesis-147.bin` | Application-only image for the wireless updater; not a complete USB image |
 | `manifest.json` | Version, board ID, download address, size, and checksum for the updater |
 | Source code ZIP/tar.gz | Source for developers; cannot be flashed as firmware |
@@ -65,13 +65,13 @@ If there is no new port, try another data cable and direct USB port. Follow [Wav
 
 ## 5. Flash the complete image
 
-Run this from the folder containing `aquarium-usb.bin`. **Replace COM7 with the port you found.**
+Run this from the folder containing `ocean-usb.bin`. **Replace COM7 with the port you found.**
 
 ```powershell
-.\.flash-tools\Scripts\python.exe -m esptool --chip esp32s3 --port COM7 --baud 460800 write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 aquarium-usb.bin
+.\.flash-tools\Scripts\python.exe -m esptool --chip esp32s3 --port COM7 --baud 460800 write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 ocean-usb.bin
 ```
 
-The offset **0x0** is correct only for the complete `aquarium-usb.bin` image. Do not substitute the application-only file. A full merged USB image can overwrite saved Wi-Fi settings; be ready to enter them again. Wireless updates preserve the saved settings.
+The offset **0x0** is correct only for the complete `ocean-usb.bin` image. Do not substitute the application-only file. A full merged USB image can overwrite saved Wi-Fi settings; be ready to enter them again. Wireless updates preserve the saved settings.
 
 Wait for **Hash of data verified** and completion. Do not disconnect power while the progress bar is moving. If connection fails, hold **BOOT**, press and release **RESET**, then release BOOT and retry. The USB port may change in download mode; check it again.
 
@@ -79,7 +79,7 @@ If the board remains in download mode after a successful flash, press RESET once
 
 ## 6. Verify the first startup
 
-1. Confirm that the aquarium picture appears sideways at the full 320 × 172 resolution.
+1. Confirm that the ocean picture appears sideways at the full 320 × 172 resolution.
 2. Tap the water once and lift your finger. Confirm four buttons appear.
 3. Tap Pause, then Resume. Try New World.
 4. Tap Parade. A creature should enter from the left; the top-right counter shows its place in the collection. Tap Return to stop early.
@@ -96,7 +96,7 @@ Download the same complete image. Install Python 3.10+ and create an environment
 python3 -m venv .flash-tools
 .flash-tools/bin/python -m pip install esptool
 .flash-tools/bin/python -m serial.tools.list_ports
-.flash-tools/bin/python -m esptool --chip esp32s3 --port /dev/ttyACM0 --baud 460800 write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 aquarium-usb.bin
+.flash-tools/bin/python -m esptool --chip esp32s3 --port /dev/ttyACM0 --baud 460800 write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 ocean-usb.bin
 ```
 
 Replace `/dev/ttyACM0` with the actual listed port. On macOS it may start with `/dev/cu.usbmodem`. On Linux your account may need serial-port group access; follow your distribution's instructions, then sign out/in. Do not guess the port or image offset.

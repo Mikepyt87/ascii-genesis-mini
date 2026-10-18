@@ -43,14 +43,15 @@ jobs:
           esp_idf_version: v5.5.2
           target: esp32s3
           path: firmware
-          command: idf.py -DPROJECT_VER=$(cat release-version.txt) build && idf.py merge-bin -o aquarium-usb.bin
+          command: idf.py -DPROJECT_VER=$(cat release-version.txt) build && idf.py merge-bin -o ocean-usb.bin
       - name: Package the board-specific update
         env:
           VERSION: ${{ inputs.version }}
         run: |
           mkdir -p release
           cp firmware/build/ascii_genesis_147.bin release/ascii-genesis-147.bin
-          cp firmware/build/aquarium-usb.bin release/aquarium-usb.bin
+          cp firmware/build/ocean-usb.bin release/ocean-usb.bin
+          cp release/ocean-usb.bin release/aquarium-usb.bin
           node tools/make-manifest.mjs "$VERSION" release/ascii-genesis-147.bin release/manifest.json
           node tools/make-release-notes.mjs "$VERSION" release/RELEASE-NOTES.md
       - uses: actions/upload-artifact@v4

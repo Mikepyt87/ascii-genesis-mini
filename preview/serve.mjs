@@ -12,4 +12,4 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, {'Content-Type': req.url === '/' ? 'text/html; charset=utf-8' : 'text/javascript; charset=utf-8', 'Cache-Control':'no-store'}); res.end(data);
   } catch { res.writeHead(500); res.end('Preview file unavailable'); }
 });
-server.listen(4174, '127.0.0.1', () => console.log('Miniature aquarium: http://127.0.0.1:4174'));
+server.listen(4174, '127.0.0.1', () => console.log('Miniature ocean: http://127.0.0.1:4174'));

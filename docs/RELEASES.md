@@ -10,7 +10,7 @@ Publishing commits does not publish a device update. A release must include a co
 3. Open **Actions → Prepare Mini release → Run workflow**.
 4. Select **main**, enter the intended version, and leave **Publish unchecked** for a test package.
 5. Wait for success. Download the `esp32-147-X.Y.Z` workflow artifact and extract it.
-6. Verify the package contains `aquarium-usb.bin`, `ascii-genesis-147.bin`, and `manifest.json`. Use the complete image for USB testing.
+6. Verify the package contains `ocean-usb.bin`, `ascii-genesis-147.bin`, and `manifest.json`. Use the complete image for USB testing.
 7. Check display, all touch buttons, pause/resume, normal reset, parade progress/return, Wi-Fi setup, hotspot reconnect, offline operation, startup acceptance, and update checks. Test full wireless installation/rollback on appropriate hardware when those paths change. Record what was actually tested.
 
 ## Publish

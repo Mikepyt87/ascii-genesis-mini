@@ -3,13 +3,13 @@
  */
 (function(root){
   class MiniNetwork {
-    constructor(){this.screen='ocean';this.online=false;this.version='0.1.0';this.previous='0.1.0';this.available=false;this.phase='idle';this.progress=0;this.timer=0;this.message='Offline aquarium ready';this.scenario='success';}
+    constructor(){this.screen='ocean';this.online=false;this.version='0.1.0';this.previous='0.1.0';this.available=false;this.phase='idle';this.progress=0;this.timer=0;this.message='Offline ocean ready';this.scenario='success';}
     get busy(){return ['checking','download','boot','rollback'].includes(this.phase);}
     setScenario(value){if(this.busy||!['success','bad-download','bad-boot'].includes(value))return;this.scenario=value;this.version='0.1.0';this.previous='0.1.0';this.available=false;this.message='Test selected - check for updates';}
     open(){if(this.screen==='ocean')this.screen='settings';}
     setup(){if(this.busy)return;this.screen='setup';this.phase='setup';this.timer=0;this.message='Phone setup active';}
     connect(){if(this.phase!=='setup')return;this.online=true;this.screen='settings';this.phase='idle';this.timer=0;this.message='Connected to demo home Wi-Fi';}
-    check(){if(this.busy)return;if(!this.online){this.message='Offline - aquarium keeps running';return;}this.available=false;this.phase='checking';this.timer=0;this.message='Checking ESP32 updates...';}
+    check(){if(this.busy)return;if(!this.online){this.message='Offline - ocean keeps running';return;}this.available=false;this.phase='checking';this.timer=0;this.message='Checking ESP32 updates...';}
     install(){if(this.busy||!this.available||!this.online)return;this.previous=this.version;this.phase='download';this.progress=0;this.timer=0;this.message='Downloading - keep power connected';}
     action(x,y){
       if(y>=140){this.screen='ocean';if(this.phase==='setup')this.phase='idle';return;}
@@ -17,17 +17,17 @@
     }
     step(dt){
       this.timer+=Math.max(0,dt);
-      if(this.phase==='setup'&&this.timer>=600){this.phase='idle';this.screen='settings';this.message='Setup timed out - aquarium stays ready';}
+      if(this.phase==='setup'&&this.timer>=600){this.phase='idle';this.screen='settings';this.message='Setup timed out - ocean stays ready';}
       else if(this.phase==='checking'&&this.timer>=2){this.phase='idle';this.available=this.version!=='0.2.0';this.message=this.available?'Update ready - tap Install to restart':'You have the current version';}
       else if(this.phase==='download'){
         this.progress=Math.min(100,Math.floor(this.timer/4*100));
         if(this.timer>=4){this.timer=0;
           if(this.scenario==='bad-download'){this.phase='idle';this.message='Update failed - current version kept';}
-          else {this.phase='boot';this.message='Verified - restarting aquarium';}}
+          else {this.phase='boot';this.message='Verified - restarting ocean';}}
       }
       else if(this.phase==='boot'&&this.timer>=2){this.timer=0;
         if(this.scenario==='bad-boot'){this.phase='rollback';this.message='Boot failed - restoring previous version';}
-        else {this.version='0.2.0';this.phase='idle';this.available=false;this.message='Update complete - aquarium ready';}}
+        else {this.version='0.2.0';this.phase='idle';this.available=false;this.message='Update complete - ocean ready';}}
       else if(this.phase==='rollback'&&this.timer>=2){this.version=this.previous;this.phase='idle';this.message='Previous version restored';}
     }
   }

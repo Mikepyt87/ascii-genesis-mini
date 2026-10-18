@@ -48,7 +48,7 @@ static void wifi_event(void *arg,esp_event_base_t base,int32_t id,void *data) {
     xSemaphoreGive(lock);
 }
 static void connect_saved(void) {
-    if(!ssid[0]) {message("Offline aquarium - open Settings for Wi-Fi");return;}
+    if(!ssid[0]) {message("Offline ocean - open Settings for Wi-Fi");return;}
     wifi_config_t cfg={0};
     strlcpy((char*)cfg.sta.ssid,ssid,sizeof(cfg.sta.ssid));
     strlcpy((char*)cfg.sta.password,password,sizeof(cfg.sta.password));
@@ -88,7 +88,7 @@ static esp_err_t portal_get(httpd_req_t *req) {
       "<!doctype html><meta name='viewport' content='width=device-width,initial-scale=1'>"
       "<title>ASCII Genesis - Mini Wi-Fi</title><style>body{font:20px system-ui;max-width:28em;margin:2em auto;padding:1em}"
       "label,input,button{display:block;margin:1em 0;width:100%%;font:inherit;box-sizing:border-box;padding:.5em}</style>"
-      "<h1>Connect your aquarium</h1><p>Choose your 2.4 GHz home network. The aquarium also works offline.</p>"
+      "<h1>Connect your ocean</h1><p>Choose your 2.4 GHz home network. The ocean also works offline.</p>"
       "<form method='post' action='/wifi'><input type='hidden' name='token' value='%s'>"
       "<label>Wi-Fi name<input name='ssid' maxlength='32' required autocomplete='off'></label>"
       "<label>Wi-Fi password<input name='password' type='password' maxlength='64' autocomplete='off'></label>"
@@ -116,7 +116,7 @@ static esp_err_t portal_post(httpd_req_t *req) {
     strlcpy(pending_ssid,name,sizeof(pending_ssid));strlcpy(pending_password,pass,sizeof(pending_password));credentials_pending=true;
     xSemaphoreGive(lock);
     httpd_resp_set_hdr(req,"Cache-Control","no-store");
-    return httpd_resp_sendstr(req,"Saved for connection. Rejoin your usual Wi-Fi and check the aquarium screen. If connection fails, reopen Wi-Fi setup on the aquarium.");
+    return httpd_resp_sendstr(req,"Saved for connection. Rejoin your usual Wi-Fi and check the ocean screen. If connection fails, reopen Wi-Fi setup on the ocean.");
 }
 static void close_portal(void) {
     if(portal){httpd_stop(portal);portal=NULL;}
@@ -163,7 +163,7 @@ static esp_http_client_handle_t https_open(const char *url) {
 }
 static void check_update(void) {
     net_status_t s;network_status(&s);
-    if(!s.online){message("Offline - aquarium keeps running");return;}
+    if(!s.online){message("Offline - ocean keeps running");return;}
     if(time(NULL)<1704067200 && esp_netif_sntp_sync_wait(pdMS_TO_TICKS(10000))!=ESP_OK){message("Clock not ready - try updates again shortly");return;}
     xSemaphoreTake(lock,portMAX_DELAY);status.available=false;status.busy=true;xSemaphoreGive(lock);
     message("Checking ESP32 updates...");memset(&candidate,0,sizeof(candidate));
@@ -223,7 +223,7 @@ done:
     if(begun)esp_ota_abort(ota);
     if(h)esp_http_client_cleanup(h);
     mbedtls_sha256_free(&hash);
-    if(okay){message("Verified - restarting aquarium");vTaskDelay(pdMS_TO_TICKS(1500));esp_restart();}
+    if(okay){message("Verified - restarting ocean");vTaskDelay(pdMS_TO_TICKS(1500));esp_restart();}
     message("Update failed - current version kept");xSemaphoreTake(lock,portMAX_DELAY);status.busy=false;status.progress=0;xSemaphoreGive(lock);
 }
 static void network_task(void *arg) {
@@ -244,14 +244,14 @@ static void network_task(void *arg) {
             else message("Could not save Wi-Fi - try setup again");
         }
         int64_t now=esp_timer_get_time();net_status_t s;network_status(&s);
-        if(s.setup&&now>portal_until){close_portal();message("Setup timed out - aquarium stays offline-ready");}
+        if(s.setup&&now>portal_until){close_portal();message("Setup timed out - ocean stays offline-ready");}
         if(!s.online&&ssid[0]&&now>next_connect){esp_wifi_connect();next_connect=now+15000000LL;}
         if(s.online&&now>next_check&&!s.setup){check_update();next_check=now+86400000000LL;}
     }
 }
 void network_start(void) {
     lock=xSemaphoreCreateMutex();commands=xQueueCreate(4,sizeof(net_command_t));assert(lock&&commands);
-    message("Offline aquarium ready");
+    message("Offline ocean ready");
     nvs_handle_t nvs;if(nvs_open("wifi147",NVS_READONLY,&nvs)==ESP_OK){size_t n=sizeof(ssid);nvs_get_str(nvs,"ssid",ssid,&n);n=sizeof(password);nvs_get_str(nvs,"password",password,&n);nvs_close(nvs);}
     ESP_ERROR_CHECK(esp_netif_init());ESP_ERROR_CHECK(esp_event_loop_create_default());
     esp_netif_create_default_wifi_sta();esp_netif_create_default_wifi_ap();
