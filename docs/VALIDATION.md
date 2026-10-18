@@ -2,7 +2,7 @@
 
 ## Current release: v0.1.13 — October 18, 2026
 
-Local simulation and renderer checks passed, including creature identity and unchanged swimming lanes throughout waterline transitions. Native waterline clearance is checked alongside the parade geometry. This version has not been confirmed on the physical board. The published build and public download verification are recorded after release.
+Local simulation and renderer checks passed, including creature identity and unchanged swimming lanes throughout waterline transitions. Native waterline clearance is checked alongside the parade geometry. This version has not been confirmed on the physical board. The [automated checks](https://github.com/Mikepyt87/ascii-genesis-mini/actions/runs/39132030404) and [release build](https://github.com/Mikepyt87/ascii-genesis-mini/actions/runs/39132090251) passed for source commit `48e24a9581cd10de7d1204a14c5e8a36fc2a5864`. The public stable manifest, application, and complete USB image were downloaded and verified: correct board, exact versioned URL, embedded project/version, **1,092,288 application bytes**, SHA-256, and matching application bytes in the USB image at 0x20000.
 
 ## Previous release: v0.1.12 — October 18, 2026
 
