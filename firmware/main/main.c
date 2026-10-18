@@ -37,6 +37,12 @@ static void text_large(const char *s,int x,int y,uint16_t c){
     for(int i=0;s[i]&&x+i*12<320;i++){unsigned n=(unsigned char)s[i];if(n<32||n>126)continue;
         for(int col=0;col<5;col++)for(int row=0;row<8;row++)if(mini_font[n*5+col]&(1<<row))rect(x+i*12+col*2,y+row*2,2,2,c);}
 }
+// Nearest-neighbor 3:2 bitmap scaling keeps the two labels above the swimmers.
+static void text_parade(const char *s,int x,int y,uint16_t c){
+    for(int i=0;s[i];i++){unsigned n=(unsigned char)s[i];if(n<32||n>126)continue;
+        for(int col=0;col<8;col++)for(int row=0;row<MINI_PARADE_NAME_HEIGHT;row++)
+            if(mini_font[n*5+col*2/3]&(1<<(row*2/3)))pixel(x+i*MINI_PARADE_NAME_ADVANCE+col,y+row,c);}
+}
 static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
 static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=9+rnd()*9,.phase=rnd()*6.28f,.active=true};}
 static int free_y(int height);
@@ -93,7 +99,7 @@ static void draw_ocean(bool controls){
     if(parade_active){
         char counter[24];snprintf(counter,sizeof(counter),"PARADE %d/%d",mini_parade_index(&parade_plan,parade_elapsed)+1,MINI_PARADE_COUNT);text(counter,20,8,pale);
         for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){
-            const char *name=mini_sprites[parade_plan.order[slot]*2].name;text(name,300-strlen(name)*6,slot%2?18:8,muted);
+            const char *name=mini_sprites[parade_plan.order[slot]*2].name;text_parade(name,mini_parade_name_x(name),mini_parade_name_y(slot),pale);
         }
     }else{text("ASCII GENESIS - MINI",20,8,pale);const char *habitat=habitats[((int)(time_s/45))%6];text(habitat,300-strlen(habitat)*6,8,muted);}
     float scroll=time_s*MINI_SCROLL_SPEED;
@@ -104,7 +110,7 @@ static void draw_ocean(bool controls){
             if(((int)(time_s/45))%6==3&&row==1)text("\\|/",x-6,ground-14,rgb(0xcd8d99));}
     }
     if(((int)(time_s/45))%6==1||((int)(time_s/45))%6==5)for(int rock=(int)floorf((scroll-82)/233)-1;rock*233+82<scroll+320;rock++){float world_x=rock*233+82;text("/__\\",mini_screen_x(world_x,scroll),mini_ground_y(world_x)-6,muted);}
-    for(int i=0;i<4;i++)glyph('o',bubble_x[i],bubble_y[i],muted);
+    for(int i=0;i<4;i++)if(!parade_active||bubble_y[i]>=MINI_PARADE_TOP)glyph('o',bubble_x[i],bubble_y[i],muted);
     if(parade_active){for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){int art=parade_plan.order[slot]*2;const mini_sprite_t *s=&mini_sprites[art];draw_swimmer(art,mini_parade_x(&parade_plan,parade_elapsed,slot,s->width*6),mini_parade_y(slot,s->height*8),parade_elapsed,0);}}
     else for(int i=0;i<3;i++){swimmer_t *f=&fish[i];if(f->active)draw_swimmer(f->art,f->x,f->y,time_s,f->phase);}
     if(controls){rect(0,140,320,32,rgb(0x102631));text(paused?"RESUME":"PAUSE",34,153,pale);text("NEW WORLD",96,153,pale);text(parade_active?"RETURN":"PARADE",179,153,pale);text("SETTINGS",247,153,pale);}

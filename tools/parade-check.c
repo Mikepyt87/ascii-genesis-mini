@@ -9,7 +9,9 @@ int main(void){
     assert(p.duration>=87&&p.duration<224);
     for(int i=0;i<MINI_PARADE_COUNT;i++){
         assert(p.order[i]==i);const mini_sprite_t *s=&mini_sprites[i*2];int width=s->width*6,height=s->height*8;
-        assert(s->name&&s->name[0]);assert(300-(int)strlen(s->name)*6>=160);
+        assert(s->name&&s->name[0]);assert(mini_parade_name_x(s->name)>=20+12*6+8);
+        assert(mini_parade_name_y(i)>=MINI_SAFE_Y);
+        assert(mini_parade_name_y(i)+MINI_PARADE_NAME_HEIGHT<=MINI_PARADE_TOP);
         float start=p.starts[i],end=start+MINI_PARADE_SECONDS-.001f;
         assert(mini_parade_index(&p,start)==i);
         assert(mini_parade_x(&p,start,i,width)+width<MINI_SAFE_X);

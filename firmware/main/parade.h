@@ -2,10 +2,16 @@
 #pragma once
 #include "ocean_geometry.h"
 #include "assets.h"
+#include <string.h>
 #define MINI_PARADE_SECONDS 6.0f
 #define MINI_PARADE_INTERVAL 3.0f
 #define MINI_PARADE_TOP 32
+#define MINI_PARADE_NAME_ADVANCE 9
+#define MINI_PARADE_NAME_HEIGHT 12
 #define MINI_PARADE_COUNT (MINI_SPRITE_COUNT/2)
+static inline int mini_parade_name_x(const char *name){return 300-(int)strlen(name)*MINI_PARADE_NAME_ADVANCE;}
+static inline int mini_parade_name_y(int slot){return 8+(slot%2)*MINI_PARADE_NAME_HEIGHT;}
+
 typedef struct {int order[MINI_PARADE_COUNT];float starts[MINI_PARADE_COUNT],duration;} mini_parade_t;
 static inline void mini_parade_init(mini_parade_t *p){
     for(int i=0;i<MINI_PARADE_COUNT;i++)p->order[i]=i;

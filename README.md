@@ -20,7 +20,7 @@ A pocket-sized ocean made from colored text: fish cross the water, bubbles rise,
 
 **Explore it:** [Complete Ocean Library](docs/OCEAN-LIBRARY.md) · [Visual tour](docs/SCREENSHOTS.md) · [About the Mini and Pi comparison](docs/PROJECT.md) · [Version history](CHANGELOG.md)
 
-**v0.1.9** updates the device and guides to use ocean consistently. The release also makes the project’s origins and thanks easier to find here on GitHub.
+**v0.1.10** makes parade names 50% larger and brighter, with both full names at the top right.
 
 ## Start here
 
@@ -60,7 +60,7 @@ Tap the water to reveal **Pause · New World · Parade · Settings**. Controls f
 
 These images come from the Mini browser renderer; they are software previews rather than board photographs. See the [visual tour](docs/SCREENSHOTS.md) for the parade, coral garden, and complete collection.
 
-Source firmware version: **0.1.9**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published. [Changes by version](CHANGELOG.md).
+Source firmware version: **0.1.10**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published. [Changes by version](CHANGELOG.md).
 
 ## Quick update for an existing board
 

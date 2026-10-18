@@ -8,6 +8,7 @@
   const BOB = 2, GAP = 4, SWIM_BOTTOM = 145;
   const SCROLL_SPEED = 3.6;
   const PARADE_SECONDS = 6, PARADE_INTERVAL = 3, PARADE_TOP = 32;
+  const PARADE_NAME_ADVANCE = 9, PARADE_NAME_HEIGHT = 12;
   const groundAt = worldX => FLOOR + Math.round(Math.sin(worldX / 42) * 3);
   const screenX = (worldX, scroll) => Math.round(worldX - scroll);
   const bandsClear = (y, h, otherY, otherH) => y + h + BOB + GAP <= otherY - BOB || otherY + otherH + BOB + GAP <= y - BOB;
@@ -125,13 +126,18 @@
       }
     }
     function text(s, x, y, color) { for (let i = 0; i < s.length; i++) glyph(s[i], x + i * 6, y, color); }
+    function paradeText(s,x,y){
+      ctx.fillStyle=colors.text;
+      for(let i=0;i<s.length;i++)for(let col=0;col<8;col++)for(let row=0;row<PARADE_NAME_HEIGHT;row++)
+        if(font[s.charCodeAt(i)*5+Math.floor(col*2/3)]&(1<<Math.floor(row*2/3)))ctx.fillRect(x+i*PARADE_NAME_ADVANCE+col,y+row,1,1);
+    }
     ctx.fillStyle = colors.water; ctx.fillRect(0, 0, W, H);
     ctx.save(); ctx.beginPath(); ctx.rect(SAFE_X, SAFE_Y, W - SAFE_X * 2, H - SAFE_Y * 2); ctx.clip();
     if(ocean.parade){
       text('PARADE '+(ocean.paradeIndex()+1)+'/'+ocean.sprites.length/2,20,8,colors.text);
       for(const f of ocean.visibleFish()){
         const name=ocean.sprites[f.index].name;const slot=ocean.parade.order.indexOf(f.index/2);
-        text(name,W-name.length*6-20,slot%2?18:8,colors.muted);
+        paradeText(name,W-name.length*PARADE_NAME_ADVANCE-20,8+(slot%2)*PARADE_NAME_HEIGHT);
       }
     }else{text('ASCII GENESIS - MINI',20,8,colors.text);const label=HABITATS[ocean.habitat];text(label,W-label.length*6-20,8,colors.muted);}
     ctx.save(); ctx.beginPath(); ctx.rect(0, WATER_TOP, W, H - WATER_TOP); ctx.clip();
@@ -156,7 +162,7 @@
         text('/__\\', screenX(worldX, ocean.scroll), groundAt(worldX) - 6, colors.muted);
       }
     }
-    for (const b of ocean.bubbles) glyph('o', b.x, b.y, colors.muted);
+    for (const b of ocean.bubbles) if(!ocean.parade||b.y>=PARADE_TOP)glyph('o', b.x, b.y, colors.muted);
     for (const fish of ocean.visibleFish()) {
       const s = ocean.sprites[fish.index];
       const bob = Math.round(Math.sin((ocean.parade?.elapsed??ocean.time) * 0.55 + fish.phase) * 2);
@@ -179,5 +185,5 @@
     }
     ctx.restore();
   }
-  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM, SCROLL_SPEED, PARADE_SECONDS, PARADE_INTERVAL, PARADE_TOP};
+  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM, SCROLL_SPEED, PARADE_SECONDS, PARADE_INTERVAL, PARADE_TOP, PARADE_NAME_ADVANCE, PARADE_NAME_HEIGHT};
 })(globalThis);

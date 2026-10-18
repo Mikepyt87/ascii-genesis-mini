@@ -2,6 +2,24 @@ import assert from 'node:assert/strict';
 export function checkParade(api,sprites){
  const {MiniOcean,bandsClear,SWIM_TOP,SWIM_BOTTOM}=api;
  const starts=new Set();
+ const {PARADE_NAME_ADVANCE,PARADE_NAME_HEIGHT,PARADE_TOP,render}=api;
+ assert.equal(PARADE_NAME_ADVANCE,9);assert.equal(PARADE_NAME_HEIGHT,12);
+ for(let slot=0;slot<sprites.length/2;slot++){
+  const name=sprites[slot*2].name,x=300-name.length*PARADE_NAME_ADVANCE,y=8+(slot%2)*PARADE_NAME_HEIGHT;
+  assert.ok(x>=100,'Names clear the counter, including the longest name');
+  assert.ok(y+PARADE_NAME_HEIGHT<=PARADE_TOP,'Both name rows clear the swimmers');
+ }
+ const sample=new MiniOcean(sprites,1);sample.toggleParade();
+ for(let slot=0;slot<sprites.length/2;slot++){
+  sample.parade.elapsed=sample.parade.starts[slot]+.5;
+  const pixels=new Map();const ctx={fillRect(x,y,w,h){if(y<PARADE_TOP&&w===1&&h===1)pixels.set(x+','+y,this.fillStyle);},save(){},restore(){},beginPath(){},rect(){},clip(){}};
+  render(ctx,sample,globalThis.MiniFont);
+  const name=sprites[slot*2].name,left=300-name.length*PARADE_NAME_ADVANCE,top=8+(slot%2)*PARADE_NAME_HEIGHT;
+  for(let i=0;i<name.length;i++)for(let col=0;col<8;col++)for(let row=0;row<PARADE_NAME_HEIGHT;row++){
+   if(globalThis.MiniFont[name.charCodeAt(i)*5+Math.floor(col*2/3)]&(1<<Math.floor(row*2/3)))
+    assert.ok(pixels.get((left+i*PARADE_NAME_ADVANCE+col)+','+(top+row))==='#bde9e6','Each full name renders larger and brighter');
+  }
+ }
  for(let seed=1;seed<=40;seed++){
   const ocean=new MiniOcean(sprites,seed);
   assert.equal(ocean.fish.length,3);
