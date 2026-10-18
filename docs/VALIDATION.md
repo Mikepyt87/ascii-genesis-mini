@@ -2,7 +2,7 @@
 
 ## Current release: v0.1.12 — October 18, 2026
 
-The shared artwork now uses balanced creature proportions; see [drawing sizes](CREATURE-SIZES.md). Local simulation and renderer checks passed for the new artwork, including full parade entry/exit, non-overlapping bands, bottom-creature contact, and existing surface/bubble limits. This release has not been confirmed on the physical board. The release build and download verification are recorded after publication.
+The shared artwork now uses balanced creature proportions; see [drawing sizes](CREATURE-SIZES.md). Local simulation and renderer checks passed for the new artwork, including full parade entry/exit, non-overlapping bands, bottom-creature contact, and existing surface/bubble limits. This release has not been confirmed on the physical board. The [automated checks](https://github.com/Mikepyt87/ascii-genesis-mini/actions/runs/39130123669) and [release build](https://github.com/Mikepyt87/ascii-genesis-mini/actions/runs/39130185386) passed for source commit `bb872aaf337eae6e825e567a20ff4d1748a1f3b2`. Downloaded and verified the public stable manifest, application, and complete USB image: correct board, embedded project/version, exact asset URL, **1,092,256 application bytes**, SHA-256, and matching application bytes in the USB image at 0x20000.
 
 ## v0.1.11 — October 18, 2026
 

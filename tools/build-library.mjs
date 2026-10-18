@@ -64,15 +64,16 @@ for(const [name,setup] of [
   ['parade',o=>{o.toggleParade();o.parade.elapsed=o.parade.starts[27]+3;}],
   ['coral',o=>{o.time=135;o.scroll=135*3.6;o.habitat=3;o.controls=false;}]
 ]){const ocean=new MiniOcean(sprites),r=recorder();setup(ocean);render(r.ctx,ocean,globalThis.MiniFont);files.set(`docs/images/${name}.svg`,documentSvg(320,172,r.finish(),`ASCII Genesis - Mini ${name} preview`));}
-let lineup='<rect width="960" height="840" fill="#020c14"/>';
-for(let i=0;i<sprites.length;i+=2){const s=sprites[i],x=(i/2%4)*240,y=Math.floor(i/8)*120;
+const cardWidth=Math.max(240,Math.ceil((Math.max(...sprites.flatMap(s=>s.rows.map(r=>r.length)))*6+24)/24)*24),collectionWidth=cardWidth*4;
+let lineup=`<rect width="${collectionWidth}" height="840" fill="#020c14"/>`;
+for(let i=0;i<sprites.length;i+=2){const s=sprites[i],x=(i/2%4)*cardWidth,y=Math.floor(i/8)*120;
   lineup+=`<text x="${x+12}" y="${y+18}" fill="#bde9e6" font-family="monospace" font-size="12">${i/2+1}. ${escape(s.name)}</text>`;
   const r=recorder();for(let row=0;row<s.rows.length;row++)for(let col=0;col<s.rows[row].length;col++){
     const code=s.rows[row].charCodeAt(col),mask=Number(s.masks[row]?.[col]);r.ctx.fillStyle=s.palette[mask>0?mask-1:0]||'#bde9e6';
     for(let c=0;c<5;c++)for(let bit=0;bit<8;bit++)if(globalThis.MiniFont[code*5+c]&(1<<bit))r.ctx.fillRect(x+12+col*6+c,y+30+row*8+bit,1,1);
   }lineup+=r.finish();
 }
-files.set('docs/images/collection.svg',documentSvg(960,840,lineup,'All 28 Mini creature and vehicle designs'));
+files.set('docs/images/collection.svg',documentSvg(collectionWidth,840,lineup,'All 28 Mini creature and vehicle designs'));
 let library=`# Mini Ocean Library
 
 The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 320 × 172 ESP32 ocean. This page describes the Mini’s implementation. The [Raspberry Pi library](https://github.com/Mikepyt87/ascii-genesis/blob/main/docs/OCEAN-LIBRARY.md) describes a different program.
