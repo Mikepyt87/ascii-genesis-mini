@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import '../art/fish-art.js';
+import '../art/size-check.mjs';
 import '../preview/font.js';
 const quote=s=>JSON.stringify(s);
 let out=`/* Generated from art/fish-art.js and preview/font.js. Do not edit.

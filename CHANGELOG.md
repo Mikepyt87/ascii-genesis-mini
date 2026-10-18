@@ -2,6 +2,13 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.12
+
+- Reviews all 28 regular designs for a consistent size relationship, shared across Pi, Mini, and Mid.
+- Shrinks the jellyfish from 15 × 7 to 6 × 4 characters, and reduces the shore crab, reef lobster, and peacock mantis shrimp.
+- Makes the reef shark about 15% longer and the humpback whale about 11% longer without adding height.
+- Preserves the original parade order, timing, movement rules, and sparse bubble limits. See [creature proportions](docs/CREATURE-SIZES.md) for all drawing sizes.
+
 ## 0.1.11
 
 - Adds occasional surface stretches with sailing boats, surfacing and spouting whales, and a Nessie-like sea monster, one visitor at a time.

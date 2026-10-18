@@ -4,7 +4,7 @@ The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 32
 
 There are **28 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **56 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
 
-The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md).
+The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md) and [balanced creature proportions](CREATURE-SIZES.md).
 
 ![All 28 Mini designs](images/collection.svg)
 
@@ -32,14 +32,14 @@ The surface boat, spouting whale, two-pose sea monster, castles, and ruins use s
 | 18 | [rose squid](#rose-squid) | 15 × 5 characters | ASCII Genesis original |
 | 19 | [violet octopus](#violet-octopus) | 16 × 7 characters | ASCII Genesis original |
 | 20 | [sea turtle](#sea-turtle) | 21 × 5 characters | ASCII Genesis original |
-| 21 | [moon jellyfish](#moon-jellyfish) | 15 × 7 characters | ASCII Genesis original |
-| 22 | [shore crab](#shore-crab) | 17 × 5 characters | ASCII Genesis original |
-| 23 | [reef lobster](#reef-lobster) | 24 × 6 characters | ASCII Genesis original |
-| 24 | [reef shark](#reef-shark) | 27 × 6 characters | ASCII Genesis original |
-| 25 | [humpback whale](#humpback-whale) | 37 × 6 characters | ASCII Genesis original |
+| 21 | [moon jellyfish](#moon-jellyfish) | 6 × 4 characters | ASCII Genesis original |
+| 22 | [shore crab](#shore-crab) | 11 × 4 characters | ASCII Genesis original |
+| 23 | [reef lobster](#reef-lobster) | 15 × 5 characters | ASCII Genesis original |
+| 24 | [reef shark](#reef-shark) | 31 × 6 characters | ASCII Genesis original |
+| 25 | [humpback whale](#humpback-whale) | 41 × 6 characters | ASCII Genesis original |
 | 26 | [yellow submarine](#yellow-submarine) | 27 × 6 characters | ASCII Genesis original |
 | 27 | [lionfish](#lionfish) | 22 × 9 characters | ASCII Genesis original |
-| 28 | [peacock mantis shrimp](#peacock-mantis-shrimp) | 22 × 5 characters | ASCII Genesis original |
+| 28 | [peacock mantis shrimp](#peacock-mantis-shrimp) | 16 × 4 characters | ASCII Genesis original |
 
 ## Shared swimming behavior
 
@@ -696,7 +696,7 @@ Facing left:
 A pale jellyfish with a rounded bell and trailing tentacles. The Mini moves the complete drawing sideways with a gentle bob; it has no separate pulse animation.
 
 - **Parade position:** 21 of 28.
-- **Drawing size:** right 15 × 7; left 15 × 7 characters.
+- **Drawing size:** right 6 × 4; left 6 × 4 characters.
 - **Palette:** `#a8c9e8`, `#8e9fc9`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
 - **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
@@ -704,25 +704,19 @@ A pale jellyfish with a rounded bell and trailing tentacles. The Mini moves the 
 Facing right:
 
 ```text
-       .----.  
-     .'      '.
-    (  .  .   )
-     '--------'
-      | ) | (  
-      ( | ( |  
-      | ( | )  
+ .--. 
+( .. )
+ '--' 
+ )||( 
 ```
 
 Facing left:
 
 ```text
-  .----.       
-.'      '.     
-(   .  .  )    
-'--------'     
-  ) | ( |      
-  | ) | )      
-  ( | ) |      
+ .--. 
+( .. )
+ '--' 
+ )||( 
 ```
 
 ### shore crab
@@ -730,7 +724,7 @@ Facing left:
 A small shore crab with claws and low legs. The Mini uses a swimming lane for this drawing rather than making its feet follow the floor.
 
 - **Parade position:** 22 of 28.
-- **Drawing size:** right 17 × 5; left 17 × 5 characters.
+- **Drawing size:** right 11 × 4; left 11 × 4 characters.
 - **Palette:** `#d69a76`, `#b87359`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
 - **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
@@ -738,21 +732,19 @@ A small shore crab with claws and low legs. The Mini uses a swimming lane for th
 Facing right:
 
 ```text
-   __         __ 
-  /  \ (o o) /  \
-  \__/--___--\__/
-    / /|||\ \    
-   /_/ ||| \_\   
+() (o o) ()
+ \--_--/   
+ /|||||\   
+/_/|||\_\  
 ```
 
 Facing left:
 
 ```text
- __         __   
-/  \ (o o) /  \  
-\__/--___--\__/  
-    / /|||\ \    
-   /_/ ||| \_\   
+() (o o) ()
+   \--_--/ 
+   /|||||\ 
+  /_/|||\_\
 ```
 
 ### reef lobster
@@ -760,7 +752,7 @@ Facing left:
 A reef lobster with an extended body, legs, and claws. Like the crab, it joins the regular lanes and the parade.
 
 - **Parade position:** 23 of 28.
-- **Drawing size:** right 24 × 6; left 24 × 6 characters.
+- **Drawing size:** right 15 × 5; left 15 × 5 characters.
 - **Palette:** `#cf8175`, `#a96159`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
 - **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
@@ -768,23 +760,21 @@ A reef lobster with an extended body, legs, and claws. Like the crab, it joins t
 Facing right:
 
 ```text
-                     __ 
-                ____/  \
-  _/\_  _ _ _  / o  \__/
- <_  _>=|=|=|=(_____)-->
-   \/   / / /  \ \ \__  
-       /_/ /_   \_\___> 
+           __  
+ _/\_ _ _ /o \ 
+<_  _>=|=(__)=>
+  \/ / / \ \_> 
+    /_/   \_\  
 ```
 
 Facing left:
 
 ```text
- __                     
-/  \____                
-\__/  o \  _ _ _  _/\_  
-<--(_____)=|=|=|=<_  _> 
-  __/ / /  \ \ \   \/   
- <___/_/   _\ \_\       
+  __           
+ / o\ _ _ _/\_ 
+<=(__)=|=<_  _>
+ <_/ / \ \ \/  
+  /_/   \_\    
 ```
 
 ### reef shark
@@ -792,7 +782,7 @@ Facing left:
 A shark silhouette with a high dorsal fin, pointed nose, and forked tail. It is decorative here and never eats other fish.
 
 - **Parade position:** 24 of 28.
-- **Drawing size:** right 27 × 6; left 27 × 6 characters.
+- **Drawing size:** right 31 × 6; left 31 × 6 characters.
 - **Palette:** `#91adbf`, `#688598`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
 - **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
@@ -800,23 +790,23 @@ A shark silhouette with a high dorsal fin, pointed nose, and forked tail. It is 
 Facing right:
 
 ```text
-               /|          
-    /\   _____/ |______    
-   /  \_/   ---   o    \__ 
-  <   _    (((           _>
-   \_/ '----.____   ____/  
-             \__\_/        
+                 /|            
+    /\    ______/ |________    
+   /  \__/    ---    o      \__
+  <   _      (((             _>
+   \_/ '-----.______   _____/  
+               \___\_/         
 ```
 
 Facing left:
 
 ```text
-          |\               
-    ______| \_____   /\    
- __/    o   ---   \_/  \   
-<_           )))    _   >  
-  \____   ____.----' \_/   
-        \_/__/             
+            |\                 
+    ________| \______    /\    
+__/      o    ---    \__/  \   
+<_             )))      _   >  
+  \_____   ______.-----' \_/   
+         \_/___/               
 ```
 
 ### humpback whale
@@ -824,7 +814,7 @@ Facing left:
 A broad whale drawing with flippers and a long back. It uses the same lane-spacing rules as the smaller designs.
 
 - **Parade position:** 25 of 28.
-- **Drawing size:** right 37 × 6; left 37 × 6 characters.
+- **Drawing size:** right 41 × 6; left 41 × 6 characters.
 - **Palette:** `#91b8c9`, `#6e91aa`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
 - **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
@@ -832,23 +822,23 @@ A broad whale drawing with flippers and a long back. It uses the same lane-spaci
 Facing right:
 
 ```text
-                 ____                
-       _________/    \____________   
-  __  /                        o  \_ 
- <  \/      __                    __)
-  \_/\_____/  \__________________/   
-             \____/                  
+                   ____                  
+       ___________/    \______________   
+  __  /                            o  \_ 
+ <  \/      __                        __)
+  \_/\_____/  \______________________/   
+             \____/                      
 ```
 
 Facing left:
 
 ```text
-                ____                 
-   ____________/    \_________       
- _/  o                        \  __  
-(__                    __      \/  > 
-   \__________________/  \_____/\_/  
-                  \____/             
+                  ____                   
+   ______________/    \___________       
+ _/  o                            \  __  
+(__                        __      \/  > 
+   \______________________/  \_____/\_/  
+                      \____/             
 ```
 
 ### yellow submarine
@@ -926,7 +916,7 @@ Facing left:
 A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. In the Mini it swims through a clear lane; it does not punch, hunt, or dig a burrow.
 
 - **Parade position:** 28 of 28.
-- **Drawing size:** right 22 × 5; left 22 × 5 characters.
+- **Drawing size:** right 16 × 4; left 16 × 4 characters.
 - **Palette:** `#54c992`, `#59aedd`, `#f4a365`, `#fff1c8`, `#ed8875`, `#b6d96f`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
 - **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
@@ -934,21 +924,19 @@ A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange st
 Facing right:
 
 ```text
-                 o   o
-                  \_/ 
- _/\_  _ _ _ __.-'==\ 
-<_  _>=|=|=|=|_    _)>
-  \/   /_/_/   \_(] (]
+            o o 
+ _/\_ _ _ .-'=\ 
+<_  _>=|=|_  _)>
+  \/ /_/_/\_(](]
 ```
 
 Facing left:
 
 ```text
-o   o                 
- \_/                  
- /=='-.__ _ _ _  _/\_ 
-<(_    _|=|=|=|=<_  _>
-[) [)_/   \_\_\   \/  
+ o o            
+ /='-. _ _ _/\_ 
+<(_  _|=|=<_  _>
+[)[)_/\_\_\ \/  
 ```
 
 ## Sources and maintenance

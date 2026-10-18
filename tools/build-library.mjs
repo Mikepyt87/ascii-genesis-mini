@@ -79,7 +79,7 @@ The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 32
 
 There are **28 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **56 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
 
-The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md).
+The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md) and [balanced creature proportions](CREATURE-SIZES.md).
 
 ![All 28 Mini designs](images/collection.svg)
 
