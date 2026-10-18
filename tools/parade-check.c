@@ -4,6 +4,12 @@
 #include <string.h>
 #include "../firmware/main/parade.h"
 int main(void){
+    // The native waterline must stop above even a fractional swimmer lane.
+    assert(mini_surface_limit(64,25.9f)==13);
+    assert(mini_surface_limit(-12,25.9f)==-12);
+    assert(mini_surface_limit(64,100)==64);
+    for(int y=23;y<MINI_SWIM_BOTTOM;y++)for(int water=-12;water<=64;water++)
+        assert(mini_surface_limit(water,y)+8<=y-MINI_BOB);
     mini_parade_t p;mini_parade_init(&p);
     assert(MINI_PARADE_SECONDS==6);assert(MINI_PARADE_INTERVAL==3);
     assert(p.duration>=87&&p.duration<224);

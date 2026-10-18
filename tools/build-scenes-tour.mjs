@@ -27,7 +27,8 @@ for(const kind of ['boat','whale','monster','ruins']){
  if(kind!=='ruins')for(;time<600;time+=.02){const s=scenes.scene(time,4848);if(s.kind===kind&&s.progress>.5&&s.progress<.51)break;}
  else for(;time<600;time+=.1)if(scenes.scene(time,4848).surface===0)break;
  if(time>=600)throw Error('Scene not found');
- ocean.time=time;ocean.step(.01);ocean.controls=false;
+ // Stage the ordinary swimmers below the intended surface for these illustrations.
+ ocean.fish=[];ocean.time=time;ocean.step(.01);ocean.controls=false;
  let slot=0;if(kind==='ruins')while(scenes.landmark(slot,4848).kind!=='ruins')slot++;
  ocean.scroll=scenes.landmark(slot,4848).worldX-25;
  const r=recorder();render(r.ctx,ocean,globalThis.MiniFont);

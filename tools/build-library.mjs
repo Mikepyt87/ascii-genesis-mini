@@ -97,7 +97,7 @@ library+=`
 - Normal swimming uses **9–18 screen pixels per second**, three times the v0.1.6 range. Each arrival receives its own speed and left/right direction. A point would cross the 320-pixel screen in roughly 18–36 seconds; a complete drawing takes longer to enter and leave.
 - The seabed and rooted plants travel together at **3.6 pixels per second**. Faster fish do not change camera speed, habitat timing, bubble speed, or the Pi edition.
 - There are at most **three normal swimmers**. Each occupies a separate vertical band that allows for the whole drawing, a two-pixel bob, and a four-pixel gap. A new arrival waits if its full height will not fit.
-- New arrivals begin beyond an edge and normally leave after their full drawing clears it. During surface transitions, a swimmer is refitted below the waterline; if no clear band fits, its slot is cleared. Edge clipping during entry or departure is expected. Important content is inset from the physical screen’s rounded corners.
+- New arrivals begin beyond an edge and normally leave after their full drawing clears it. The waterline waits above existing swimmers; it never removes them or moves their lanes. New arrivals use clear bands below the intended surface depth. Edge clipping during entry or departure is expected. Important content is inset from the physical screen’s rounded corners.
 - The colored character drawings are static. The renderer translates each drawing and adds a small vertical bob; it does not animate individual fins, claws, legs, or tentacles.
 - All designs use these rules, including the crab, lobster, octopus, and mantis shrimp. The Mini has no hunting, food web, schools, diver visits, local-clock lighting, or AI narration.
 

@@ -38,7 +38,7 @@ The Mini uses compact four-row castles and three-row ruins to leave open water a
 
 There are at most **two ordinary bubbles on screen**, shared by creatures and seabed emissions. Emission attempts are spaced **7–12 seconds** apart; an attempt can produce no bubble if both slots are occupied or the chosen creature is off screen. Bubbles rise at about seven logical pixels per second, drift gently, and disappear at the current waterline. They are hidden during the parade.
 
-There are up to three ordinary swimmers, subject to drawing height and available space. As the waterline enters the view, swimmers are fitted into clear underwater bands. A slot is cleared if its drawing cannot fit, and new arrivals wait for enough room. The three surface visitors use their own single visitor slot.
+There are up to three ordinary swimmers, subject to drawing height and available space. The waterline stops above existing swimmers, with clearance for their upward bob. Creatures keep their lanes until they swim offscreen; a surface transition never removes or relocates them. New arrivals wait for a clear band below the intended surface depth, allowing the surface to enter as the older swimmers leave. A high swimmer can delay or hide a surface visitor during its scheduled window. The three surface visitors use their own single visitor slot.
 
 ## Preview and checks
 

@@ -2,6 +2,12 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.13
+
+- Fixes creatures disappearing when the waterline drops: the line now waits above existing swimmers instead of clearing their slots or moving their lanes.
+- Reserves clear bands below the intended surface depth for new arrivals, with full upward-bob clearance for existing swimmers.
+- Adds regression checks that track each creature through surface transitions until its full drawing leaves the screen.
+
 ## 0.1.12
 
 - Reviews all 28 regular designs for a consistent size relationship, shared across Pi, Mini, and Mid.

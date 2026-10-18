@@ -49,12 +49,20 @@
     }
     freeY(height) {
       const candidates = [];
-      for (let y = this.waterTop(); y + height + BOB <= SWIM_BOTTOM; y++) {
+      for (let y = Math.max(this.waterTop(), this.arrivalTop()); y + height + BOB <= SWIM_BOTTOM; y++) {
         if (this.fish.every(f => bandsClear(y, height, f.y, f.height))) candidates.push(y);
       }
       return candidates.length ? candidates[Math.floor(this.random() * candidates.length)] : null;
     }
-    waterTop(){return Math.max(SWIM_TOP,Math.round(-12+76*scenes.scene(this.time,this.sceneSeed).surface)+12);}
+    desiredSurfaceY(){return Math.round(-12+76*scenes.scene(this.time,this.sceneSeed).surface);}
+    arrivalTop(){return Math.max(SWIM_TOP,this.desiredSurfaceY()+12);}
+    surfaceY(){
+      // Existing swimmers keep their lanes; reserve the desired depth for newcomers.
+      let water=this.desiredSurfaceY();
+      for(const f of this.fish)water=Math.min(water,Math.floor(f.y)-12);
+      return water;
+    }
+    waterTop(){return Math.max(SWIM_TOP,this.surfaceY()+12);}
     step(dt) {
       if (this.paused) return;
       dt = Math.max(0, Math.min(dt, 0.25));
@@ -63,10 +71,6 @@
       this.habitat = Math.floor(this.time / 45) % HABITATS.length;
       for (const f of this.fish) f.x += f.direction * f.speed * dt;
       this.fish = this.fish.filter(f => f.x < W + 8 && f.x + f.width > -8);
-      for(const f of [...this.fish])if(f.y<this.waterTop()){
-        this.fish=this.fish.filter(other=>other!==f);const y=this.freeY(f.height);
-        if(y!==null){f.y=y;this.fish.push(f);}
-      }
       if (this.fish.length < 3) {
         if (!this.pendingSpawn) this.pendingSpawn = {index: Math.floor(this.random() * (this.sprites.length / 2)) * 2, direction: this.random() < 0.5 ? -1 : 1};
         const {index, direction} = this.pendingSpawn;
@@ -180,11 +184,11 @@
         if(floor-rows.length*8-2<H*2/3)continue;
         rows.forEach((row,i)=>text(row,x,floor-rows.length*8-2+i*8,l.kind==='castle'?'#6f8290':'#687c78'));
       }
-      const scene=scenes.scene(ocean.time,ocean.sceneSeed),water=Math.round(-12+76*scene.surface);
+      const scene=scenes.scene(ocean.time,ocean.sceneSeed),water=ocean.surfaceY();
       if(water>=20){
         ctx.fillStyle='#081723';ctx.fillRect(12,20,296,water-12);
         for(let x=12;x<308;x+=6)glyph(Math.sin(ocean.time*1.2+x*.06)>0?'~':'_',x,water,'#508d9f');
-        if(scene.kind){
+        if(scene.kind&&water>=52){
           const rows=scenes.art[scene.kind==='monster'&&Math.floor(scene.progress*30/.6)%2?'monsterAlt':scene.kind],width=Math.max(...rows.map(r=>r.length))*6;
           const x=Math.round(-width+scene.progress*(W+width));
           const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};

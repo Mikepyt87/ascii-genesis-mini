@@ -17,3 +17,8 @@ static inline bool mini_band_fits(int y,int height) {return y>=MINI_SWIM_TOP&&y+
 static inline bool mini_bands_clear(float y,int height,float other_y,int other_height) {
     return y+height+MINI_BOB+MINI_GAP<=other_y-MINI_BOB || other_y+other_height+MINI_BOB+MINI_GAP<=y-MINI_BOB;
 }
+
+// Leave room for the wave glyph and full upward bob; never displace a swimmer.
+static inline int mini_surface_limit(int water,float swimmer_y) {
+    int ceiling=(int)floorf(swimmer_y)-12;return water<ceiling?water:ceiling;
+}
