@@ -12,10 +12,18 @@ let out=`/* Generated from art/fish-art.js and preview/font.js. Do not edit.
  */
 #pragma once
 #include <stdint.h>
-typedef struct {const char *rows[10],*masks[10];uint32_t palette[7];int width,height;const char *name;} mini_sprite_t;
+typedef struct {const char *rows[10],*masks[10];uint32_t palette[7];int width,height;const char *name;int bottom;int8_t feet[64];} mini_sprite_t;
 static const unsigned char mini_font[]={${globalThis.MiniFont.join(',')}};
 static const mini_sprite_t mini_sprites[]={\n`;
-for(const s of globalThis.AsciiquariumSprites)out+=`{ {${s.rows.map(quote)}}, {${s.masks.map(quote)}}, {${s.palette.map(c=>'0x'+c.slice(1))}}, ${Math.max(...s.rows.map(r=>r.length))}, ${s.rows.length}, ${quote(s.name)}},\n`;
+const bottomNames=new Set(['shore crab','reef lobster','peacock mantis shrimp','violet octopus']);
+for(const s of globalThis.AsciiquariumSprites){
+ const feet=Array.from({length:Math.max(...s.rows.map(r=>r.length))},(_,col)=>{
+  let last=-1;s.rows.forEach((row,r)=>{const ch=row[col];if(!ch||ch===' ')return;
+   for(let x=0;x<5;x++)for(let y=0;y<8;y++)if(globalThis.MiniFont[ch.charCodeAt(0)*5+x]&(1<<y))last=Math.max(last,r*8+y);
+  });return last;
+ });
+ out+=`{ {${s.rows.map(quote)}}, {${s.masks.map(quote)}}, {${s.palette.map(c=>'0x'+c.slice(1))}}, ${Math.max(...s.rows.map(r=>r.length))}, ${s.rows.length}, ${quote(s.name)}, ${bottomNames.has(s.name)?1:0}, {${feet}}},\n`;
+}
 out+='};\n';
 out+=`#define MINI_SPRITE_COUNT ${globalThis.AsciiquariumSprites.length}\n`;
 out+=`#define MINI_MANTIS_INDEX ${globalThis.AsciiquariumSprites.findIndex(s=>s.name==='peacock mantis shrimp')}\n`;

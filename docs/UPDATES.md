@@ -1,6 +1,6 @@
 # Wireless updates
 
-Current release: **v0.1.13**, with a fix for creatures disappearing during waterline transitions, plus the existing balanced creature proportions, surface visitors, castles, ruins, and sparse bubbles. See [what changed](../CHANGELOG.md) and the [new scenes guide](SURFACE-SCENES.md).
+Current release: **v0.1.14**, with a fix for creatures disappearing during waterline transitions, plus the existing balanced creature proportions, surface visitors, castles, ruins, and sparse bubbles. See [what changed](../CHANGELOG.md) and the [new scenes guide](SURFACE-SCENES.md).
 
 ## Install an offered update
 

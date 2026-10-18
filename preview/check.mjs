@@ -35,7 +35,7 @@ for (let frame = 0; frame < 36000; frame++) {
   for (const fish of ocean.fish) {
     assert.ok(fish.speed>=9&&fish.speed<18,'New arrivals retain the faster swimming range');
     assert.ok(Number.isFinite(fish.x) && Number.isFinite(fish.y));
-    assert.ok(fish.y >= 23 && fish.y + fish.height + 2 <= 145);
+    assert.ok(fish.y >= 23 && (ocean.isBottom(fish.index)||fish.y + fish.height + 2 <= 145));
   }
   for(let i=0;i<ocean.fish.length;i++)for(let j=i+1;j<ocean.fish.length;j++){
     const a=ocean.fish[i],b=ocean.fish[j];
@@ -81,3 +81,5 @@ assert.ok(20+'ASCII-Genesis-Mini-FFFF'.length*12<=308,'Large setup SSID must fit
 console.log('PASS: one simulated hour, all habitats and screens, creature clearance, scenery translation, rounded-panel safe area, Wi-Fi text fit, pause and touch.');
 
 const {checkScenes}=await import('./scenes-check.mjs');checkScenes(globalThis.MiniAquarium,sprites);
+
+const {checkBottom}=await import('./bottom-check.mjs');checkBottom(globalThis.MiniAquarium,sprites);

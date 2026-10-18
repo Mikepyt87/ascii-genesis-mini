@@ -22,7 +22,7 @@ Tap the water, lift your finger, then tap a button. Controls normally hide after
 
 This illustration holds the parade at its final design, the peacock mantis shrimp. Its green body, blue legs, and orange striking clubs are separate colors in the drawing. The Mini treats it as a swimmer; there is no claw strike animation.
 
-All 28 designs keep their original order, with six-second crossings and up to two creatures in separate bands. Their names appear at the top right. A full parade lasts **1 minute 45 seconds**. Tall neighbors wait for enough room. Return resumes your preserved ocean.
+All 28 designs keep their original order, with six-second crossings and up to two creatures in separate bands. Their names appear at the top right. A full parade lasts **1 minute 54 seconds**. Tall neighbors wait for enough room. Return resumes your preserved ocean.
 
 ## Coral garden
 

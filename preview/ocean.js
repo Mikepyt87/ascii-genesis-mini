@@ -8,6 +8,13 @@
   const SAFE_X = 12, SAFE_Y = 8, SWIM_TOP = 23;
   const BOB = 2, GAP = 4, SWIM_BOTTOM = 145;
   const SCROLL_SPEED = 3.6;
+  const bottomNames=new Set(['shore crab','reef lobster','peacock mantis shrimp','violet octopus']);
+  const bottomReserve=height=>FLOOR-3-height;
+  const feetFor=s=>Array.from({length:Math.max(...s.rows.map(r=>r.length))},(_,col)=>{
+    let last=-1;s.rows.forEach((row,r)=>{const ch=row[col];if(!ch||ch===' ')return;
+      for(let x=0;x<5;x++)for(let y=0;y<8;y++)if(root.MiniFont[ch.charCodeAt(0)*5+x]&(1<<y))last=Math.max(last,r*8+y);
+    });return last;
+  });
   const PARADE_SECONDS = 6, PARADE_INTERVAL = 3, PARADE_TOP = 32;
   const PARADE_NAME_ADVANCE = 9, PARADE_NAME_HEIGHT = 12;
   const groundAt = worldX => FLOOR + Math.round(Math.sin(worldX / 42) * 3);
@@ -16,7 +23,7 @@
   const HABITATS = ['KELP MEADOW', 'ROCKY REEF', 'OPEN SAND', 'CORAL GARDEN', 'SEAGRASS BED', 'WRECK DEPTHS'];
   class MiniOcean {
     constructor(sprites, seed = 147) {
-      this.sprites = sprites;
+      this.sprites = sprites;this.feet=sprites.map(feetFor);
       this.seed = seed >>> 0 || 147; this.sceneSeed=this.seed;
       this.time = this.random()*270; this.paused = false; this.controls = true;
       this.habitat = Math.floor(this.time/45)%6; this.scroll = this.time*SCROLL_SPEED; this.fish = [];
@@ -27,13 +34,22 @@
         const first=Math.floor(this.random()*(sprites.length/2));
         for(let attempt=0;attempt<sprites.length/2;attempt++){
           const index=((first+attempt)%(sprites.length/2))*2,sprite=sprites[index],height=sprite.rows.length*8;
-          const band=Math.floor((SWIM_BOTTOM-SWIM_TOP)/3),room=band-height-2*BOB-GAP;if(room<0)continue;
-          const y=SWIM_TOP+slot*band+BOB+Math.floor(this.random()*(room+1));
+          if(this.isBottom(index)&&slot<2)continue;
+          const band=Math.floor((SWIM_BOTTOM-SWIM_TOP)/3),room=band-height-2*BOB-GAP;if(room<0&&!this.isBottom(index))continue;
+          const y=this.isBottom(index)?bottomReserve(height):SWIM_TOP+slot*band+BOB+Math.floor(this.random()*(room+1));
+          if(!this.fish.every(f=>bandsClear(y,height,f.y,f.height)))continue;
           const width=Math.max(...sprite.rows.map(r=>r.length))*6;
           const direction=this.random()<.5?-1:1;
           this.spawn(index,SAFE_X+this.random()*(W-2*SAFE_X-width),y,direction);break;
         }
       }
+    }
+    isBottom(index){return bottomNames.has(this.sprites[index].name);}
+    bottomY(index,x,scroll=this.scroll){return Math.min(...this.feet[index].flatMap((foot,col)=>foot<0?[]:[groundAt(Math.round(x)+col*6+2+scroll)-foot]));}
+    paradeY(slot){const index=slot*2,height=this.sprites[index].rows.length*8;
+      if(this.isBottom(index))return bottomReserve(height);
+      const neighbor=[slot-1,slot+1].some(n=>n>=0&&n<this.sprites.length/2&&this.isBottom(n*2));
+      return neighbor||slot%2===0?PARADE_TOP+BOB:SWIM_BOTTOM-BOB-height;
     }
     random() {
       let x = this.seed; x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
@@ -43,11 +59,12 @@
       const sprite = this.sprites[(index & ~1) + (direction < 0 ? 1 : 0)];
       const width = Math.max(...sprite.rows.map(r => r.length)) * 6;
       const height = sprite.rows.length * 8;
-      this.fish.push({index: (index & ~1) + (direction < 0 ? 1 : 0), x, y,
+      this.fish.push({index: (index & ~1) + (direction < 0 ? 1 : 0), x, y:this.isBottom(index)?bottomReserve(height):y,
         width, height, direction, speed: 9 + this.random() * 9,
         phase: this.random() * Math.PI * 2});
     }
-    freeY(height) {
+    freeY(height,index=-1) {
+      if(index>=0&&this.isBottom(index)){const y=bottomReserve(height);return y>=this.arrivalTop()&&this.fish.every(f=>bandsClear(y,height,f.y,f.height))?y:null;}
       const candidates = [];
       for (let y = Math.max(this.waterTop(), this.arrivalTop()); y + height + BOB <= SWIM_BOTTOM; y++) {
         if (this.fish.every(f => bandsClear(y, height, f.y, f.height))) candidates.push(y);
@@ -77,7 +94,7 @@
         const sprite = this.sprites[index];
         const width = Math.max(...sprite.rows.map(r => r.length)) * 6;
         const height = sprite.rows.length * 8;
-        const y = this.freeY(height);
+        const y = this.freeY(height,index);
         if (y !== null) {
           this.spawn(index, direction > 0 ? -width - 2 : W + 2, y, direction);
           this.pendingSpawn = null;
@@ -110,8 +127,8 @@
       const order=Array.from({length:this.sprites.length/2},(_,i)=>i);
       const starts=[0];
       for(let i=1;i<order.length;i++){
-        const height=(this.sprites[order[i-1]*2].rows.length+this.sprites[order[i]*2].rows.length)*8;
-        starts[i]=starts[i-1]+(height+4*BOB+GAP<=SWIM_BOTTOM-PARADE_TOP?PARADE_INTERVAL:PARADE_SECONDS);
+        const a=this.sprites[(i-1)*2].rows.length*8,b=this.sprites[i*2].rows.length*8;
+        starts[i]=starts[i-1]+(bandsClear(this.paradeY(i-1),a,this.paradeY(i),b)?PARADE_INTERVAL:PARADE_SECONDS);
       }
       this.parade={elapsed:0,order,starts,duration:starts.at(-1)+PARADE_SECONDS};
     }
@@ -123,7 +140,7 @@
         const age=elapsed-starts[slot];if(age<0||age>=PARADE_SECONDS)return [];
         const index=design*2,sprite=this.sprites[index],width=Math.max(...sprite.rows.map(r=>r.length))*6,height=sprite.rows.length*8;
         const phase=Math.max(0,Math.min(1,(age-.25)/(PARADE_SECONDS-.5)));
-        return [{index,width,height,x:SAFE_X-width-2+phase*(W-2*SAFE_X+width+4),y:slot%2?SWIM_BOTTOM-BOB-height:PARADE_TOP+BOB,phase:0}];
+        return [{index,width,height,x:SAFE_X-width-2+phase*(W-2*SAFE_X+width+4),y:this.paradeY(slot),phase:0}];
       });
     }
   }
@@ -203,12 +220,13 @@
     }
     for (const fish of ocean.visibleFish()) {
       const s = ocean.sprites[fish.index];
-      const bob = Math.round(Math.sin((ocean.parade?.elapsed??ocean.time) * 0.55 + fish.phase) * 2);
+      const bottom=ocean.isBottom(fish.index),bob=bottom?0:Math.round(Math.sin((ocean.parade?.elapsed??ocean.time) * 0.55 + fish.phase) * 2);
+      const y=bottom?ocean.bottomY(fish.index,fish.x):fish.y;
       for (let row = 0; row < s.rows.length; row++) {
         for (let col = 0; col < s.rows[row].length; col++) {
           const ch = s.rows[row][col]; if (ch === ' ') continue;
           const mask = Number(s.masks[row]?.[col]);
-          glyph(ch, fish.x + col * 6, fish.y + row * 8 + bob, s.palette[mask > 0 ? mask - 1 : 0] || colors.text);
+          glyph(ch, fish.x + col * 6, y + row * 8 + bob, s.palette[mask > 0 ? mask - 1 : 0] || colors.text);
         }
       }
     }

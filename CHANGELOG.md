@@ -2,6 +2,13 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.14
+
+- Keeps the shore crab, reef lobster, peacock mantis shrimp, and violet octopus on the scrolling seabed in the normal ocean and parade.
+- Anchors visible feet to the terrain and removes their swimming bob. Bottom arrivals wait for a clear bottom band.
+- Keeps the original parade order and six-second crossings. Neighbors take turns when the bottom lane needs room; the full parade now takes 114 seconds.
+- Adds browser and native checks for both directions, terrain contact, spacing, complete crossings, and grounded parade placement.
+
 ## 0.1.13
 
 - Fixes creatures disappearing when the waterline drops: the line now waits above existing swimmers instead of clearing their slots or moving their lanes.

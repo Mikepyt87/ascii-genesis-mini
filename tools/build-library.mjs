@@ -29,7 +29,7 @@ const descriptions=[
   'A violet ray with broad wings, a narrow tail, and a small eye. Its drawing glides sideways using the shared swimming motion.',
   'A blue-green fish with a light-like stalk above its head and a pale eye. The lure is part of the static artwork.',
   'A rose-colored squid with a pointed mantle and tentacles trailing behind. Its whole drawing moves together.',
-  'A violet octopus with two eyes and curling arms below a rounded head. In this edition it shares the regular swimming lanes.',
+  'A violet octopus with two eyes and curling arms below a rounded head. It follows the scrolling seabed with its arms grounded and no swimming bob.',
   'A green turtle with a patterned shell, four flippers, and a small head. The shell markings use the artwork color masks.',
   'A pale jellyfish with a rounded bell and trailing tentacles. The Mini moves the complete drawing sideways with a gentle bob; it has no separate pulse animation.',
   'A small shore crab with claws and low legs. The Mini uses a swimming lane for this drawing rather than making its feet follow the floor.',
@@ -96,14 +96,14 @@ library+=`
 
 - Normal swimming uses **9–18 screen pixels per second**, three times the v0.1.6 range. Each arrival receives its own speed and left/right direction. A point would cross the 320-pixel screen in roughly 18–36 seconds; a complete drawing takes longer to enter and leave.
 - The seabed and rooted plants travel together at **3.6 pixels per second**. Faster fish do not change camera speed, habitat timing, bubble speed, or the Pi edition.
-- There are at most **three normal swimmers**. Each occupies a separate vertical band that allows for the whole drawing, a two-pixel bob, and a four-pixel gap. A new arrival waits if its full height will not fit.
+- There are at most **three normal creatures**. Free swimmers occupy separate vertical bands with a two-pixel bob and four-pixel gap; bottom dwellers reserve the seabed band. A new arrival waits if its full height will not fit.
 - New arrivals begin beyond an edge and normally leave after their full drawing clears it. The waterline waits above existing swimmers; it never removes them or moves their lanes. New arrivals use clear bands below the intended surface depth. Edge clipping during entry or departure is expected. Important content is inset from the physical screen’s rounded corners.
-- The colored character drawings are static. The renderer translates each drawing and adds a small vertical bob; it does not animate individual fins, claws, legs, or tentacles.
-- All designs use these rules, including the crab, lobster, octopus, and mantis shrimp. The Mini has no hunting, food web, schools, diver visits, local-clock lighting, or AI narration.
+- The colored character drawings are static. The renderer translates each drawing; free swimmers have a small vertical bob, while bottom dwellers keep their feet on the terrain. It does not animate individual fins, claws, legs, or tentacles.
+- The crab, lobster, octopus, and mantis shrimp use a reserved bottom band and visible-foot terrain contact instead of swimming lanes. They stay grounded during the parade too. The Mini has no hunting, food web, schools, diver visits, local-clock lighting, or AI narration.
 
 ## Creature parade
 
-Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors take turns so nothing overlaps. The full lineup lasts **105 seconds (1 minute 45 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
+Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors and creatures sharing the bottom lane take turns so nothing overlaps. The full lineup lasts **114 seconds (1 minute 54 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
 
 The normal world is held in place, including its random state, then resumes when the parade finishes or you tap Return. Pause freezes the parade too. New World cancels it and starts a fresh ocean. See [Controls](CONTROLS.md) for button behavior.
 

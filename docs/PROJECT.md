@@ -30,7 +30,7 @@ The Mini shares a two-bubble limit across the scene, with 7–12 seconds between
 | Everyday operation | USB power; no computer needed | Raspberry Pi OS Desktop |
 | Normal swimmers | Up to three, separated by vertical bands | Its own larger scene and population rules |
 | Collection | 28 designs, both directions | Shared artwork collection, with different behavior |
-| Parade | Up to two; original order; named; 105 seconds | Staggered lineup; two minutes |
+| Parade | Up to two; original order; named; 114 seconds | Staggered lineup; two minutes |
 | Ecosystem | Decorative motion and habitat labels | Food web, schools, encounters, and visitors |
 | Lighting/narration | No day/night or AI narration controls | Separate lighting and optional narration features |
 | Updates | Wi-Fi firmware download after you choose Install | Update desktop icon follows the Pi repository |

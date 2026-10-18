@@ -32,7 +32,7 @@ export function checkParade(api,sprites){
    assert.ok(ocean.parade);
    const visible=ocean.visibleFish();assert.ok(visible.length>=1&&visible.length<=2);
    for(const f of visible){
-    assert.ok(f.y-2>=SWIM_TOP&&f.y+f.height+2<=SWIM_BOTTOM);
+    assert.ok(f.y-2>=SWIM_TOP&&(ocean.isBottom(f.index)||f.y+f.height+2<=SWIM_BOTTOM));
     if(f.x>=12&&f.x+f.width<=308)seen.add(f.index/2);
     if(f.x>308)exited.add(f.index/2);
    }

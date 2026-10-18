@@ -24,8 +24,21 @@ int main(void){
         assert(mini_parade_x(&p,start+3,i,width)>=MINI_SAFE_X);
         assert(mini_parade_x(&p,start+3,i,width)+width<=320-MINI_SAFE_X);
         assert(mini_parade_x(&p,end,i,width)>320-MINI_SAFE_X);
-        int y=mini_parade_y(i,height);assert(y-MINI_BOB>=MINI_PARADE_TOP&&y+height+MINI_BOB<=MINI_SWIM_BOTTOM);
+        int y=mini_parade_y(i,height);assert(y-MINI_BOB>=MINI_PARADE_TOP&&(s->bottom||y+height+MINI_BOB<=MINI_SWIM_BOTTOM));
     }
+    int bottom_count=0;
+    for(int art=0;art<MINI_SPRITE_COUNT;art++)if(mini_sprites[art].bottom){
+        bottom_count++;const mini_sprite_t *s=&mini_sprites[art];
+        for(int x=-s->width*6;x<=320;x+=3)for(int scroll=0;scroll<528;scroll+=11){
+            int y=mini_bottom_y(art,x,scroll),contacts=0;
+            assert(y>=MINI_SWIM_BOTTOM+4-s->height*8);
+            for(int col=0;col<s->width;col++)if(s->feet[col]>=0){int ground=mini_ground_y(x+col*6+2+scroll);
+                assert(y+s->feet[col]<=ground);if(y+s->feet[col]==ground)contacts++;
+            }
+            assert(contacts>0);
+        }
+    }
+    assert(bottom_count==8);
     int pair_frames=0;
     for(float t=0;t<p.duration;t+=.05f){
         int count=0,slots[2]={0};
