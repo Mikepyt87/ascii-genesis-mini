@@ -2,6 +2,10 @@
 
 Publishing commits does not publish a device update. A release must include a compiled application and a valid stable-channel manifest.
 
+Keep the README's current version, changelog, illustrated scene guide, and validation record aligned with each published release. Run `node tools/build-scenes-tour.mjs --check`, `node tools/build-library.mjs --check`, and `node tools/check-docs.mjs` before publishing. Historical migration versions remain in the guides intentionally.
+
+Keep the README's current version, changelog, illustrated scene guide, and validation record aligned with each published release. Run `node tools/build-scenes-tour.mjs --check`, `node tools/build-library.mjs --check`, and `node tools/check-docs.mjs` before publishing. Historical migration versions remain in the guides intentionally.
+
 ## Prepare and check
 
 1. Merge the intended changes into main and wait for **Check Mini** to pass.

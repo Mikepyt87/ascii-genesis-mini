@@ -4,6 +4,8 @@ The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 32
 
 There are **28 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **56 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
 
+The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md).
+
 ![All 28 Mini designs](images/collection.svg)
 
 ## Find a design
@@ -44,7 +46,7 @@ There are **28 creature and vehicle designs**, with a left-facing and right-faci
 - Normal swimming uses **9–18 screen pixels per second**, three times the v0.1.6 range. Each arrival receives its own speed and left/right direction. A point would cross the 320-pixel screen in roughly 18–36 seconds; a complete drawing takes longer to enter and leave.
 - The seabed and rooted plants travel together at **3.6 pixels per second**. Faster fish do not change camera speed, habitat timing, bubble speed, or the Pi edition.
 - There are at most **three normal swimmers**. Each occupies a separate vertical band that allows for the whole drawing, a two-pixel bob, and a four-pixel gap. A new arrival waits if its full height will not fit.
-- New arrivals begin beyond an edge and are removed only after leaving the screen. Edge clipping during entry or departure is expected. Important content is inset from the physical screen’s rounded corners.
+- New arrivals begin beyond an edge and normally leave after their full drawing clears it. During surface transitions, a swimmer is refitted below the waterline; if no clear band fits, its slot is cleared. Edge clipping during entry or departure is expected. Important content is inset from the physical screen’s rounded corners.
 - The colored character drawings are static. The renderer translates each drawing and adds a small vertical bob; it does not animate individual fins, claws, legs, or tentacles.
 - All designs use these rules, including the crab, lobster, octopus, and mantis shrimp. The Mini has no hunting, food web, schools, diver visits, local-clock lighting, or AI narration.
 
@@ -67,7 +69,17 @@ The habitat label changes every **45 seconds of running ocean time**, cycling th
 | Seagrass bed | The shared seabed and plants; no separate grass simulation |
 | Wreck depths | The shared scenery plus rock outlines; no shipwreck sprite or visiting eel |
 
-Ground is made from underscore, dot, and colon characters along a shallow wave. Plants have two to four character rows, sway above their fixed roots, and travel with the same camera as the ground. Bubbles rise through the scene, with at most four present. The habitat label does not restrict which designs can arrive.
+Ground is made from underscore, dot, and colon characters along a shallow wave. Plants have two to four character rows, sway above their fixed roots, and travel with the same camera as the ground. Bubbles rise from creatures or the seabed, with at most two present and 7–12 seconds between emission attempts. They drift upward at seven pixels per second and disappear at the current waterline. The habitat label does not restrict which designs can arrive.
+
+## Surface visits and landmarks
+
+The journey occasionally rises to a visible waterline, then returns to deeper water. A surface stretch lasts about two minutes in a cycle of four to five minutes. The camera eases into and out of it over twelve seconds. A sailing boat, a surfacing whale with a short animated water spout, and a long-necked sea monster each get a thirty-second crossing window. Only one surface visitor appears at a time. Their order varies with the world seed; the creature parade keeps its original order.
+
+Castles and submerged ruins belong to fixed world coordinates, so they move with the seabed. These new landmarks stay in the bottom third of the screen. They are background scenery rather than extra swimmers. The sea monster uses two poses adapted from the original Asciiquarium drawing; the compact boat, whale, spout, castle, and ruins are ASCII Genesis additions. See the repository credits for authors and licenses.
+
+The surface visitors and landmarks are separate from the 28 regular creature and vehicle designs. They do not add entries to the parade. Pause freezes the scene; New World starts a new journey. During the parade, the surface scenes are hidden and their normal-world clock is held, then resumes afterward.
+
+The new castles and ruins stay in the bottom third; the Mini uses compact drawings so they do not crowd the open water. Surface visitors, scenery, and ordinary bubbles are hidden during the parade. They do not change the 28-design lineup. See the [illustrated surface scenes guide](SURFACE-SCENES.md).
 
 ## Creature drawings
 

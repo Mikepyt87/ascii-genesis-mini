@@ -6,7 +6,7 @@ These are generated illustrations from the Mini’s actual browser renderer at *
 
 ![Mini ocean with a small fish, mantis shrimp, and turtle](images/ocean.svg)
 
-The startup scene includes a tiny fish, peacock mantis shrimp, and sea turtle in separate swimming bands. They leave the scene and are replaced by randomly selected designs. Regular swimmers move at **9–18 pixels per second** in v0.1.7, three times the old range. The seabed still scrolls at 3.6 pixels per second, with plants anchored to the same ground.
+This illustration shows one selected scene. Real startup and New World randomize the creatures, directions, positions, and habitat. They leave the scene and are replaced by randomly selected designs. Regular swimmers move at **9–18 pixels per second** in current firmware. The seabed still scrolls at 3.6 pixels per second, with plants anchored to the same ground.
 
 The screen keeps a margin around the rounded corners. You may see creatures partly outside the edges as they arrive or leave; that is part of their crossing. The [Ocean Library](OCEAN-LIBRARY.md) shows the complete drawings.
 
@@ -29,6 +29,10 @@ All 28 designs keep their original order, with six-second crossings and up to tw
 ![Mini coral garden with pink branches among rooted plants](images/coral.svg)
 
 The habitat label rotates through six names every 45 seconds of normal running time. Coral garden adds pink branch marks; rocky reef and wreck depths add little rock outlines. Other labels share the same rolling ground and plants. The Mini does not include the Pi’s large wreck, discoveries, food web, or day/night cycle. [Exact scenery reference](OCEAN-LIBRARY.md#habitats-and-scenery).
+
+## Surface visitors and landmarks
+
+The current ocean also includes sailing boats, surfacing and spouting whales, a two-pose sea monster, castles, and submerged ruins. New landmarks stay in the bottom third. At most two ordinary bubbles rise at once. View the [current scene illustrations and behavior guide](SURFACE-SCENES.md); these visitors are separate from the 28-design parade.
 
 ## The complete collection
 

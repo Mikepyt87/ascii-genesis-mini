@@ -6,9 +6,19 @@ ASCII Genesis - Mini is a small decorative ocean made from colored text characte
 
 Fish and other sea creatures cross a dark blue screen above a gently rolling seabed. Plants sway while their roots stay attached to the moving ground, and small bubbles rise through the water. The collection includes 28 creature and vehicle designs, from a tiny three-line fish to a whale, submarine, lionfish, and peacock mantis shrimp.
 
-The Mini uses a small 320 × 172 screen, so it leaves space between the full drawings and limits the ordinary scene to three swimmers. Large creatures wait for enough room. Tap the screen for Pause, New World, Parade, and Settings. The parade gives each design a complete crossing on its own.
+The Mini uses a small 320 × 172 screen, so it leaves space between the full drawings and limits the ordinary scene to three swimmers. Large creatures wait for enough room. Tap the screen for Pause, New World, Parade, and Settings. The parade keeps the original order and gives each design a complete crossing, with up to two visible at a time.
 
 The [visual tour](SCREENSHOTS.md) shows the screen, and the [Ocean Library](OCEAN-LIBRARY.md) documents every design and the scenery. The drawings are stylized artwork; creature names do not imply a biological simulation.
+
+## Surface visits and landmarks
+
+The journey occasionally rises to a visible waterline, then returns to deeper water. A surface stretch lasts about two minutes in a cycle of four to five minutes. The camera eases into and out of it over twelve seconds. A sailing boat, a surfacing whale with a short animated water spout, and a long-necked sea monster each get a thirty-second crossing window. Only one surface visitor appears at a time. Their order varies with the world seed; the creature parade keeps its original order.
+
+Castles and submerged ruins belong to fixed world coordinates, so they move with the seabed. These new landmarks stay in the bottom third of the screen. They are background scenery rather than extra swimmers. The sea monster uses two poses adapted from the original Asciiquarium drawing; the compact boat, whale, spout, castle, and ruins are ASCII Genesis additions. See the repository credits for authors and licenses.
+
+The surface visitors and landmarks are separate from the 28 regular creature and vehicle designs. They do not add entries to the parade. Pause freezes the scene; New World starts a new journey. During the parade, the surface scenes are hidden and their normal-world clock is held, then resumes afterward.
+
+The Mini shares a two-bubble limit across the scene, with 7–12 seconds between emission attempts. [New artwork and exact behavior](SURFACE-SCENES.md).
 
 ## Mini and Raspberry Pi editions
 

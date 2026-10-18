@@ -23,6 +23,10 @@ Pause also pauses the parade. If you start it while paused, tap Resume. Opening 
 
 The top shows the installed firmware version and whether Wi-Fi is online. Set up Wi-Fi opens the phone setup screen. Check for updates checks the published channel. If a newer compatible version is found, that button offers Install and restart. Back to ocean closes the settings screen.
 
+## Surface scenes and bubbles
+
+Pause also freezes the surface visitors, waterline transitions, landmarks, and bubbles. The parade hides these additions and holds their clock, then returns to the preserved normal world. New World starts a new journey. Surface events can occur without Wi-Fi. See [surface scenes and landmarks](SURFACE-SCENES.md).
+
 ## What is different from Raspberry Pi?
 
 The Mini has its own 320 × 172 bitmap renderer, touch driver, Wi-Fi setup, and firmware updater. It has three ordinary swimmer slots and an ordered parade with up to two creatures. Startup and New World randomize the normal ocean’s opening creatures, directions, positions, and habitat; the parade order stays fixed. The Pi uses a 1280 × 400 browser display and its separate ecosystem/parade. Its scrolling speed is unchanged by the Mini's faster scrolling. The Mini does not include Pi narration, hunting, schooling, desktop launchers, or the Pi enclosure.

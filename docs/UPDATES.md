@@ -1,5 +1,7 @@
 # Wireless updates
 
+Current release: **v0.1.11**, with surface visitors, castles, ruins, and sparse bubbles. See [what changed](../CHANGELOG.md) and the [new scenes guide](SURFACE-SCENES.md).
+
 ## Install an offered update
 
 1. Connect the ocean to home Wi-Fi or a **2.4 GHz** hotspot. See [Wi-Fi setup](WIFI.md).

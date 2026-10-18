@@ -27,11 +27,16 @@ The preview simulates the 320 × 172 screen, rounded corners, touch buttons, pau
 
 ## Software checks
 
+Surface artwork is in `preview/ocean-scenes.js`. After editing it, regenerate `firmware/main/ocean_scenes.h` with `node tools/generate-scenes.mjs` and the illustrated guide with `node tools/build-scenes-tour.mjs`. Update the library descriptions in `tools/build-library.mjs` before regenerating `docs/OCEAN-LIBRARY.md`; editing only the generated Markdown would be overwritten.
+
+Surface artwork is in `preview/ocean-scenes.js`. After editing it, regenerate `firmware/main/ocean_scenes.h` with `node tools/generate-scenes.mjs` and the illustrated guide with `node tools/build-scenes-tour.mjs`. Update the library descriptions in `tools/build-library.mjs` before regenerating `docs/OCEAN-LIBRARY.md`; editing only the generated Markdown would be overwritten.
+
 No npm packages are required:
 
 ```text
 node preview/check.mjs
 node tools/generate-scenes.mjs --check
+node tools/build-scenes-tour.mjs --check
 node preview/network-check.mjs
 node tools/generate-assets.mjs --check
 node tools/build-library.mjs --check
