@@ -37,7 +37,7 @@ node tools/build-library.mjs --check
 node tools/check-docs.mjs
 ```
 
-The ocean check includes one simulated hour, all habitats, creature clearance, matching plant/ground movement, rounded-panel containment, large setup text, pause/reset controls, and all 28 parade arrivals, complete crossings, exits, duration, cancellation, and preservation of the normal ocean.
+The ocean check includes 40 randomized starts, ordered two-creature parades, and one simulated hour, all habitats, creature clearance, matching plant/ground movement, rounded-panel containment, large setup text, pause/reset controls, and all 28 parade arrivals, complete crossings, exits, duration, cancellation, and preservation of the normal ocean.
 
 CI also compiles `tools/policy-check.c`, `touch-check.c`, `portal-check.c`, `geometry-check.c`, and `parade-check.c` with a native C compiler and warnings treated as errors. Geometry and parade checks link `-lm`. It then builds the actual firmware using ESP-IDF 5.5.2.
 
@@ -68,7 +68,7 @@ node art/restore-sprites.mjs
 node tools/generate-assets.mjs
 ```
 
-Commit the source, generated `art/fish-art.js`, and `firmware/main/assets.h` together. Do not edit the generated header alone. Keep color masks aligned with the drawing and keep license notices. Mini firmware supports at most ten ASCII rows per creature; update the renderer and checks if expanding that limit.
+Commit the source, generated `art/fish-art.js`, and `firmware/main/assets.h` together. Do not edit the generated header alone. Keep color masks aligned with the drawing and keep license notices. Generated assets include creature names used in the parade header. Mini firmware supports at most ten ASCII rows per creature; update the renderer and checks if expanding that limit.
 
 The [Ocean Library](OCEAN-LIBRARY.md) and SVG illustrations are also generated from the artwork and browser renderer. Update the descriptions in `tools/build-library.mjs`, then run:
 

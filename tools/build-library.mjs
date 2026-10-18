@@ -60,7 +60,7 @@ const files=new Map();
 for(const [name,setup] of [
   ['ocean',o=>{o.controls=false;}],
   ['controls',()=>{}],
-  ['parade',o=>{o.toggleParade();o.parade.elapsed=27*8+4;}],
+  ['parade',o=>{o.toggleParade();o.parade.elapsed=o.parade.starts[27]+3;}],
   ['coral',o=>{o.time=135;o.scroll=135*3.6;o.habitat=3;o.controls=false;}]
 ]){const ocean=new MiniOcean(sprites),r=recorder();setup(ocean);render(r.ctx,ocean,globalThis.MiniFont);files.set(`docs/images/${name}.svg`,documentSvg(320,172,r.finish(),`ASCII Genesis - Mini ${name} preview`));}
 let lineup='<rect width="960" height="840" fill="#020c14"/>';
@@ -99,7 +99,7 @@ library+=`
 
 ## Creature parade
 
-Parade uses the table’s order, facing right, **one design at a time**. Each gets eight seconds to fully enter, cross, and leave. The full lineup lasts **224 seconds (3 minutes 44 seconds)**. Its crossing speed is calculated from drawing width; the regular swimming speed does not control it.
+Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors take turns so nothing overlaps. The full lineup lasts **105 seconds (1 minute 45 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
 
 The normal world is held in place, including its random state, then resumes when the parade finishes or you tap Return. Pause freezes the parade too. New World cancels it and starts a fresh ocean. See [Controls](CONTROLS.md) for button behavior.
 

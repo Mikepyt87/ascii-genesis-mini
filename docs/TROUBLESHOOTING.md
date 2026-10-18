@@ -11,7 +11,7 @@ Start by opening Settings and recording the installed version. Describe what app
 | Text/image clipped at corners | Use current firmware with the rounded-screen safe area; check landscape orientation |
 | Picture appears but touch does nothing | Update from firmware older than v0.1.1; tap once, lift, then tap a displayed button |
 | Parade seems empty | The first creature begins off screen; wait a moment, check Pause/Resume, and watch the counter |
-| Parade counter does not move | If paused, tap Resume. A design stays selected for eight seconds |
+| Parade counter does not move | If paused, tap Resume. Each design crosses in six seconds; tall neighbors enter one at a time |
 | Setup network disappeared | Reopen Settings → Set up Wi-Fi. Setup closes after ten minutes, saving credentials, or Back |
 | Phone reports no internet on setup Wi-Fi | Stay connected and open http://192.168.4.1; that temporary network is only for setup |
 | Browser says Join the device setup network first | On v0.1.1 or older, use USB recovery; v0.1.2 fixed dual-stack socket checking. On current firmware, rejoin the displayed setup network |

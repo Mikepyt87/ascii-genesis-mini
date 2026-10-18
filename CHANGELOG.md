@@ -2,6 +2,13 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.8
+
+- Faster parade: six-second crossings, with up to two creatures in separate bands. Tall neighbors wait when needed. The full parade takes 1 minute 45 seconds, down from 3 minutes 44 seconds.
+- Keeps all 28 designs in their original order and displays their names at the top right.
+- Randomizes the regular ocean's starting creatures, directions, positions, and habitat at startup and New World. Parade order remains fixed.
+- Preserves pause, Return, the normal ocean, and the existing Wi-Fi/update flow.
+
 ## 0.1.7
 
 - Regular swimmers move three times faster: 9–18 pixels per second instead of 3–6.

@@ -22,6 +22,7 @@ static float time_s,controls_until=8;
 static bool paused;
 static bool parade_active;
 static float parade_elapsed;
+static mini_parade_t parade_plan;
 static int screen; // 0 ocean, 1 settings, 2 phone setup
 typedef struct {int art,dir;float x,y,speed,phase;bool active;} swimmer_t;
 static swimmer_t fish[3];
@@ -38,8 +39,20 @@ static void text_large(const char *s,int x,int y,uint16_t c){
 }
 static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
 static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=9+rnd()*9,.phase=rnd()*6.28f,.active=true};}
-static void new_world(void){time_s=0;pending_art=-1;parade_active=false;parade_elapsed=0;spawn(0,6,1,28,23);spawn(1,MINI_MANTIS_INDEX,-1,156,55);spawn(2,38,-1,180,103);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=23+rnd()*120;}paused=false;}
-static void toggle_parade(void){parade_active=!parade_active;parade_elapsed=0;}
+static int free_y(int height);
+static void new_world(void){
+    time_s=rnd()*270;pending_art=-1;parade_active=false;parade_elapsed=0;memset(fish,0,sizeof(fish));
+    for(int slot=0;slot<3;slot++){
+        int first=esp_random()%(MINI_SPRITE_COUNT/2),band=(MINI_SWIM_BOTTOM-MINI_SWIM_TOP)/3;
+        for(int attempt=0;attempt<MINI_SPRITE_COUNT/2;attempt++){
+            int art=((first+attempt)%(MINI_SPRITE_COUNT/2))*2,height=mini_sprites[art].height*8;
+            int room=band-height-2*MINI_BOB-MINI_GAP,y=room>=0?MINI_SWIM_TOP+slot*band+MINI_BOB+(int)(rnd()*(room+1)):-1;
+            if(y>=0){int dir=rnd()<.5f?-1:1;float width=mini_sprites[art].width*6;spawn(slot,art,dir,MINI_SAFE_X+rnd()*(320-2*MINI_SAFE_X-width),y);break;}
+        }
+    }
+    for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=23+rnd()*(MINI_SWIM_BOTTOM-23);}paused=false;
+}
+static void toggle_parade(void){parade_active=!parade_active;parade_elapsed=0;if(parade_active)mini_parade_init(&parade_plan);}
 static int free_y(int height){
     int chosen=-1,count=0;
     for(int y=MINI_SWIM_TOP;mini_band_fits(y,height);y++){
@@ -51,7 +64,7 @@ static int free_y(int height){
 }
 static void simulate(float dt){
     if(paused)return;
-    if(parade_active){parade_elapsed+=dt;if(mini_parade_index(parade_elapsed)>=MINI_SPRITE_COUNT/2)parade_active=false;return;}
+    if(parade_active){parade_elapsed+=dt;if(parade_elapsed>=parade_plan.duration)parade_active=false;return;}
     time_s+=dt;
     for(int i=0;i<3;i++){
         swimmer_t *f=&fish[i];if(!f->active)continue;f->x+=f->dir*f->speed*dt;const mini_sprite_t *s=&mini_sprites[f->art];
@@ -76,11 +89,13 @@ static void draw_swimmer(int art,float x,float y,float clock,float phase){
 static void draw_ocean(bool controls){
     const uint16_t pale=rgb(0xbde9e6),muted=rgb(0x54858d),sand=rgb(0x80715a);
     for(int i=0;i<320*172;i++)fb[i]=rgb(0x020c14);
-    text("ASCII GENESIS - MINI",20,8,pale);
     static const char *habitats[]={"KELP MEADOW","ROCKY REEF","OPEN SAND","CORAL GARDEN","SEAGRASS BED","WRECK DEPTHS"};
-    char counter[24];const char *habitat=habitats[((int)(time_s/45))%6];
-    if(parade_active){snprintf(counter,sizeof(counter),"PARADE %d/%d",mini_parade_index(parade_elapsed)+1,MINI_SPRITE_COUNT/2);habitat=counter;}
-    text(habitat,300-strlen(habitat)*6,8,muted);
+    if(parade_active){
+        char counter[24];snprintf(counter,sizeof(counter),"PARADE %d/%d",mini_parade_index(&parade_plan,parade_elapsed)+1,MINI_PARADE_COUNT);text(counter,20,8,pale);
+        for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){
+            const char *name=mini_sprites[parade_plan.order[slot]*2].name;text(name,300-strlen(name)*6,slot%2?18:8,muted);
+        }
+    }else{text("ASCII GENESIS - MINI",20,8,pale);const char *habitat=habitats[((int)(time_s/45))%6];text(habitat,300-strlen(habitat)*6,8,muted);}
     float scroll=time_s*MINI_SCROLL_SPEED;
     for(int i=(int)floorf(scroll/6)-1;i*6<scroll+326;i++){float world_x=i*6;int x=mini_screen_x(world_x,scroll),ground=mini_ground_y(world_x);glyph(i%4==0?':':'.',x,ground+1,sand);glyph('_',x,ground-6,sand);}
     for(int p=(int)floorf((scroll-22)/57)-1;p*57+22<scroll+332;p++){
@@ -90,7 +105,7 @@ static void draw_ocean(bool controls){
     }
     if(((int)(time_s/45))%6==1||((int)(time_s/45))%6==5)for(int rock=(int)floorf((scroll-82)/233)-1;rock*233+82<scroll+320;rock++){float world_x=rock*233+82;text("/__\\",mini_screen_x(world_x,scroll),mini_ground_y(world_x)-6,muted);}
     for(int i=0;i<4;i++)glyph('o',bubble_x[i],bubble_y[i],muted);
-    if(parade_active){int art=mini_parade_index(parade_elapsed)*2;const mini_sprite_t *s=&mini_sprites[art];draw_swimmer(art,mini_parade_x(parade_elapsed,s->width*6),mini_parade_y(s->height*8),parade_elapsed,0);}
+    if(parade_active){for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){int art=parade_plan.order[slot]*2;const mini_sprite_t *s=&mini_sprites[art];draw_swimmer(art,mini_parade_x(&parade_plan,parade_elapsed,slot,s->width*6),mini_parade_y(slot,s->height*8),parade_elapsed,0);}}
     else for(int i=0;i<3;i++){swimmer_t *f=&fish[i];if(f->active)draw_swimmer(f->art,f->x,f->y,time_s,f->phase);}
     if(controls){rect(0,140,320,32,rgb(0x102631));text(paused?"RESUME":"PAUSE",34,153,pale);text("NEW WORLD",96,153,pale);text(parade_active?"RETURN":"PARADE",179,153,pale);text("SETTINGS",247,153,pale);}
 }
@@ -110,7 +125,7 @@ static void draw_settings(net_status_t *n){
 void app_main(void){
     esp_err_t err=nvs_flash_init();if(err==ESP_ERR_NVS_NO_FREE_PAGES||err==ESP_ERR_NVS_NEW_VERSION_FOUND){ESP_ERROR_CHECK(nvs_flash_erase());err=nvs_flash_init();}ESP_ERROR_CHECK(err);
     fb=heap_caps_malloc(320*172*2,MALLOC_CAP_SPIRAM);assert(fb&&esp_psram_is_initialized());
-    board_init();new_world();network_start();
+    board_init();network_start();new_world();
     ESP_ERROR_CHECK(esp_task_wdt_add(NULL));
     int64_t start=esp_timer_get_time(),last=start,last_press=0;bool held=false,validated=false;
     while(true){int64_t now=esp_timer_get_time();float dt=fminf((now-last)/1000000.0f,.1f);last=now;simulate(dt);float uptime=(now-start)/1000000.0f;

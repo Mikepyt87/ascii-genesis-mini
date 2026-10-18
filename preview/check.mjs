@@ -1,3 +1,4 @@
+import {checkParade} from './parade-check.mjs';
 import assert from 'node:assert/strict';
 import '../art/fish-art.js';
 import './font.js';
@@ -7,15 +8,16 @@ const {MiniOcean, render, bandsClear} = globalThis.MiniAquarium;
 const sprites = globalThis.AsciiquariumSprites;
 const ocean = new MiniOcean(sprites);
 assert.equal(sprites.length, 56);
-assert.equal(sprites[ocean.fish[1].index].name,'peacock mantis shrimp');
+
 assert.equal(ocean.fish.length, 3);
 for(const fish of ocean.fish)assert.ok(fish.speed>=9&&fish.speed<18,'Regular swimmers use the faster 9–18 px/s range');
 const start = ocean.fish[0].x;
+const initialTime=ocean.time,initialScroll=ocean.scroll,direction=ocean.fish[0].direction;
 const speed = ocean.fish[0].speed;
 ocean.step(0.1);
-assert.equal(ocean.scroll,.1*3.6,'Mini scrolling is twice the previous speed');
-assert.ok(ocean.fish[0].x > start, 'Fish must actually swim');
-assert.ok(Math.abs(ocean.fish[0].x-start-speed*.1)<1e-10,'Swimming advances at the selected speed');
+assert.ok(Math.abs(ocean.scroll-initialScroll-.1*3.6)<1e-10);
+assert.ok((ocean.fish[0].x-start)*direction>0,'Fish must swim in their selected direction');
+assert.ok(Math.abs(ocean.fish[0].x-start-direction*speed*.1)<1e-10,'Swimming advances at the selected speed');
 ocean.paused = true;
 const paused = JSON.stringify(ocean);
 ocean.step(0.25);
@@ -48,24 +50,7 @@ assert.ok(ocean.paused);
 assert.equal(ocean.action(150, 150), 'reset');
 assert.equal(ocean.action(250, 150), 'settings');
 ocean.paused=false;
-const saved=JSON.stringify({time:ocean.time,scroll:ocean.scroll,fish:ocean.fish,bubbles:ocean.bubbles,seed:ocean.seed,pending:ocean.pendingSpawn});
-assert.equal(ocean.action(200,150),'parade');
-const visible=new Set(),exited=new Set();
-for(let frame=0;frame<28*8*20;frame++){
-  const f=ocean.visibleFish()[0],index=f.index/2;
-  assert.ok(ocean.parade&&ocean.visibleFish().length===1);
-  assert.ok(f.y-2>=20&&f.y+f.height+2<=145);
-  if(f.x>=12&&f.x+f.width<=308)visible.add(index);
-  if(f.x>308)exited.add(index);
-  ocean.step(.05);
-}
-// Floating-point accumulation may leave a tiny remainder before the exact end.
-if(ocean.parade)ocean.step(.001);
-assert.equal(ocean.parade,null);assert.equal(visible.size,28);assert.equal(exited.size,28);
-assert.equal(JSON.stringify({time:ocean.time,scroll:ocean.scroll,fish:ocean.fish,bubbles:ocean.bubbles,seed:ocean.seed,pending:ocean.pendingSpawn}),saved,'Parade preserves the normal ocean exactly');
-ocean.toggleParade();ocean.step(1/8);ocean.paused=true;const frozen=JSON.stringify(ocean);ocean.step(.2);assert.equal(JSON.stringify(ocean),frozen,'Pause freezes parade');
-ocean.paused=false;ocean.toggleParade();assert.equal(ocean.parade,null,'Return cancels the parade');
-assert.equal(new MiniOcean(sprites, 10).time, 0);
+checkParade(globalThis.MiniAquarium,sprites);
 // Camera translation must carry actual ground and plant pixels together.
 function sceneryPixels(scroll,color){
   const result=new Set();
@@ -77,7 +62,7 @@ for(const color of ['#80715a','#56ab91']){
   for(const item of before){const [x,y]=item.split(',').map(Number);if(x>=12&&x<308)assert.ok(after.has(`${x-6},${y}`),'Ground and plants must translate together without slipping');}
 }
 const crowded=new MiniOcean(sprites);
-assert.equal(crowded.freeY(72),null,'A large creature must wait if the occupied bands leave no room');
+assert.equal(crowded.freeY(122),null,'A large creature must wait if the occupied bands leave no room');
 crowded.fish=[];assert.notEqual(crowded.freeY(72),null,'A waiting large creature can enter once space clears');
 // Apply the rectangular clip stack and check all foreground against a 24px panel radius.
 let clip=[0,0,320,172],path=clip,stack=[],foreground=0;

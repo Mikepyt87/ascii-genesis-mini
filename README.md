@@ -6,6 +6,8 @@ A small, touch-controlled ASCII aquarium for the **Waveshare ESP32-S3-Touch-LCD-
 
 ![ASCII Genesis - Mini ocean with a fish, peacock mantis shrimp, and turtle](docs/images/ocean.svg)
 
+Each startup and New World randomizes the opening creatures, directions, positions, and habitat. The parade keeps its original order.
+
 A pocket-sized ocean made from colored text: fish cross the water, bubbles rise, and plants sway above a slowly traveling seabed. Plug the board into USB power and it starts on its own. It runs offline; Wi-Fi is optional for updates.
 
 **Explore it:** [Complete Ocean Library](docs/OCEAN-LIBRARY.md) · [Visual tour](docs/SCREENSHOTS.md) · [About the Mini and Pi comparison](docs/PROJECT.md) · [Version history](CHANGELOG.md)
@@ -42,13 +44,13 @@ Up to three creatures swim in separate vertical bands, leaving room for their wh
 
 The layout keeps text and foreground content away from the screen's rounded corners. The Mini is a decorative aquarium with static ASCII drawings and simple motion. The larger Pi edition has its own food web, schools, visitors, lighting, and other features; see [the edition comparison](docs/PROJECT.md#mini-and-raspberry-pi-editions).
 
-Tap the water to reveal **Pause · New World · Parade · Settings**. Controls fade after eight seconds. The parade shows all 28 designs in order, one at a time, then returns to the ocean you left. A full parade takes about **3 minutes 44 seconds**. [Full controls guide](docs/CONTROLS.md).
+Tap the water to reveal **Pause · New World · Parade · Settings**. Controls fade after eight seconds. The parade shows all 28 designs in their original order, with up to two in separate bands and their names at the top right. Each crosses in six seconds; the full parade takes **1 minute 45 seconds**. It then returns to the ocean you left. [Full controls guide](docs/CONTROLS.md).
 
 ![Mini controls: Pause, New World, Parade, Settings](docs/images/controls.svg)
 
 These images come from the Mini browser renderer; they are software previews rather than board photographs. See the [visual tour](docs/SCREENSHOTS.md) for the parade, coral garden, and complete collection.
 
-Source firmware version: **0.1.7**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published. [Changes by version](CHANGELOG.md).
+Source firmware version: **0.1.8**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published. [Changes by version](CHANGELOG.md).
 
 ## Quick update for an existing board
 

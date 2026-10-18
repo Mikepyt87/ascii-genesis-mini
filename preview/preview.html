@@ -31,7 +31,7 @@
       const root = document.getElementById('mini-aquarium-preview');
       const canvas = root.querySelector('canvas'), ctx = canvas.getContext('2d');
       const api = globalThis.MiniAquarium;
-      let seed = 147, ocean = new api.MiniOcean(globalThis.AsciiquariumSprites, seed);
+      let seed = crypto.getRandomValues(new Uint32Array(1))[0], ocean = new api.MiniOcean(globalThis.AsciiquariumSprites, seed);
       const network = new globalThis.MiniNetwork.MiniNetwork();
       const pause = root.querySelector('[data-action="pause"]');
       const status = root.querySelector('[data-status]');

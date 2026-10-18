@@ -11,10 +11,10 @@ let out=`/* Generated from art/fish-art.js and preview/font.js. Do not edit.
  */
 #pragma once
 #include <stdint.h>
-typedef struct {const char *rows[10],*masks[10];uint32_t palette[7];int width,height;} mini_sprite_t;
+typedef struct {const char *rows[10],*masks[10];uint32_t palette[7];int width,height;const char *name;} mini_sprite_t;
 static const unsigned char mini_font[]={${globalThis.MiniFont.join(',')}};
 static const mini_sprite_t mini_sprites[]={\n`;
-for(const s of globalThis.AsciiquariumSprites)out+=`{ {${s.rows.map(quote)}}, {${s.masks.map(quote)}}, {${s.palette.map(c=>'0x'+c.slice(1))}}, ${Math.max(...s.rows.map(r=>r.length))}, ${s.rows.length}},\n`;
+for(const s of globalThis.AsciiquariumSprites)out+=`{ {${s.rows.map(quote)}}, {${s.masks.map(quote)}}, {${s.palette.map(c=>'0x'+c.slice(1))}}, ${Math.max(...s.rows.map(r=>r.length))}, ${s.rows.length}, ${quote(s.name)}},\n`;
 out+='};\n';
 out+=`#define MINI_SPRITE_COUNT ${globalThis.AsciiquariumSprites.length}\n`;
 out+=`#define MINI_MANTIS_INDEX ${globalThis.AsciiquariumSprites.findIndex(s=>s.name==='peacock mantis shrimp')}\n`;

@@ -7,7 +7,7 @@
   const SAFE_X = 12, SAFE_Y = 8, SWIM_TOP = 23;
   const BOB = 2, GAP = 4, SWIM_BOTTOM = 145;
   const SCROLL_SPEED = 3.6;
-  const PARADE_SECONDS = 8;
+  const PARADE_SECONDS = 6, PARADE_INTERVAL = 3, PARADE_TOP = 32;
   const groundAt = worldX => FLOOR + Math.round(Math.sin(worldX / 42) * 3);
   const screenX = (worldX, scroll) => Math.round(worldX - scroll);
   const bandsClear = (y, h, otherY, otherH) => y + h + BOB + GAP <= otherY - BOB || otherY + otherH + BOB + GAP <= y - BOB;
@@ -16,14 +16,22 @@
     constructor(sprites, seed = 147) {
       this.sprites = sprites;
       this.seed = seed >>> 0 || 147;
-      this.time = 0; this.paused = false; this.controls = true;
-      this.habitat = 0; this.scroll = 0; this.fish = [];
+      this.time = this.random()*270; this.paused = false; this.controls = true;
+      this.habitat = Math.floor(this.time/45)%6; this.scroll = this.time*SCROLL_SPEED; this.fish = [];
       this.pendingSpawn = null;
       this.parade = null;
-      this.bubbles = []; this.nextBubble = 2;
-      this.spawn(6, 28, 23, 1);
-      this.spawn(sprites.findIndex(s=>s.name==='peacock mantis shrimp'), 156, 55, -1);
-      this.spawn(38, 180, 103, -1);
+      this.bubbles = []; this.nextBubble = this.time+2;
+      for(let slot=0;slot<3;slot++){
+        const first=Math.floor(this.random()*(sprites.length/2));
+        for(let attempt=0;attempt<sprites.length/2;attempt++){
+          const index=((first+attempt)%(sprites.length/2))*2,sprite=sprites[index],height=sprite.rows.length*8;
+          const band=Math.floor((SWIM_BOTTOM-SWIM_TOP)/3),room=band-height-2*BOB-GAP;if(room<0)continue;
+          const y=SWIM_TOP+slot*band+BOB+Math.floor(this.random()*(room+1));
+          const width=Math.max(...sprite.rows.map(r=>r.length))*6;
+          const direction=this.random()<.5?-1:1;
+          this.spawn(index,SAFE_X+this.random()*(W-2*SAFE_X-width),y,direction);break;
+        }
+      }
     }
     random() {
       let x = this.seed; x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
@@ -47,7 +55,7 @@
     step(dt) {
       if (this.paused) return;
       dt = Math.max(0, Math.min(dt, 0.25));
-      if(this.parade){this.parade.elapsed+=dt;if(this.parade.elapsed>=this.sprites.length/2*PARADE_SECONDS)this.parade=null;return;}
+      if(this.parade){this.parade.elapsed+=dt;if(this.parade.elapsed>=this.parade.duration)this.parade=null;return;}
       this.time += dt; this.scroll = this.time * SCROLL_SPEED;
       this.habitat = Math.floor(this.time / 45) % HABITATS.length;
       for (const f of this.fish) f.x += f.direction * f.speed * dt;
@@ -82,15 +90,29 @@
       this.controls = true;
       return 'show';
     }
-    toggleParade(){this.parade=this.parade?null:{elapsed:0};}
+    toggleParade(){
+      if(this.parade){this.parade=null;return;}
+      const order=Array.from({length:this.sprites.length/2},(_,i)=>i);
+      const starts=[0];
+      for(let i=1;i<order.length;i++){
+        const height=(this.sprites[order[i-1]*2].rows.length+this.sprites[order[i]*2].rows.length)*8;
+        starts[i]=starts[i-1]+(height+4*BOB+GAP<=SWIM_BOTTOM-PARADE_TOP?PARADE_INTERVAL:PARADE_SECONDS);
+      }
+      this.parade={elapsed:0,order,starts,duration:starts.at(-1)+PARADE_SECONDS};
+    }
+    paradeIndex(){let i=0;while(i+1<this.parade.order.length&&this.parade.starts[i+1]<=this.parade.elapsed)i++;return i;}
     visibleFish(){
       if(!this.parade)return this.fish;
-      const elapsed=this.parade.elapsed,index=Math.floor(elapsed/PARADE_SECONDS)*2,sprite=this.sprites[index];
-      const width=Math.max(...sprite.rows.map(r=>r.length))*6,height=sprite.rows.length*8;
-      const phase=Math.max(0,Math.min(1,(elapsed%PARADE_SECONDS-.25)/(PARADE_SECONDS-.5)));
-      return [{index,width,height,x:SAFE_X-width-2+phase*(W-2*SAFE_X+width+4),y:SWIM_TOP+Math.floor((SWIM_BOTTOM-BOB-SWIM_TOP-height)/2),phase:0}];
+      const {elapsed,order,starts}=this.parade;
+      return order.flatMap((design,slot)=>{
+        const age=elapsed-starts[slot];if(age<0||age>=PARADE_SECONDS)return [];
+        const index=design*2,sprite=this.sprites[index],width=Math.max(...sprite.rows.map(r=>r.length))*6,height=sprite.rows.length*8;
+        const phase=Math.max(0,Math.min(1,(age-.25)/(PARADE_SECONDS-.5)));
+        return [{index,width,height,x:SAFE_X-width-2+phase*(W-2*SAFE_X+width+4),y:slot%2?SWIM_BOTTOM-BOB-height:PARADE_TOP+BOB,phase:0}];
+      });
     }
   }
+
   function render(ctx, ocean, font) {
     const colors = {water: '#020c14', text: '#bde9e6', muted: '#54858d', green: '#56ab91', sand: '#80715a'};
     function glyph(char, x, y, color) {
@@ -105,9 +127,13 @@
     function text(s, x, y, color) { for (let i = 0; i < s.length; i++) glyph(s[i], x + i * 6, y, color); }
     ctx.fillStyle = colors.water; ctx.fillRect(0, 0, W, H);
     ctx.save(); ctx.beginPath(); ctx.rect(SAFE_X, SAFE_Y, W - SAFE_X * 2, H - SAFE_Y * 2); ctx.clip();
-    text('ASCII GENESIS - MINI', 20, 8, colors.text);
-    const label=ocean.parade?'PARADE '+(Math.floor(ocean.parade.elapsed/PARADE_SECONDS)+1)+'/'+ocean.sprites.length/2:HABITATS[ocean.habitat];
-    text(label, W - label.length * 6 - 20, 8, colors.muted);
+    if(ocean.parade){
+      text('PARADE '+(ocean.paradeIndex()+1)+'/'+ocean.sprites.length/2,20,8,colors.text);
+      for(const f of ocean.visibleFish()){
+        const name=ocean.sprites[f.index].name;const slot=ocean.parade.order.indexOf(f.index/2);
+        text(name,W-name.length*6-20,slot%2?18:8,colors.muted);
+      }
+    }else{text('ASCII GENESIS - MINI',20,8,colors.text);const label=HABITATS[ocean.habitat];text(label,W-label.length*6-20,8,colors.muted);}
     ctx.save(); ctx.beginPath(); ctx.rect(0, WATER_TOP, W, H - WATER_TOP); ctx.clip();
     for (let i = Math.floor(ocean.scroll / 6) - 1; i * 6 < ocean.scroll + W + 6; i++) {
       const worldX = i * 6, x = screenX(worldX, ocean.scroll), ground = groundAt(worldX);
@@ -153,5 +179,5 @@
     }
     ctx.restore();
   }
-  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM, SCROLL_SPEED, PARADE_SECONDS};
+  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM, SCROLL_SPEED, PARADE_SECONDS, PARADE_INTERVAL, PARADE_TOP};
 })(globalThis);
