@@ -11,3 +11,5 @@ Original ASCII Genesis additions include the puffer, bannerfish, spearfish, mora
 **Waveshare** supplies the hardware documentation and JD9853 driver, whose Apache-2.0 notices remain in the driver folder. **Espressif** supplies ESP-IDF, device libraries, and flashing tools. The bitmap font is from **Adafruit GFX**, with its BSD notice in [FONT-LICENSE.txt](preview/FONT-LICENSE.txt).
 
 The Mini-specific renderer, Wi-Fi setup, updater, safe-area layout, and sequential parade are project additions. Credits do not imply endorsement by the original projects.
+
+The surface sea monster adapts Asciiquarium’s original long-necked, looping-body drawing. Its two poses are in `preview/ocean-scenes.js`, under GPL-2.0-or-later. The compact boat, surfacing whale, spout, castles, and ruins are ASCII Genesis additions inspired by the original scene.

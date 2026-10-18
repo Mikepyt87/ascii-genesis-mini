@@ -50,6 +50,8 @@ There are **28 colored creature and vehicle designs**, including the peacock man
 
 Tap the water for **Pause · New World · Parade · Settings**. The parade keeps all 28 designs in their original order, with six-second crossings and up to two creatures at a time. A full Mini parade takes **105 seconds (1 minute 45 seconds)**, then returns to the preserved ocean. The full names appear at the top right, with larger, brighter text from v0.1.10. Regular swimmers move at **9–18 pixels per second**, while the seabed scrolls at **3.6 pixels per second**. See the [Ocean Library](docs/OCEAN-LIBRARY.md) and [controls guide](docs/CONTROLS.md) for the full behavior.
 
+Surface stretches bring sailing boats, whales that surface and spout, and an occasional Nessie-like sea monster. Castles and ruins pass along the seabed. Bubbles rise from creatures or the seabed, with no more than two on screen at once. Surface visitors take turns, and the creature parade keeps its own clear view.
+
 ![ASCII Genesis Mini ocean](docs/images/ocean.svg)
 
 The image is a browser preview, not a photograph of the board.

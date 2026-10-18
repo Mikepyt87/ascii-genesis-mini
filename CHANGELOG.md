@@ -2,6 +2,13 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.11
+
+- Adds occasional surface stretches with sailing boats, surfacing and spouting whales, and a Nessie-like sea monster, one visitor at a time.
+- Adds castles and submerged ruins anchored to the scrolling seabed, contained within the bottom third of the screen.
+- Uses sparse bubbles from passing creatures or the seabed: at most two, with 7–12 seconds between emission attempts. Bubbles rise and disappear at the waterline.
+- Keeps the ordered creature parade separate from surface visitors and landmarks.
+
 ## 0.1.10
 
 - Makes parade names 50% larger and brighter in the top-right corner. Both full names fit beside the counter and above the creatures.

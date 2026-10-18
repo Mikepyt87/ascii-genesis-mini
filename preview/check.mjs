@@ -2,6 +2,7 @@ import {checkParade} from './parade-check.mjs';
 import assert from 'node:assert/strict';
 import '../art/fish-art.js';
 import './font.js';
+import './ocean-scenes.js';
 import './ocean.js';
 import './network.js';
 const {MiniOcean, render, bandsClear} = globalThis.MiniAquarium;
@@ -78,3 +79,5 @@ for(const screen of ['settings','setup']){const net=new globalThis.MiniNetwork.M
 assert.ok(foreground>1000);
 assert.ok(20+'ASCII-Genesis-Mini-FFFF'.length*12<=308,'Large setup SSID must fit without clipping');
 console.log('PASS: one simulated hour, all habitats and screens, creature clearance, scenery translation, rounded-panel safe area, Wi-Fi text fit, pause and touch.');
+
+const {checkScenes}=await import('./scenes-check.mjs');checkScenes(globalThis.MiniAquarium,sprites);

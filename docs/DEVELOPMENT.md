@@ -31,6 +31,7 @@ No npm packages are required:
 
 ```text
 node preview/check.mjs
+node tools/generate-scenes.mjs --check
 node preview/network-check.mjs
 node tools/generate-assets.mjs --check
 node tools/build-library.mjs --check

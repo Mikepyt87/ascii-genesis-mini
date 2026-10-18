@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
-const allowed = new Map([['/', 'preview.html'], ['/ocean.js', 'ocean.js'], ['/font.js', 'font.js'], ['/network.js','network.js'], ['/fish-art.js', '../art/fish-art.js']]);
+const allowed = new Map([['/', 'preview.html'], ['/ocean-scenes.js', 'ocean-scenes.js'], ['/ocean.js', 'ocean.js'], ['/font.js', 'font.js'], ['/network.js','network.js'], ['/fish-art.js', '../art/fish-art.js']]);
 const server = http.createServer(async (req, res) => {
   if (req.method !== 'GET' || !allowed.has(req.url)) { res.writeHead(404); res.end(); return; }
   try {

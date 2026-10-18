@@ -3,6 +3,7 @@
  */
 (function (root) {
   'use strict';
+  const scenes=root.OceanScenes;
   const W = 320, H = 172, WATER_TOP = 20, FLOOR = 152;
   const SAFE_X = 12, SAFE_Y = 8, SWIM_TOP = 23;
   const BOB = 2, GAP = 4, SWIM_BOTTOM = 145;
@@ -16,7 +17,7 @@
   class MiniOcean {
     constructor(sprites, seed = 147) {
       this.sprites = sprites;
-      this.seed = seed >>> 0 || 147;
+      this.seed = seed >>> 0 || 147; this.sceneSeed=this.seed;
       this.time = this.random()*270; this.paused = false; this.controls = true;
       this.habitat = Math.floor(this.time/45)%6; this.scroll = this.time*SCROLL_SPEED; this.fish = [];
       this.pendingSpawn = null;
@@ -48,11 +49,12 @@
     }
     freeY(height) {
       const candidates = [];
-      for (let y = SWIM_TOP; y + height + BOB <= SWIM_BOTTOM; y++) {
+      for (let y = this.waterTop(); y + height + BOB <= SWIM_BOTTOM; y++) {
         if (this.fish.every(f => bandsClear(y, height, f.y, f.height))) candidates.push(y);
       }
       return candidates.length ? candidates[Math.floor(this.random() * candidates.length)] : null;
     }
+    waterTop(){return Math.max(SWIM_TOP,Math.round(-12+76*scenes.scene(this.time,this.sceneSeed).surface)+12);}
     step(dt) {
       if (this.paused) return;
       dt = Math.max(0, Math.min(dt, 0.25));
@@ -61,6 +63,10 @@
       this.habitat = Math.floor(this.time / 45) % HABITATS.length;
       for (const f of this.fish) f.x += f.direction * f.speed * dt;
       this.fish = this.fish.filter(f => f.x < W + 8 && f.x + f.width > -8);
+      for(const f of [...this.fish])if(f.y<this.waterTop()){
+        this.fish=this.fish.filter(other=>other!==f);const y=this.freeY(f.height);
+        if(y!==null){f.y=y;this.fish.push(f);}
+      }
       if (this.fish.length < 3) {
         if (!this.pendingSpawn) this.pendingSpawn = {index: Math.floor(this.random() * (this.sprites.length / 2)) * 2, direction: this.random() < 0.5 ? -1 : 1};
         const {index, direction} = this.pendingSpawn;
@@ -74,11 +80,15 @@
         }
       }
       if (this.time >= this.nextBubble) {
-        if (this.bubbles.length < 4) this.bubbles.push({x: 15 + this.random() * 290, y: FLOOR - 2});
-        this.nextBubble = this.time + 2 + this.random() * 3;
+        if (this.bubbles.length < 2){
+          const f=this.fish[Math.floor(this.random()*this.fish.length)];
+          const x=f?f.x+(f.direction>0?f.width:0):30+this.random()*260;
+          if(x>SAFE_X&&x<W-SAFE_X)this.bubbles.push({x,y:f?f.y+f.height*.375:FLOOR-12});
+        }
+        this.nextBubble = this.time + 7 + this.random() * 5;
       }
-      for (const b of this.bubbles) b.y -= dt * 5;
-      this.bubbles = this.bubbles.filter(b => b.y > WATER_TOP + 3);
+      for (const b of this.bubbles) {b.y -= dt * 7;b.x-=dt*.7;}
+      this.bubbles = this.bubbles.filter(b => b.y > this.waterTop() && b.x>SAFE_X);
       if (this.time > 8) this.controls = false;
     }
     action(x, y) {
@@ -162,7 +172,31 @@
         text('/__\\', screenX(worldX, ocean.scroll), groundAt(worldX) - 6, colors.muted);
       }
     }
-    for (const b of ocean.bubbles) if(!ocean.parade||b.y>=PARADE_TOP)glyph('o', b.x, b.y, colors.muted);
+    if(!ocean.parade){
+      for(let slot=Math.floor((ocean.scroll-300)/900)-1;slot*900<ocean.scroll+W;slot++){
+        const l=scenes.landmark(slot,ocean.sceneSeed),rows=scenes.art[l.kind+'Small'],x=screenX(l.worldX,ocean.scroll);
+        if(x+78<0||x>W)continue;
+        const floor=Math.min(...Array.from({length:14},(_,i)=>groundAt(l.worldX+i*6)));
+        if(floor-rows.length*8-2<H*2/3)continue;
+        rows.forEach((row,i)=>text(row,x,floor-rows.length*8-2+i*8,l.kind==='castle'?'#6f8290':'#687c78'));
+      }
+      const scene=scenes.scene(ocean.time,ocean.sceneSeed),water=Math.round(-12+76*scene.surface);
+      if(water>=20){
+        ctx.fillStyle='#081723';ctx.fillRect(12,20,296,water-12);
+        for(let x=12;x<308;x+=6)glyph(Math.sin(ocean.time*1.2+x*.06)>0?'~':'_',x,water,'#508d9f');
+        if(scene.kind){
+          const rows=scenes.art[scene.kind==='monster'&&Math.floor(scene.progress*30/.6)%2?'monsterAlt':scene.kind],width=Math.max(...rows.map(r=>r.length))*6;
+          const x=Math.round(-width+scene.progress*(W+width));
+          const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
+          const lift=smooth(scene.progress*6)*smooth((1-scene.progress)*6);
+          const y=scene.kind==='boat'?water-24:scene.kind==='whale'?water-8+Math.floor((1-lift)*32):water-32;
+          rows.forEach((row,i)=>text(row,x,y+i*8,scene.kind==='boat'?'#c8b68f':scene.kind==='whale'?'#82a9bb':'#8fb68b'));
+          const p=scene.progress*30%11;
+          if(scene.kind==='whale'&&lift>.95&&p>=3&&p<6.2)scenes.art.spout[Math.min(3,Math.floor((p-3)/.8))].forEach((row,i)=>text(row,x+12,y-24+i*8,'#a3d8e5'));
+        }
+      }
+      for(const b of ocean.bubbles)glyph(b.y<ocean.waterTop()+20?'.':'o',b.x,b.y,colors.muted);
+    }
     for (const fish of ocean.visibleFish()) {
       const s = ocean.sprites[fish.index];
       const bob = Math.round(Math.sin((ocean.parade?.elapsed??ocean.time) * 0.55 + fish.phase) * 2);

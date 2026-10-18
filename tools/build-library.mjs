@@ -5,6 +5,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import '../art/fish-art.js';
 import '../preview/font.js';
+import '../preview/ocean-scenes.js';
 import '../preview/ocean.js';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const {MiniOcean,render}=globalThis.MiniAquarium;

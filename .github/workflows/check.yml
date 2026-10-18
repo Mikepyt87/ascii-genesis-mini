@@ -12,7 +12,7 @@ jobs:
           node-version: '22'
       - run: node preview/check.mjs
       - run: node preview/network-check.mjs
-      - run: node tools/generate-assets.mjs --check
+      - run: node tools/generate-assets.mjs --check && node tools/generate-scenes.mjs --check
       - run: node tools/check-docs.mjs
       - run: node tools/build-library.mjs --check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check

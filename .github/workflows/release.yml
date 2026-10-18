@@ -30,7 +30,7 @@ jobs:
           node -e 'if(!/^\d{1,5}\.\d{1,5}\.\d{1,5}$/.test(process.env.VERSION)||process.env.VERSION.split(".").some(n=>Number(n)>65535))process.exit(1)'
           printf '%s' "$VERSION" > firmware/release-version.txt
       - run: node preview/check.mjs && node preview/network-check.mjs
-      - run: node tools/generate-assets.mjs --check
+      - run: node tools/generate-assets.mjs --check && node tools/generate-scenes.mjs --check
       - run: node tools/check-docs.mjs
       - run: node tools/build-library.mjs --check
       - run: gcc -std=c11 -Wall -Wextra -Werror tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check
