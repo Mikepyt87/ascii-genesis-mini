@@ -1,6 +1,6 @@
-# ASCII Genesis - Mini
+# ASCII Genesis — Mini
 
-A small, touch-controlled ASCII ocean for the **Waveshare ESP32-S3-Touch-LCD-1.47**. The screen runs sideways at **320 × 172**. The ESP32 is built into the display board; no Raspberry Pi is needed.
+A traveling ASCII ocean for **Waveshare ESP32-S3-Touch-LCD-1.47**, displayed sideways at **320 × 172**.
 
 ## With thanks to the projects that started it
 
@@ -10,95 +10,60 @@ ASCII Genesis grew from **[Asciiquarium](https://github.com/cmatsuoka/asciiquari
 
 We call ASCII Genesis an **ocean**: its creatures travel through a scrolling world of changing terrain and habitats.
 
-**This repository is for the Mini only.** The larger Raspberry Pi ocean has its own [repository and instructions](https://github.com/Mikepyt87/ascii-genesis).
-
-![ASCII Genesis - Mini ocean with a fish, peacock mantis shrimp, and turtle](docs/images/ocean.svg)
-
-Each startup and New World randomizes the opening creatures, directions, positions, and habitat. The parade keeps its original order.
-
-A pocket-sized ocean made from colored text: fish cross the water, bubbles rise, and plants sway above a slowly traveling seabed. Plug the board into USB power and it starts on its own. It runs offline; Wi-Fi is optional for updates.
-
-**Explore it:** [Complete Ocean Library](docs/OCEAN-LIBRARY.md) · [Visual tour](docs/SCREENSHOTS.md) · [About the Mini and Pi comparison](docs/PROJECT.md) · [Version history](CHANGELOG.md)
-
-**v0.1.10** makes parade names 50% larger and brighter, with both full names at the top right.
+**This repository is the Mini project.** The other editions have separate projects: **[ASCII Genesis — Raspberry Pi](https://github.com/Mikepyt87/ascii-genesis)** and **[ASCII Genesis — Mid](https://github.com/Mikepyt87/ascii-genesis-mid)**. The three projects have different hardware, installers, and update channels.
 
 ## Start here
 
-| What you want to do | Follow this guide |
+| Your situation | What to do |
 | --- | --- |
-| Browse every creature, drawing, color, and behavior | [Mini Ocean Library: all 28 designs in both directions](docs/OCEAN-LIBRARY.md) |
-| See the screen and understand the project | [Visual tour](docs/SCREENSHOTS.md) and [project description](docs/PROJECT.md) |
-| Put the ocean on a new board | [First installation: download, USB port, flash, and first startup](docs/INSTALL.md) |
-| Update an ocean that already works | [Wireless updates and version checks](docs/UPDATES.md) |
-| Connect home Wi-Fi or a phone hotspot | [Wi-Fi setup, step by step](docs/WIFI.md) |
-| Use Pause, New World, Parade, and Settings | [Touch controls and parade](docs/CONTROLS.md) |
-| Fix a blank screen, connection problem, or failed update | [Troubleshooting and USB recovery](docs/TROUBLESHOOTING.md) |
-| Preview it or build from source | [Developer setup and checks](docs/DEVELOPMENT.md) |
-| Understand the move from the original repository | [Repository transition and existing boards](docs/MIGRATION.md) |
-| Report a problem or help improve it | [Contributing and issue information](CONTRIBUTING.md) |
+| Building the Mini ocean for the first time | Follow [Mini installation and first startup](docs/INSTALL.md) from the board check onward |
+| Checking the board and USB connection | Follow the [board and USB port checks](docs/INSTALL.md); use the Waveshare touch model listed below |
+| Already installed and want new creatures | Connect Wi-Fi, open **Settings → Check for Updates → Install**, and keep power connected; see [wireless updates](docs/UPDATES.md) |
+| Want to see the artwork and behavior | Open the [Ocean Library](docs/OCEAN-LIBRARY.md) or [screenshot tour](docs/SCREENSHOTS.md) |
+| Have the 4-inch GUITION screen or a Raspberry Pi | Use the [Mid installation guide](https://github.com/Mikepyt87/ascii-genesis-mid/blob/main/INSTALL.md) or [Pi installation guide](https://github.com/Mikepyt87/ascii-genesis/blob/main/raspberry-pi/SETUP.md) for that edition |
 
-## Required hardware
+## Mini hardware
 
-- **Waveshare ESP32-S3-Touch-LCD-1.47**, including its capacitive touch screen, 16 MB flash, and 8 MB PSRAM. Check the full model name: the non-touch LCD-1.47 is different.
-- A USB **data** cable and a computer for the first installation. A charge-only cable will power the screen but cannot install firmware.
+- Waveshare **ESP32-S3-Touch-LCD-1.47**, with a built-in ESP32-S3, 16 MB flash, and 8 MB PSRAM.
+- Integrated 1.47-inch JD9853 display and AXS5106L capacitive touch, used sideways at **320 wide × 172 high**.
+- A USB **data** cable and a computer for the first installation.
 - A USB power source for normal use.
 - Optional: home Wi-Fi or a phone hotspot operating at **2.4 GHz** for updates.
 
-No microSD card, soldered headers, API key, Raspberry Pi OS, or Pi desktop installer is required. The ocean runs without internet. An SD card does not add RAM and is not used by this firmware.
+The display and touch controller connect directly to the ESP32 on the board. This is standalone ESP32 firmware; no Raspberry Pi, microSD card, operating-system installation, or API key is needed. Check the full board name: the non-touch LCD-1.47 uses different hardware.
 
-## What it does
+## First software installation on the Mini
 
-The ocean includes **28 colored creature and vehicle designs**, each facing both directions. Tiny reef fish share the collection with a puffer, ray, eel, squid, octopus, turtle, jellyfish, crab, lobster, shark, whale, yellow submarine, lionfish, and peacock mantis shrimp. The [Ocean Library](docs/OCEAN-LIBRARY.md) includes every drawing, its dimensions, palette, origin, and behavior.
+Use the [complete guide](docs/INSTALL.md) to check the board and identify its USB port first. Install [Python for Windows](https://www.python.org/downloads/windows/) if needed. Download **ocean-usb.bin** from the newest [numbered Mini release](https://github.com/Mikepyt87/ascii-genesis-mini/releases). Then open **Windows PowerShell in the folder containing that file**, replacing **COM7** with your board's port:
 
-Up to three creatures swim in separate vertical bands, leaving room for their whole drawings and gentle bobbing. In v0.1.7 regular swimmers move at **9–18 pixels per second**, three times the previous range. Plants remain rooted to the seabed as both scroll together at **3.6 pixels per second**. Bubbles rise through the water, and the habitat label changes every 45 seconds. Coral garden adds pink branches; rocky reef and wreck depths add small rock outlines. [Exact scenery and movement rules](docs/OCEAN-LIBRARY.md#habitats-and-scenery).
-
-The layout keeps text and foreground content away from the screen's rounded corners. The Mini is a decorative ocean with static ASCII drawings and simple motion. The larger Pi edition has its own food web, schools, visitors, lighting, and other features; see [the edition comparison](docs/PROJECT.md#mini-and-raspberry-pi-editions).
-
-Tap the water to reveal **Pause · New World · Parade · Settings**. Controls fade after eight seconds. The parade shows all 28 designs in their original order, with up to two in separate bands and their names at the top right. Each crosses in six seconds; the full parade takes **1 minute 45 seconds**. It then returns to the ocean you left. [Full controls guide](docs/CONTROLS.md).
-
-![Mini controls: Pause, New World, Parade, Settings](docs/images/controls.svg)
-
-These images come from the Mini browser renderer; they are software previews rather than board photographs. See the [visual tour](docs/SCREENSHOTS.md) for the parade, coral garden, and complete collection.
-
-Source firmware version: **0.1.10**. Use a numbered release from [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases); a source-code ZIP is not installable firmware. The release page identifies which version is actually published. [Changes by version](CHANGELOG.md).
-
-## Quick update for an existing board
-
-1. Connect the ocean to home Wi-Fi or a 2.4 GHz hotspot.
-2. Tap **Settings → Check for updates**.
-3. When offered a newer version, tap **Install** and leave power connected through the restart.
-4. Wait at least 30 seconds after the ocean returns, then confirm the version in Settings.
-
-Boards on **v0.1.2 or v0.1.3 need USB recovery first** because those versions cannot follow GitHub's long download addresses. Boards on v0.1.4/v0.1.5 receive the v0.1.6 transition through the old channel; v0.1.6 and later check this repository. See [the transition guide](docs/MIGRATION.md).
-
-## Source layout
-
-| Folder | Contents |
-| --- | --- |
-| `firmware/` | ESP-IDF 5.5.2 application, display/touch driver, Wi-Fi and updater |
-| `preview/` | Local browser simulation; no real passwords or flashing |
-| `art/` | Shared-source ASCII drawings, original additions, and artwork license |
-| `tools/` | Asset generator, manifest generator, and software checks |
-| `docs/` | Installation, Wi-Fi, controls, updates, recovery, and development guides |
-
-## Preview before installing
-
-With Node.js 20 or newer installed, clone or download this repository, open a terminal in its folder, and run:
-
-```text
-node preview/serve.mjs
+```powershell
+py -m venv .flash-tools
+.\.flash-tools\Scripts\python.exe -m pip install esptool
+.\.flash-tools\Scripts\python.exe -m esptool --chip esp32s3 --port COM7 --baud 460800 write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 ocean-usb.bin
 ```
 
-Open **http://127.0.0.1:4174** on that computer. The preview includes the ocean, touch controls, and parade, with a labeled simulation of Wi-Fi/update screens. Leave the terminal running while using it; Ctrl+C stops it. It cannot flash or provision a real board. [Complete preview and development instructions](docs/DEVELOPMENT.md).
+The ocean starts when the board restarts. Leave power connected for at least **30 seconds after startup**. If the Mini is already installed, use the update instructions instead of flashing over it. [The full guide](docs/INSTALL.md) explains the complete USB image, port selection, first startup, and Linux/macOS installation. It also links to [Wi-Fi setup](docs/WIFI.md), [touch controls](docs/CONTROLS.md), and [troubleshooting](docs/TROUBLESHOOTING.md).
 
-## Build, checks, and contributions
+## What the Mini ocean includes
 
-The actual firmware builds with **ESP-IDF 5.5.2** for ESP32-S3. The JD9853 LCD and AXS5106L touch controller are configured in the supplied source; no separate display-library setup is needed. The browser preview has no npm dependencies. Automated checks cover a simulated hour, creature separation, rounded-corner margins, scenery movement, touch/update policies, the complete parade, generated assets, catalog freshness, and documentation links. GitHub Actions also compiles the device firmware. Hardware behavior still needs a real board.
+There are **28 colored creature and vehicle designs**, including the peacock mantis shrimp, six changing habitats, rising bubbles, swaying plants, and a scrolling seabed. Up to three creatures swim in separate bands. Startup and New World randomize the opening creatures, directions, positions, and habitat. It runs offline; Wi-Fi is optional for updates.
 
-Use [Development](docs/DEVELOPMENT.md) for exact commands, [Contributing](CONTRIBUTING.md) for changes and reports, and [Maintainer releases](docs/RELEASES.md) for publishing a device update.
+Tap the water for **Pause · New World · Parade · Settings**. The parade keeps all 28 designs in their original order, with six-second crossings and up to two creatures at a time. A full Mini parade takes **105 seconds (1 minute 45 seconds)**, then returns to the preserved ocean. The full names appear at the top right, with larger, brighter text from v0.1.10. Regular swimmers move at **9–18 pixels per second**, while the seabed scrolls at **3.6 pixels per second**. See the [Ocean Library](docs/OCEAN-LIBRARY.md) and [controls guide](docs/CONTROLS.md) for the full behavior.
 
-## Credits and licenses
+![ASCII Genesis Mini ocean](docs/images/ocean.svg)
 
-ASCII Genesis builds on **Asciiquarium by Kirk Baucom**, with most upstream art credited to **Joan Stark** and expanded biodiversity by **Claudio Matsuoka**. Original project additions include the mantis shrimp and other creatures. **OpenGhost / xanderchinxyz** inspired the early display exploration. See [CREDITS.md](CREDITS.md) and [THIRD-PARTY.md](THIRD-PARTY.md).
+The image is a browser preview, not a photograph of the board.
 
-The firmware is [GPL-3.0-or-later](LICENSE). Artwork is [GPL-2.0-or-later](art/LICENSE.txt); the display driver and bitmap font retain their own notices.
+## Updates and source
+
+The Mini updater follows this repository's wireless update channel. Connect home Wi-Fi or a 2.4 GHz hotspot, then use **Settings → Check for Updates → Install**. Keep power connected through the restart and for at least 30 seconds afterward. It checks for releases automatically but waits for you to choose Install. [The update guide](docs/UPDATES.md) covers version checks and recovery.
+
+Current firmware: **v0.1.10**. Use a numbered [release](https://github.com/Mikepyt87/ascii-genesis-mini/releases) for installable firmware; [CHANGELOG.md](CHANGELOG.md) records the changes. Boards on v0.1.2/v0.1.3 need USB recovery first. Boards on v0.1.4/v0.1.5 receive the v0.1.6 transition before checking this repository. See [migration details](docs/MIGRATION.md).
+
+The firmware and board drivers are in `firmware/`; the browser preview is in `preview/`; artwork is in `art/`; generators and checks are in `tools/`. Tests run in GitHub Actions. Use [Development](docs/DEVELOPMENT.md) for the preview and ESP-IDF 5.5.2 build, [the edition comparison](docs/PROJECT.md) for the differences from Pi, [Contributing](CONTRIBUTING.md) to help improve it, and [Maintainer releases](docs/RELEASES.md) for publishing an update.
+
+## Credits
+
+Built on **Asciiquarium by Kirk Baucom**, with most upstream ASCII art credited to **Joan Stark** and expanded biodiversity by **Claudio Matsuoka**. **OpenGhost / xanderchinxyz** inspired the early display exploration. Project additions include the Mini renderer, original creatures, touch controls, Wi-Fi setup, and updater. Read [CREDITS.md](CREDITS.md), [THIRD-PARTY.md](THIRD-PARTY.md), and [LICENSE](LICENSE).
+
+Firmware is GPL-3.0-or-later; artwork is [GPL-2.0-or-later](art/LICENSE.txt). The display driver and bitmap font retain their own notices.
