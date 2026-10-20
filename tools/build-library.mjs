@@ -32,13 +32,13 @@ const descriptions=[
   'A violet octopus with two eyes and curling arms below a rounded head. It follows the scrolling seabed with its arms grounded and no swimming bob.',
   'A green turtle with a patterned shell, four flippers, and a small head. The shell markings use the artwork color masks.',
   'A pale jellyfish with a rounded bell and trailing tentacles. The Mini moves the complete drawing sideways with a gentle bob; it has no separate pulse animation.',
-  'A small shore crab with claws and low legs. The Mini uses a swimming lane for this drawing rather than making its feet follow the floor.',
-  'A reef lobster with an extended body, legs, and claws. Like the crab, it joins the regular lanes and the parade.',
+  'A small shore crab with claws and low legs. Its visible feet follow the scrolling floor without swimming bob, including during the parade.',
+  'A reef lobster with an extended body, legs, and claws. Like the crab, it follows the seabed in the ordinary ocean and parade.',
   'A shark silhouette with a high dorsal fin, pointed nose, and forked tail. It is decorative here and never eats other fish.',
   'A broad whale drawing with flippers and a long back. It uses the same lane-spacing rules as the smaller designs.',
   'A yellow submarine with a raised periscope and hull details. It is the collection’s decorative vehicle, not an animal.',
   'A copper-toned lionfish with pale stripes and spread-out spines. The fins are drawn into the sprite rather than animated separately.',
-  'A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. In the Mini it swims through a clear lane; it does not punch, hunt, or dig a burrow.'
+  'A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. Its feet follow the seabed without swimming bob; it does not punch, hunt, or dig a burrow.'
 ];
 if(descriptions.length*2!==sprites.length)throw Error('Add a catalog description for each design');
 const escape=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');

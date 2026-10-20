@@ -4,8 +4,6 @@ Publishing commits does not publish a device update. A release must include a co
 
 Keep the README's current version, changelog, illustrated scene guide, and validation record aligned with each published release. Run `node tools/build-scenes-tour.mjs --check`, `node tools/build-library.mjs --check`, and `node tools/check-docs.mjs` before publishing. Historical migration versions remain in the guides intentionally.
 
-Keep the README's current version, changelog, illustrated scene guide, and validation record aligned with each published release. Run `node tools/build-scenes-tour.mjs --check`, `node tools/build-library.mjs --check`, and `node tools/check-docs.mjs` before publishing. Historical migration versions remain in the guides intentionally.
-
 ## Prepare and check
 
 1. Merge the intended changes into main and wait for **Check Mini** to pass.
@@ -37,3 +35,7 @@ New firmware checks this repository. Old installed v0.1.4/v0.1.5 firmware only t
 6. Existing boards can install v0.1.6 from the old channel, then automatically check this repository. Keep that compatibility release/channel available for boards that migrate later.
 
 Do not point the old channel directly at a new-repository URL: the old firmware deliberately rejects that URL. Do not continue publishing future Mini releases in both repositories. The Pi updater follows its own main branch and does not consume either firmware channel.
+
+## Documentation-only updates
+
+Publish corrected guides to main after the documentation and generated-illustration checks pass. This does not require a firmware version bump or device update. Existing release assets stay unchanged; main contains the current instructions.

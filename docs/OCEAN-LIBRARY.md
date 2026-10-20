@@ -721,7 +721,7 @@ Facing left:
 
 ### shore crab
 
-A small shore crab with claws and low legs. The Mini uses a swimming lane for this drawing rather than making its feet follow the floor.
+A small shore crab with claws and low legs. Its visible feet follow the scrolling floor without swimming bob, including during the parade.
 
 - **Parade position:** 22 of 28.
 - **Drawing size:** right 11 × 4; left 11 × 4 characters.
@@ -749,7 +749,7 @@ Facing left:
 
 ### reef lobster
 
-A reef lobster with an extended body, legs, and claws. Like the crab, it joins the regular lanes and the parade.
+A reef lobster with an extended body, legs, and claws. Like the crab, it follows the seabed in the ordinary ocean and parade.
 
 - **Parade position:** 23 of 28.
 - **Drawing size:** right 15 × 5; left 15 × 5 characters.
@@ -913,7 +913,7 @@ Facing left:
 
 ### peacock mantis shrimp
 
-A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. In the Mini it swims through a clear lane; it does not punch, hunt, or dig a burrow.
+A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. Its feet follow the seabed without swimming bob; it does not punch, hunt, or dig a burrow.
 
 - **Parade position:** 28 of 28.
 - **Drawing size:** right 16 × 4; left 16 × 4 characters.

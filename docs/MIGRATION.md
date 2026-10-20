@@ -30,3 +30,7 @@ The board ID, embedded project name `ascii_genesis_147`, two 6 MiB application s
 The standalone Mini starts from the Mini code and shared artwork in original repository commit `93edc82417ec08ebcb6a79afab48ff8e2ff5e8dc`. This repository keeps source and third-party notices needed for those assets. Original history and prior releases remain available in the old repository; the Pi renderer and ecosystem stay there.
 
 The first standalone version adds the Mini parade. It does not change the Pi's scrolling speed, parade, or runtime behavior.
+
+## The 4-inch edition
+
+[ASCII Genesis — Mid](https://github.com/Mikepyt87/ascii-genesis-mid) runs on the GUITION ESP32-4848S040, with a 480 × 480 touch display and a 320 × 320 logical ocean. It shares the artwork, but has its own USB image and wireless update channel. Its parade lasts 99 seconds. Mini firmware must not be used on Mid.

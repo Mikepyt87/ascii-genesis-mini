@@ -38,7 +38,7 @@ Use the [complete guide](docs/INSTALL.md) to check the board and identify its US
 
 ```powershell
 py -m venv .flash-tools
-.\.flash-tools\Scripts\python.exe -m pip install esptool
+.\.flash-tools\Scripts\python.exe -m pip install esptool==5.6.0
 .\.flash-tools\Scripts\python.exe -m esptool --chip esp32s3 --port COM7 --baud 460800 write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 ocean-usb.bin
 ```
 

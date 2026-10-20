@@ -2,6 +2,10 @@
 
 Wi-Fi is used for time synchronization and downloading firmware updates. The ocean works offline. The ESP32-S3 uses **2.4 GHz Wi-Fi**; a 5 GHz-only network will not work.
 
+![First the phone joins the setup network; then the ocean joins home Wi-Fi](images/wifi-setup.svg)
+
+The phone and the ocean have separate connections. A phone showing “connected” is not the final check: look for **Wi-Fi online on the ocean’s Settings screen**.
+
 ## Connect with a phone
 
 1. On the ocean, tap the water, then **Settings → Set up Wi-Fi with phone**.

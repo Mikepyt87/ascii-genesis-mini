@@ -47,3 +47,7 @@ It does not include Bluetooth updates, SD-card storage features, sound, battery-
 ## Where it came from
 
 The Mini grew from [ASCII Genesis](https://github.com/Mikepyt87/ascii-genesis). Its artwork builds on Asciiquarium by Kirk Baucom, with most upstream art credited to Joan Stark and expanded biodiversity by Claudio Matsuoka. The early display exploration was inspired by OpenGhost / xanderchinxyz. The Mini became a separate repository at v0.1.6 so its hardware, flashing, and update instructions could stand on their own. [Full credits](../CREDITS.md).
+
+## The 4-inch edition
+
+[ASCII Genesis — Mid](https://github.com/Mikepyt87/ascii-genesis-mid) runs on the GUITION ESP32-4848S040, with a 480 × 480 touch display and a 320 × 320 logical ocean. It shares the artwork, but has its own USB image and wireless update channel. Its parade lasts 99 seconds. Mini firmware must not be used on Mid.

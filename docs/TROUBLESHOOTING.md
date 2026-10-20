@@ -4,8 +4,10 @@ Start by opening Settings and recording the installed version. Describe what app
 
 | Problem | What to try |
 | --- | --- |
+| Python was not found | Install Python 3.10+, reopen PowerShell, and follow the separate tool-environment steps in [Install](INSTALL.md#3-install-the-flashing-tool-on-windows) |
+| File not found | Open PowerShell in the folder containing `ocean-usb.bin`; check the exact filename |
 | Screen powers on but the computer sees no port | Use a known data cable, a direct USB port, and check Device Manager while reconnecting |
-| COM port is busy | Close the ESP-IDF monitor with Ctrl+], and close other serial/flashing tools |
+| COM port is busy / Access is denied | Close the ESP-IDF monitor with Ctrl+], and close other serial/flashing tools |
 | Flashing cannot connect | Hold BOOT, press/release RESET, release BOOT; recheck the USB port and retry |
 | Flash verified but screen stays blank | Confirm the exact Touch-LCD-1.47 model and complete image; press RESET without BOOT; capture the startup error |
 | Text/image clipped at corners | Use current firmware with the rounded-screen safe area; check landscape orientation |
@@ -24,7 +26,7 @@ Start by opening Settings and recording the installed version. Describe what app
 
 ## Recover over USB
 
-Use the [complete installation instructions](INSTALL.md), with the newest numbered release's **aquarium-usb.bin** at **0x0**. Expect to enter Wi-Fi settings again when using a complete merged image. Do not flash the application-only file at 0x0.
+Use the [complete installation instructions](INSTALL.md), with the newest numbered release's **ocean-usb.bin** at **0x0**. Expect to enter Wi-Fi settings again when using a complete merged image. Do not flash the application-only file at 0x0.
 
 Normal recovery does not require erasing the entire flash first. Only perform a full erase when deliberately removing all settings and both application slots, and when a known-good complete image and working USB connection are ready. An erase by itself leaves no ocean to boot.
 

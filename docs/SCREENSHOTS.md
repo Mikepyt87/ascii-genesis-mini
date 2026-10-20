@@ -4,7 +4,7 @@ These are generated illustrations from the Mini’s actual browser renderer at *
 
 ## The everyday ocean
 
-![Mini ocean with a small fish, mantis shrimp, and turtle](images/ocean.svg)
+![One staged Mini ocean scene](images/ocean.svg)
 
 This illustration shows one selected scene. Real startup and New World randomize the creatures, directions, positions, and habitat. They leave the scene and are replaced by randomly selected designs. Regular swimmers move at **9–18 pixels per second** in current firmware. The seabed still scrolls at 3.6 pixels per second, with plants anchored to the same ground.
 
@@ -20,7 +20,7 @@ Tap the water, lift your finger, then tap a button. Controls normally hide after
 
 ![Peacock mantis shrimp in the Mini parade with Return control](images/parade.svg)
 
-This illustration holds the parade at its final design, the peacock mantis shrimp. Its green body, blue legs, and orange striking clubs are separate colors in the drawing. The Mini treats it as a swimmer; there is no claw strike animation.
+This illustration holds the parade at its final design, the peacock mantis shrimp. Its green body, blue legs, and orange striking clubs are separate colors in the drawing. Its visible feet follow the seabed, including during the parade; there is no claw strike animation.
 
 All 28 designs keep their original order, with six-second crossings and up to two creatures in separate bands. Their names appear at the top right. A full parade lasts **1 minute 54 seconds**. Tall neighbors wait for enough room. Return resumes your preserved ocean.
 
