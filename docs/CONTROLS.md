@@ -1,6 +1,6 @@
 # Touch controls and creature parade
 
-Tap the ocean and lift your finger. Four buttons appear along the bottom. They fade after eight seconds so the ocean has room. When controls are hidden, the first tap reveals them; a second tap selects a button.
+Tap the ocean and lift your finger. Four large buttons appear in two rows: Pause and New World above Parade and Settings. Each button is 132 by 38 pixels, with 24 pixels of side clearance and 26 pixels below the lower row so a raised case frame is easier to work around. Settings, Wi-Fi, update, Back, and Dedication controls are also inset from the edges. They fade after eight seconds so the ocean has room. When controls are hidden, the first tap reveals them; a second tap selects a button.
 
 | Button | What happens |
 | --- | --- |

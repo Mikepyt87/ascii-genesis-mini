@@ -1,5 +1,11 @@
 # Mini version history
 
+## v0.1.17
+
+- Replace the edge control strip with four large inset buttons in a two-by-two layout.
+- Inset Wi-Fi, update, Back and Dedication controls; move their touch targets away from case frames.
+- Keep the unobstructed ocean view when controls hide, with unchanged swimming speeds.
+
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
 ## 0.1.16

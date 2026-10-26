@@ -12,8 +12,8 @@
     check(){if(this.busy)return;if(!this.online){this.message='Offline - ocean keeps running';return;}this.available=false;this.phase='checking';this.timer=0;this.message='Checking ESP32 updates...';}
     install(){if(this.busy||!this.available||!this.online)return;this.previous=this.version;this.phase='download';this.progress=0;this.timer=0;this.message='Downloading - keep power connected';}
     action(x,y){
-      if(y>=140){this.screen='ocean';if(this.phase==='setup')this.phase='idle';return;}
-      if(this.screen==='settings'&&!this.busy){if(y>=58&&y<90)this.setup();else if(y>=98&&y<130){if(this.available)this.install();else this.check();}}
+      if(x>=24&&x<296&&y>=124&&y<156){this.screen='ocean';if(this.phase==='setup')this.phase='idle';return;}
+      if(this.screen==='settings'&&!this.busy&&x>=24&&x<296){if(y>=52&&y<82)this.setup();else if(y>=88&&y<118){if(this.available)this.install();else this.check();}}
     }
     step(dt){
       this.timer+=Math.max(0,dt);
@@ -37,14 +37,14 @@
     ctx.save();ctx.beginPath();ctx.rect(12,8,296,156);ctx.clip();
     if(net.screen==='setup'){
       text('CONNECT WITH YOUR PHONE',20,8);text('Join this Wi-Fi network:',20,24);text('ASCII-Genesis-Mini-DEMO',20,40,'#73c9ff',2);
-      text('Demo password:',20,64);text('preview-only',20,78,'#73c9ff',2);text('Open http://192.168.4.1',20,108);text('Setup closes after 10 minutes',20,124);
+      text('Demo password:',20,64);text('preview-only',20,78,'#73c9ff',2);text('Open http://192.168.4.1',20,100);text('Setup closes after 10 minutes',20,114);
     }else{
       text('SETTINGS',20,8);text('v'+net.version+'  '+(net.online?'Wi-Fi online':'Offline'),20,22,'#73c9ff');text(net.message,20,38);
-      ctx.fillStyle='#102631';ctx.fillRect(0,58,320,32);text('SET UP WI-FI WITH PHONE',20,70);
-      ctx.fillStyle='#102631';ctx.fillRect(0,98,320,32);
-      text(net.busy?'PLEASE WAIT  '+net.progress+'%':net.available?'INSTALL v0.2.0 & RESTART':'CHECK FOR UPDATES',20,110);
+      ctx.fillStyle='#102631';ctx.fillRect(24,52,272,30);text('SET UP WI-FI WITH PHONE',36,63);
+      ctx.fillStyle='#102631';ctx.fillRect(24,88,272,30);
+      text(net.busy?'PLEASE WAIT  '+net.progress+'%':net.available?'INSTALL v0.2.0 & RESTART':'CHECK FOR UPDATES',36,99);
     }
-    ctx.fillStyle='#102631';ctx.fillRect(0,140,320,32);text('BACK TO OCEAN',118,153);
+    ctx.fillStyle='#102631';ctx.fillRect(24,124,272,32);text('BACK TO OCEAN',124,136);
     ctx.restore();
   }
   root.MiniNetwork={MiniNetwork,draw};
