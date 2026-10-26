@@ -40,7 +40,7 @@ const descriptions=[
   'A copper-toned lionfish with pale stripes and spread-out spines. The fins are drawn into the sprite rather than animated separately.',
   'A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. Its feet follow the seabed without swimming bob; it does not punch, hunt, or dig a burrow.'
 ];
-descriptions.push('A teal angelfish with balanced, wing-shaped fins. Its entrance sends out a soft ring of teal and pale-green sparks.','A blue marlin with a long bill, gold fins, and carefully spaced body stripes. A gold fan of sparks marks its entrance.','An orange wrasse with violet fins and diagonal markings. Violet and orange sparks spiral outward when it enters.');
+descriptions.push('A teal angelfish with balanced, wing-shaped fins. Teal and pale-green stars surround its whole body on entry.','A blue marlin with a long bill, gold fins, and carefully spaced body stripes. Gold stars surround its whole body on entry.','An orange wrasse with violet fins and diagonal markings. Violet and orange stars surround its whole body on entry.');
 if(descriptions.length*2!==sprites.length)throw Error('Add a catalog description for each design');
 const escape=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 // Canvas-compatible rectangle/clip recorder: render() supplies every ocean pixel.

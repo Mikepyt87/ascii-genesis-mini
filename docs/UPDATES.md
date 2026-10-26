@@ -1,6 +1,6 @@
 # Wireless updates
 
-Current release: **v0.1.15**, with three [signature fish and entrance celebrations](SIGNATURE-FISH.md), grounded crabs, lobsters, mantis shrimp, and octopuses, plus the existing waterline fix, balanced creature proportions, surface visitors, castles, ruins, and sparse bubbles. See [what changed](../CHANGELOG.md) and the [new scenes guide](SURFACE-SCENES.md).
+Current release: **v0.1.16**, with three [signature fish and entrance celebrations](SIGNATURE-FISH.md), grounded crabs, lobsters, mantis shrimp, and octopuses, plus the existing waterline fix, balanced creature proportions, surface visitors, castles, ruins, and sparse bubbles. See [what changed](../CHANGELOG.md) and the [new scenes guide](SURFACE-SCENES.md).
 
 ## Install an offered update
 

@@ -2,6 +2,12 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.16
+
+- Moves signature celebrations around the whole fish, following its body with a clear gap instead of emitting particles from its nose.
+- Waits until the complete drawing is visible, then surrounds it with teal, gold, or violet/orange stars for three seconds.
+- Preserves private Mini profiles, fish speeds, safe screen margins, pause behavior, and once-per-crossing timing.
+
 ## 0.1.15
 
 - Adds Balance Angelfish, Steadfast Marlin, and Spark Wrasse to the normal ocean and parade (31 designs).

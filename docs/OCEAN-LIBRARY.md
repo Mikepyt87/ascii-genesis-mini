@@ -944,7 +944,7 @@ Facing left:
 
 ### balance angelfish
 
-A teal angelfish with balanced, wing-shaped fins. Its entrance sends out a soft ring of teal and pale-green sparks.
+A teal angelfish with balanced, wing-shaped fins. Teal and pale-green stars surround its whole body on entry.
 
 - **Parade position:** 29 of 31.
 - **Drawing size:** right 15 × 5; left 15 × 5 characters.
@@ -974,7 +974,7 @@ Facing left:
 
 ### steadfast marlin
 
-A blue marlin with a long bill, gold fins, and carefully spaced body stripes. A gold fan of sparks marks its entrance.
+A blue marlin with a long bill, gold fins, and carefully spaced body stripes. Gold stars surround its whole body on entry.
 
 - **Parade position:** 30 of 31.
 - **Drawing size:** right 22 × 5; left 22 × 5 characters.
@@ -1004,7 +1004,7 @@ Facing left:
 
 ### spark wrasse
 
-An orange wrasse with violet fins and diagonal markings. Violet and orange sparks spiral outward when it enters.
+An orange wrasse with violet fins and diagonal markings. Violet and orange stars surround its whole body on entry.
 
 - **Parade position:** 31 of 31.
 - **Drawing size:** right 16 × 5; left 16 × 5 characters.
