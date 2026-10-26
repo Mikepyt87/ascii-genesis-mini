@@ -1,6 +1,6 @@
 # Mini version history
 
-## v0.1.17
+## 0.1.17
 
 - Replace the edge control strip with four large inset buttons in a two-by-two layout.
 - Inset Wi-Fi, update, Back and Dedication controls; move their touch targets away from case frames.
