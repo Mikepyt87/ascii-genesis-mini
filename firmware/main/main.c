@@ -210,7 +210,12 @@ static void draw_ocean(bool controls){
     draw_entrances();
     if(parade_active){for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){int art=parade_plan.order[slot]*2;const mini_sprite_t *s=&mini_sprites[art];draw_swimmer(art,mini_parade_x(&parade_plan,parade_elapsed,slot,s->width*6),mini_parade_y(slot,s->height*8),parade_elapsed,0);}}
     else for(int i=0;i<3;i++){swimmer_t *f=&fish[i];if(f->active)draw_swimmer(f->art,f->x,f->y,time_s,f->phase);}
-    if(controls){rect(0,140,320,32,rgb(0x102631));text(paused?"RESUME":"PAUSE",34,153,pale);text("NEW WORLD",96,153,pale);text(parade_active?"RETURN":"PARADE",179,153,pale);text("SETTINGS",247,153,pale);}
+    if(controls){
+        rect(24,62,132,38,rgb(0x102631));rect(164,62,132,38,rgb(0x102631));
+        rect(24,108,132,38,rgb(0x102631));rect(164,108,132,38,rgb(0x102631));
+        text(paused?"RESUME":"PAUSE",72,77,pale);text("NEW WORLD",203,77,pale);
+        text(parade_active?"RETURN":"PARADE",72,123,pale);text("SETTINGS",206,123,pale);
+    }
 }
 static void draw_settings(net_status_t *n){
     const uint16_t c=rgb(0xbde9e6),m=rgb(0x73c9ff);char line[54];
@@ -220,17 +225,17 @@ static void draw_settings(net_status_t *n){
         const char *at=edition.note;
         for(int row=0;row<8&&*at;row++){
             int len=strlen(at);if(len>46){len=46;while(len>0&&at[len]!=' ')len--;if(!len)len=46;}
-            char wrapped[47];memcpy(wrapped,at,len);wrapped[len]=0;text(wrapped,20,48+row*11,c);at+=len;while(*at==' ')at++;
+            char wrapped[47];memcpy(wrapped,at,len);wrapped[len]=0;text(wrapped,20,44+row*10,c);at+=len;while(*at==' ')at++;
         }
-    }else if(screen==2){text("CONNECT WITH YOUR PHONE",20,8,c);if(n->setup){text("Join this Wi-Fi network:",20,24,c);text_large(n->ap_name,20,40,m);text("Password:",20,64,c);text_large(n->ap_password,20,78,m);text("Open http://192.168.4.1",20,108,c);text("Setup closes after 10 minutes",20,124,c);}else text(n->message,20,44,c);}
+    }else if(screen==2){text("CONNECT WITH YOUR PHONE",20,8,c);if(n->setup){text("Join this Wi-Fi network:",20,24,c);text_large(n->ap_name,20,40,m);text("Password:",20,64,c);text_large(n->ap_password,20,78,m);text("Open http://192.168.4.1",20,100,c);text("Setup closes after 10 minutes",20,114,c);}else text(n->message,20,44,c);}
     else {text("SETTINGS",20,8,c);snprintf(line,sizeof(line),"v%s  %s",esp_app_get_description()->version,n->online?"Wi-Fi online":"Offline");text(line,20,22,m);text(n->message,20,38,c);
-      rect(0,58,320,32,rgb(0x102631));text("SET UP WI-FI WITH PHONE",20,70,c);
-      rect(0,98,320,32,rgb(0x102631));
-      if(n->busy){snprintf(line,sizeof(line),"PLEASE WAIT  %d%%",n->progress);text(line,20,110,c);}
-      else if(n->available){snprintf(line,sizeof(line),"INSTALL v%s & RESTART",n->version);text(line,20,110,c);}
-      else text("CHECK FOR UPDATES",20,110,c);
+      rect(24,52,272,30,rgb(0x102631));text("SET UP WI-FI WITH PHONE",36,63,c);
+      rect(24,88,272,30,rgb(0x102631));
+      if(n->busy){snprintf(line,sizeof(line),"PLEASE WAIT  %d%%",n->progress);text(line,36,99,c);}
+      else if(n->available){snprintf(line,sizeof(line),"INSTALL v%s & RESTART",n->version);text(line,36,99,c);}
+      else text("CHECK FOR UPDATES",36,99,c);
     }
-    rect(0,140,320,32,rgb(0x102631));if(screen==1&&edition.name[0]){text("BACK",52,153,c);text("DEDICATION",198,153,m);}else text("BACK TO OCEAN",118,153,c);
+    rect(24,124,272,32,rgb(0x102631));if(screen==1&&edition.name[0]){rect(156,124,8,32,rgb(0x020c14));text("BACK",78,136,c);text("DEDICATION",200,136,m);}else text("BACK TO OCEAN",124,136,c);
 }
 void app_main(void){
     esp_err_t err=nvs_flash_init();if(err==ESP_ERR_NVS_NO_FREE_PAGES||err==ESP_ERR_NVS_NEW_VERSION_FOUND){ESP_ERROR_CHECK(nvs_flash_erase());err=nvs_flash_init();}ESP_ERROR_CHECK(err);
@@ -242,8 +247,11 @@ void app_main(void){
     while(true){int64_t now=esp_timer_get_time();float dt=fminf((now-last)/1000000.0f,.1f);last=now;simulate(dt);float uptime=(now-start)/1000000.0f;
         edition_snapshot(&edition);net_status_t n;network_status(&n);int x,y;bool pressed=board_touch(&x,&y);
         if(pressed&&!held&&now-last_press>350000){last_press=now;
-            if(screen){if(y>=140){if(screen==1&&edition.name[0]&&x>=160){screen=3;}else{if(n.setup)network_command(NET_CLOSE_SETUP);screen=0;}}else if(!n.busy&&screen==1){if(y>=58&&y<90){network_command(NET_SETUP);screen=2;}else if(y>=98&&y<130)network_command(n.available?NET_INSTALL:NET_CHECK);}}
-            else if((uptime<controls_until||paused)&&y>=140){if(x<86)paused=!paused;else if(x<160)new_world();else if(x<234)toggle_parade();else screen=1;}
+            if(screen){if(x>=24&&x<296&&y>=124&&y<156){if(screen==1&&edition.name[0]&&x>=160){screen=3;}else{if(n.setup)network_command(NET_CLOSE_SETUP);screen=0;}}else if(!n.busy&&screen==1&&x>=24&&x<296){if(y>=52&&y<82){network_command(NET_SETUP);screen=2;}else if(y>=88&&y<118)network_command(n.available?NET_INSTALL:NET_CHECK);}}
+            else if((uptime<controls_until||paused)&&x>=24&&x<296){
+                if(y>=62&&y<100){if(x<156)paused=!paused;else if(x>=164)new_world();}
+                else if(y>=108&&y<146){if(x<156)toggle_parade();else if(x>=164)screen=1;}
+            }
             controls_until=uptime+8;
         }
         held=pressed;

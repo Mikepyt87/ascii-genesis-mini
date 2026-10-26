@@ -12,5 +12,5 @@ for(const scenario of ['bad-download','bad-boot']){
   assert.equal(bad.version,'0.1.0');assert.equal(bad.phase,'idle');
 }
 const timeout=make();timeout.setup();timeout.step(600);assert.equal(timeout.phase,'idle');assert.equal(timeout.screen,'settings');
-const cancel=make();cancel.setup();cancel.action(20,155);assert.equal(cancel.screen,'ocean');assert.equal(cancel.phase,'idle');
+const cancel=make();cancel.setup();cancel.action(160,140);assert.equal(cancel.screen,'ocean');assert.equal(cancel.phase,'idle');
 console.log('PASS: offline use, phone setup, timeout, version check, install, corrupt download rejection, failed boot rollback, and busy-state guards (simulation).');

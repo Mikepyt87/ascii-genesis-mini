@@ -158,11 +158,9 @@
       if (this.time > 8) this.controls = false;
     }
     action(x, y) {
-      if (this.controls && y >= 140) {
-        if (x < 86) this.paused = !this.paused;
-        else if (x < 160) return 'reset';
-        else if (x < 234) {this.toggleParade();return 'parade';}
-        else return 'settings';
+      if (this.controls && x>=24 && x<296) {
+        if(y>=62&&y<100){if(x<156)this.paused=!this.paused;else if(x>=164)return 'reset';}
+        else if(y>=108&&y<146){if(x<156){this.toggleParade();return 'parade';}else if(x>=164)return 'settings';}
       }
       this.controls = true;
       return 'show';
@@ -279,12 +277,12 @@
     }
     ctx.restore();
     if (ocean.controls) {
-      ctx.fillStyle = '#102631'; ctx.fillRect(0, 140, 320, 32);
+      ctx.fillStyle = '#102631'; for(const [x,y] of [[24,62],[164,62],[24,108],[164,108]])ctx.fillRect(x,y,132,38);
       const pause = ocean.paused ? 'RESUME' : 'PAUSE';
-      text(pause, 34, 153, colors.text);
-      text('NEW WORLD', 96, 153, colors.text);
-      text(ocean.parade?'RETURN':'PARADE', 179, 153, colors.text);
-      text('SETTINGS', 247, 153, colors.text);
+      text(pause, 72, 77, colors.text);
+      text('NEW WORLD', 203, 77, colors.text);
+      text(ocean.parade?'RETURN':'PARADE', 72, 123, colors.text);
+      text('SETTINGS', 206, 123, colors.text);
     }
     ctx.restore();
   }

@@ -45,11 +45,11 @@ for (let frame = 0; frame < 36000; frame++) {
 }
 assert.equal(visited.size, 6);
 assert.ok(draws > 0);
-assert.equal(ocean.action(10, 150), 'show', 'Hidden controls first reveal without triggering');
-ocean.action(10, 150);
+assert.equal(ocean.action(90, 80), 'show', 'Hidden controls first reveal without triggering');
+ocean.action(90, 80);
 assert.ok(ocean.paused);
-assert.equal(ocean.action(150, 150), 'reset');
-assert.equal(ocean.action(250, 150), 'settings');
+assert.equal(ocean.action(230, 80), 'reset');
+assert.equal(ocean.action(230, 126), 'settings');
 ocean.paused=false;
 checkParade(globalThis.MiniAquarium,sprites);
 // Camera translation must carry actual ground and plant pixels together.
