@@ -13,7 +13,7 @@ Put the board on a dry, nonconductive surface. Use a known USB data cable connec
 ## 2. Download the right file
 
 1. Open [ASCII Genesis - Mini releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases).
-2. Choose the highest **numbered** release, currently [esp32-147-v0.1.14](https://github.com/Mikepyt87/ascii-genesis-mini/releases/tag/esp32-147-v0.1.14). Release-list order is not always version order.
+2. Choose the highest **numbered** release, currently [esp32-147-v0.1.15](https://github.com/Mikepyt87/ascii-genesis-mini/releases/tag/esp32-147-v0.1.15). Release-list order is not always version order.
 3. Expand **Assets** if necessary.
 4. Download **ocean-usb.bin**. This is the complete first-install image.
 5. Create `ASCII-Genesis-Mini` inside your Windows Downloads folder and put the file there. Check that the filename is exactly `ocean-usb.bin`, without a second `.bin` or a download suffix.
