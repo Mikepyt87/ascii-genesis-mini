@@ -73,7 +73,7 @@
         dedicationOpen=false;network.screen='ocean';ocean.parade=null;ocean.fish=[];ocean.pendingSpawn=null;ocean.paused=false;ocean.controls=false;controlsUntil=0;
         ocean.celebrations=new GenesisCelebrations.Tracker();const name=GenesisCelebrations.names[Number(root.querySelector('[data-entrance]').value)];
         const index=AsciiquariumSprites.findIndex(s=>s.name===name),width=Math.max(...AsciiquariumSprites[index].rows.map(r=>r.length))*6;
-        ocean.spawn(index,19-width,70,1);sync();
+        ocean.spawn(index,40,70,1);sync();
       });
       pause.addEventListener('click', toggle);
       root.querySelector('[data-action="reset"]').addEventListener('click', reset);

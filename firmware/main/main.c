@@ -91,28 +91,29 @@ static int free_y(int art){
     }
     return chosen;
 }
-static void entrance_start(int art,float x,float y,int dir,bool *seen){
+static void entrance_start(int art,float x,float y,int target,bool *seen){
     const mini_sprite_t *s=&mini_sprites[art];int kind=celebration_kind(s->name);
-    if(*seen||kind<0||x+s->width*6<=18||x>=302)return;
+    for(int i=0;i<3;i++)if(entrances[i].active&&entrances[i].target==target){entrances[i].x=x+s->width*3;entrances[i].y=y+s->height*4;}
+    if(*seen||kind<0||x<24||x+s->width*6>296)return;
     *seen=true;int slot=0;for(int i=0;i<3;i++)if(!entrances[i].active||entrances[i].age>entrances[slot].age)slot=i;
-    entrances[slot]=(celebration_t){.active=true,.kind=kind,.x=fminf(276,fmaxf(44,dir>0?x+s->width*6:x)),.y=fminf(120,fmaxf(52,y+s->height*4)),.age=0};
+    entrances[slot]=(celebration_t){.active=true,.kind=kind,.target=target,.x=x+s->width*3,.y=y+s->height*4,.width=s->width*6,.height=s->height*8,.age=0};
 }
 static void advance_entrances(float dt){
     for(int i=0;i<3;i++)if(entrances[i].active){entrances[i].age+=dt;if(entrances[i].age>=3)entrances[i].active=false;}
     if(parade_active){for(int i=0;i<MINI_PARADE_COUNT;i++)if(mini_parade_visible(&parade_plan,parade_elapsed,i)){
-        int art=parade_plan.order[i]*2;entrance_start(art,mini_parade_x(&parade_plan,parade_elapsed,i,mini_sprites[art].width*6),mini_parade_y(i,mini_sprites[art].height*8),1,&parade_seen[i]);}}
-    else for(int i=0;i<3;i++)if(fish[i].active)entrance_start(fish[i].art,fish[i].x,fish[i].y,fish[i].dir,&fish_seen[i]);
+        int art=parade_plan.order[i]*2;entrance_start(art,mini_parade_x(&parade_plan,parade_elapsed,i,mini_sprites[art].width*6),mini_parade_y(i,mini_sprites[art].height*8),i,&parade_seen[i]);}}
+    else for(int i=0;i<3;i++)if(fish[i].active)entrance_start(fish[i].art,fish[i].x,fish[i].y,i,&fish_seen[i]);
 }
 static bool entrance_clear(int x,int y){
-    if(x<12||x+3>=308||y<22||y+3>=138)return false;
+    if(x<13||x+4>=308||y<23||y+4>=138)return false;
     if(parade_active){for(int i=0;i<MINI_PARADE_COUNT;i++)if(mini_parade_visible(&parade_plan,parade_elapsed,i)){
         const mini_sprite_t *s=&mini_sprites[parade_plan.order[i]*2];float fx=mini_parade_x(&parade_plan,parade_elapsed,i,s->width*6),fy=mini_parade_y(i,s->height*8);
-        if(x+3>=fx-3&&x<=fx+s->width*6+3&&y+3>=fy-3&&y<=fy+s->height*8+3)return false;}}
+        if(x+4>=fx-4&&x-2<=fx+s->width*6+4&&y+4>=fy-4&&y-2<=fy+s->height*8+4)return false;}}
     else for(int i=0;i<3;i++)if(fish[i].active){const swimmer_t *f=&fish[i];const mini_sprite_t *s=&mini_sprites[f->art];
-        if(x+3>=f->x-3&&x<=f->x+s->width*6+3&&y+3>=f->y-3&&y<=f->y+s->height*8+3)return false;}
+        if(x+4>=f->x-4&&x-2<=f->x+s->width*6+4&&y+4>=f->y-4&&y-2<=f->y+s->height*8+4)return false;}
     return true;
 }
-static void draw_entrances(void){for(int i=0;i<3;i++)if(entrances[i].active)for(int n=0;n<20;n++){
+static void draw_entrances(void){for(int i=0;i<3;i++)if(entrances[i].active)for(int n=0;n<24;n++){
     int x,y,size;unsigned color;if(celebration_point(&entrances[i],n,&x,&y,&size,&color)&&entrance_clear(x,y)){rect(x,y,size,size,rgb(color));if(size==2){rect(x-1,y+1,4,1,rgb(color));rect(x+1,y-1,1,4,rgb(color));}}}}
 static void simulate(float dt){
     if(paused)return;
