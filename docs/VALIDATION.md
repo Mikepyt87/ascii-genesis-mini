@@ -1,6 +1,13 @@
 # Mini validation record
 
-## Current release: v0.1.16 — October 25, 2026
+## Current release: v0.1.17 — October 26, 2026
+
+The inset two-by-two controls, Settings, Wi-Fi setup and Back were visually checked and exercised in the browser. Simulation tests passed for hidden-control reveal, pause, reset, Settings, frame margins, button gutters, and inset setup/Back, together with the existing ocean, parade and network checks. Generated library illustrations were refreshed. [Firmware checks and release publication](https://github.com/Mikepyt87/ascii-genesis-mini/actions/runs/40340943643) passed.
+
+The live update manifest, application and USB image were downloaded and verified for board ID, exact versioned URL, SHA-256, embedded project/version, **1,105,008 application bytes**, and identical application bytes at USB offset 0x20000. Comfort and clearance with the actual custom case remain unverified until tested on the physical board.
+
+
+## Previous release: v0.1.16 — October 25, 2026
 
 The revised celebrations surround and follow the entire signature fish, start only after full entry, and keep a clear gap from bodies and controls. Browser simulation, both directions, all four sides, spacing, pause/return, three-second expiry, native C checks, and the [release build and publication](https://github.com/Mikepyt87/ascii-genesis-mini/actions/runs/40263220224) passed. All three Mini effects were visually inspected in the local preview. Swimming speeds are unchanged.
 
