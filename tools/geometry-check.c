@@ -9,7 +9,7 @@ int main(void){
     assert(!mini_bands_clear(20,40,40,40));
     assert(!mini_band_fits(17,140));
     assert(!mini_band_fits(10,24));
-    assert(MINI_SPRITE_COUNT==56&&MINI_MANTIS_INDEX==54);
+    assert(MINI_SPRITE_COUNT==62&&MINI_MANTIS_INDEX==54);
     assert(MINI_SCROLL_SPEED==3.6f);
     for(int i=0;i<MINI_SPRITE_COUNT;i++){
         int h=mini_sprites[i].height*8;bool can_enter=false;

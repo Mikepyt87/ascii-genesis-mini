@@ -2,6 +2,13 @@
 
 Numbered firmware downloads are on [Releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases). This history also records versions published before the Mini moved into its own repository. A source commit is not an installable firmware update.
 
+## 0.1.15
+
+- Adds Balance Angelfish, Steadfast Marlin, and Spark Wrasse to the normal ocean and parade (31 designs).
+- Adds distinct three-second entrance celebrations, in both directions, with particles kept clear of fish and controls. Pause freezes the effects.
+- Adds optional private personal editions: local setup profile, on-device dedication, signature opening fish, and persistence through normal OTA updates. No recipient information is included in the public release.
+- Keeps existing swimming and scenery speeds.
+
 ## 0.1.14
 
 - Keeps the shore crab, reef lobster, peacock mantis shrimp, and violet octopus on the scrolling seabed in the normal ocean and parade.

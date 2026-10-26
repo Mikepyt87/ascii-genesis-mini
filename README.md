@@ -46,11 +46,11 @@ The ocean starts when the board restarts. Leave power connected for at least **3
 
 ## What the Mini ocean includes
 
-There are **28 colored creature and vehicle designs**, including the peacock mantis shrimp, six changing habitats, rising bubbles, swaying plants, and a scrolling seabed. Up to three creatures share the scene. Crabs, lobsters, mantis shrimp, and octopuses follow the seabed without bobbing; other creatures use clear swimming bands. Startup and New World randomize the opening creatures, directions, positions, and habitat. It runs offline; Wi-Fi is optional for updates.
+There are **31 colored creature and vehicle designs**, including the peacock mantis shrimp, six changing habitats, rising bubbles, swaying plants, and a scrolling seabed. Up to three creatures share the scene. Crabs, lobsters, mantis shrimp, and octopuses follow the seabed without bobbing; other creatures use clear swimming bands. Startup and New World randomize the opening creatures, directions, positions, and habitat. It runs offline; Wi-Fi is optional for updates.
 
 The collection uses [balanced creature proportions](docs/CREATURE-SIZES.md): a much smaller jellyfish and smaller crustaceans, with a modestly larger shark and whale.
 
-Tap the water for **Pause · New World · Parade · Settings**. The parade keeps all 28 designs in their original order, with six-second crossings and up to two creatures at a time. A full Mini parade takes **114 seconds (1 minute 54 seconds)**, then returns to the preserved ocean. The full names appear at the top right, with larger, brighter text from v0.1.10. Regular swimmers move at **9–18 pixels per second**, while the seabed scrolls at **3.6 pixels per second**. See the [Ocean Library](docs/OCEAN-LIBRARY.md) and [controls guide](docs/CONTROLS.md) for the full behavior.
+Tap the water for **Pause · New World · Parade · Settings**. The parade keeps all 31 designs in their original order, with six-second crossings and up to two creatures at a time. A full Mini parade takes **123 seconds (2 minutes 3 seconds)**, then returns to the preserved ocean. The full names appear at the top right, with larger, brighter text from v0.1.10. Regular swimmers move at **9–18 pixels per second**, while the seabed scrolls at **3.6 pixels per second**. See the [Ocean Library](docs/OCEAN-LIBRARY.md) and [controls guide](docs/CONTROLS.md) for the full behavior.
 
 Surface stretches bring sailing boats, whales that surface and spout, and an occasional Nessie-like sea monster. Castles and ruins pass along the seabed within the bottom third of the screen. Bubbles rise from creatures or the seabed, with no more than two on screen at once. Surface visitors take turns, and the creature parade keeps its own clear view. See the [surface scenes and landmarks guide](docs/SURFACE-SCENES.md) for the new artwork, timing, and bubble limits.
 
@@ -62,7 +62,7 @@ The image is a generated preview from the current renderer, not a photograph of 
 
 The Mini updater follows this repository's wireless update channel. Connect home Wi-Fi or a 2.4 GHz hotspot, then use **Settings → Check for Updates → Install**. Keep power connected through the restart and for at least 30 seconds afterward. It checks for releases automatically but waits for you to choose Install. [The update guide](docs/UPDATES.md) covers version checks and recovery.
 
-Current firmware: **v0.1.14**. Use a numbered [release](https://github.com/Mikepyt87/ascii-genesis-mini/releases) for installable firmware; [CHANGELOG.md](CHANGELOG.md) records the changes. The [validation record](docs/VALIDATION.md) separates software checks from physical-board confirmation. Boards on v0.1.2/v0.1.3 need USB recovery first. Boards on v0.1.4/v0.1.5 receive the v0.1.6 transition before checking this repository. See [migration details](docs/MIGRATION.md).
+Current firmware: **v0.1.15**. Use a numbered [release](https://github.com/Mikepyt87/ascii-genesis-mini/releases) for installable firmware; [CHANGELOG.md](CHANGELOG.md) records the changes. The [validation record](docs/VALIDATION.md) separates software checks from physical-board confirmation. Boards on v0.1.2/v0.1.3 need USB recovery first. Boards on v0.1.4/v0.1.5 receive the v0.1.6 transition before checking this repository. See [migration details](docs/MIGRATION.md).
 
 The firmware and board drivers are in `firmware/`; the browser preview is in `preview/`; artwork is in `art/`; generators and checks are in `tools/`. Tests run in GitHub Actions. Use [Development](docs/DEVELOPMENT.md) for the preview and ESP-IDF 5.5.2 build, [the edition comparison](docs/PROJECT.md) for the differences from Pi, [Contributing](CONTRIBUTING.md) to help improve it, and [Maintainer releases](docs/RELEASES.md) for publishing an update.
 
@@ -71,3 +71,9 @@ The firmware and board drivers are in `firmware/`; the browser preview is in `pr
 Built on **Asciiquarium by Kirk Baucom**, with most upstream ASCII art credited to **Joan Stark** and expanded biodiversity by **Claudio Matsuoka**. **OpenGhost / xanderchinxyz** inspired the early display exploration. Project additions include the Mini renderer, original creatures, touch controls, Wi-Fi setup, and updater. Read [CREDITS.md](CREDITS.md), [THIRD-PARTY.md](THIRD-PARTY.md), and [LICENSE](LICENSE).
 
 Firmware is GPL-3.0-or-later; artwork is [GPL-2.0-or-later](art/LICENSE.txt). The display driver and bitmap font retain their own notices.
+
+### Signature fish and entrance celebrations
+
+The [three new signature fish](docs/SIGNATURE-FISH.md) join the normal ocean and parade, bringing the collection to **31 designs**. Each has a distinct three-second entrance effect.
+
+[Personal editions](docs/PERSONAL-EDITIONS.md) store a private name and dedication on an individual Mini while retaining normal wireless updates.

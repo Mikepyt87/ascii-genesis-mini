@@ -1,3 +1,35 @@
+/* Original ASCII Genesis entrance effects. GPL-3.0-or-later. */
+(function(root){
+ const names=['balance angelfish','steadfast marlin','spark wrasse'];
+ const colors=[['#75d8ca','#c9fff0'],['#dfb96c','#fff1b8'],['#b79ae0','#ffc18a']];
+ function points(kind,age,x,y,scale=1){
+   if(age<0||age>=3)return [];
+   const out=[],fade=age<2.1?1:(3-age)/.9;
+   for(let i=0;i<20;i++){
+     const a=i*Math.PI*2/20,spread=8+age*12;
+     let dx,dy;
+     if(kind===0){dx=Math.cos(a+age*.6)*spread;dy=Math.sin(a+age*.6)*spread*.65;}
+     else if(kind===1){const fan=-Math.PI+.25+i*(Math.PI-.5)/19;dx=Math.cos(fan)*spread;dy=Math.sin(fan)*spread+age*age*3;}
+     else {const spiral=a+age*2;dx=Math.cos(spiral)*spread*(.45+.55*i/19);dy=Math.sin(spiral)*spread*(.45+.55*i/19);}
+     if(fade<.5&&i%2)continue;
+     out.push({x:Math.round(x+dx*scale),y:Math.round(y+dy*scale),color:colors[kind][i%2],size:age<2.1?2:1});
+   }return out;
+ }
+ class Tracker {
+   constructor(){this.seen=new WeakSet();this.ids=new Set();this.effects=[];}
+   step(items,dt,width,height){
+     this.effects=this.effects.map(e=>({...e,age:e.age+dt})).filter(e=>e.age<3);
+     for(const item of items){
+       const kind=names.indexOf(item.name),{x,y,w,h,right,key}=item;
+       if(kind<0||x+w<=18||x>=width-18)continue;
+       const set=typeof key==='object'?this.seen:this.ids;if(set.has(key))continue;set.add(key);
+       this.effects.push({kind,age:0,x:Math.max(44,Math.min(width-44,right?x+w:x)),y:Math.max(52,Math.min(height-52,y+h/2))});
+     }this.effects=this.effects.slice(-3);
+   }
+   pixels(width,height,blocked,scale=1){return this.effects.flatMap(e=>points(e.kind,e.age,e.x,e.y,scale)).filter(p=>p.x>=12&&p.x+3<width-12&&p.y>=22&&p.y+3<height-34&&!blocked.some(b=>p.x+3>=b.x-3&&p.x<=b.x+b.w+3&&p.y+3>=b.y-3&&p.y<=b.y+b.h+3));}
+ }
+ root.GenesisCelebrations={names,points,Tracker};
+})(globalThis);
 /* ASCII Genesis miniature ocean, GPL-2.0-or-later.
  * Browser design simulation for the 320 x 172 display; not firmware emulation.
  */
@@ -28,7 +60,7 @@
       this.time = this.random()*270; this.paused = false; this.controls = true;
       this.habitat = Math.floor(this.time/45)%6; this.scroll = this.time*SCROLL_SPEED; this.fish = [];
       this.pendingSpawn = null;
-      this.parade = null;
+      this.parade = null; this.celebrations=new root.GenesisCelebrations.Tracker();
       this.bubbles = []; this.nextBubble = this.time+2;
       for(let slot=0;slot<3;slot++){
         const first=Math.floor(this.random()*(sprites.length/2));
@@ -43,6 +75,12 @@
           this.spawn(index,SAFE_X+this.random()*(W-2*SAFE_X-width),y,direction);break;
         }
       }
+    }
+    personalize(profile){
+      if(!profile||typeof profile.name!=='string'||!profile.name.length||profile.name.length>12||typeof profile.dedication!=='string'||!profile.dedication.length||profile.dedication.length>320||!Number.isInteger(profile.fish)||profile.fish<0||profile.fish>2||!/^[ -~]+$/.test(profile.name+profile.dedication))throw Error('Invalid private edition profile');
+      this.edition={...profile};this.fish=[];this.pendingSpawn=null;this.celebrations=new root.GenesisCelebrations.Tracker();
+      const index=this.sprites.findIndex(s=>s.name===root.GenesisCelebrations.names[profile.fish]);
+      this.spawn(index,40,25,1);
     }
     isBottom(index){return bottomNames.has(this.sprites[index].name);}
     bottomY(index,x,scroll=this.scroll){return Math.min(...this.feet[index].flatMap((foot,col)=>foot<0?[]:[groundAt(Math.round(x)+col*6+2+scroll)-foot]));}
@@ -80,10 +118,12 @@
       return water;
     }
     waterTop(){return Math.max(SWIM_TOP,this.surfaceY()+12);}
+    celebrationItems(){return this.visibleFish().map(f=>({key:this.parade?'parade-'+f.index:f,name:this.sprites[f.index].name,x:f.x,y:f.y,w:f.width,h:f.height,right:this.parade?true:f.direction>0}));}
+    advanceCelebrations(dt){this.celebrations.step(this.celebrationItems(),dt,W,H);}
     step(dt) {
       if (this.paused) return;
       dt = Math.max(0, Math.min(dt, 0.25));
-      if(this.parade){this.parade.elapsed+=dt;if(this.parade.elapsed>=this.parade.duration)this.parade=null;return;}
+      if(this.parade){this.parade.elapsed+=dt;this.advanceCelebrations(dt);if(this.parade.elapsed>=this.parade.duration){this.parade=null;this.celebrations=this.normalCelebrations;}return;}
       this.time += dt; this.scroll = this.time * SCROLL_SPEED;
       this.habitat = Math.floor(this.time / 45) % HABITATS.length;
       for (const f of this.fish) f.x += f.direction * f.speed * dt;
@@ -110,6 +150,7 @@
       }
       for (const b of this.bubbles) {b.y -= dt * 7;b.x-=dt*.7;}
       this.bubbles = this.bubbles.filter(b => b.y > this.waterTop() && b.x>SAFE_X);
+      this.advanceCelebrations(dt);
       if (this.time > 8) this.controls = false;
     }
     action(x, y) {
@@ -123,7 +164,8 @@
       return 'show';
     }
     toggleParade(){
-      if(this.parade){this.parade=null;return;}
+      if(this.parade){this.parade=null;this.celebrations=this.normalCelebrations;return;}
+      this.normalCelebrations=this.celebrations;this.celebrations=new root.GenesisCelebrations.Tracker();
       const order=Array.from({length:this.sprites.length/2},(_,i)=>i);
       const starts=[0];
       for(let i=1;i<order.length;i++){
@@ -170,7 +212,7 @@
         const name=ocean.sprites[f.index].name;const slot=ocean.parade.order.indexOf(f.index/2);
         paradeText(name,W-name.length*PARADE_NAME_ADVANCE-20,8+(slot%2)*PARADE_NAME_HEIGHT);
       }
-    }else{text('ASCII GENESIS - MINI',20,8,colors.text);const label=HABITATS[ocean.habitat];text(label,W-label.length*6-20,8,colors.muted);}
+    }else{text(ocean.edition?ocean.edition.name+' EDITION':'ASCII GENESIS - MINI',20,8,colors.text);const label=HABITATS[ocean.habitat];text(label,W-label.length*6-20,8,colors.muted);}
     ctx.save(); ctx.beginPath(); ctx.rect(0, WATER_TOP, W, H - WATER_TOP); ctx.clip();
     for (let i = Math.floor(ocean.scroll / 6) - 1; i * 6 < ocean.scroll + W + 6; i++) {
       const worldX = i * 6, x = screenX(worldX, ocean.scroll), ground = groundAt(worldX);
@@ -218,6 +260,7 @@
       }
       for(const b of ocean.bubbles)glyph(b.y<ocean.waterTop()+20?'.':'o',b.x,b.y,colors.muted);
     }
+    for(const p of ocean.celebrations.pixels(W,H,ocean.celebrationItems())){ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size,p.size);if(p.size===2){ctx.fillRect(p.x-1,p.y+1,4,1);ctx.fillRect(p.x+1,p.y-1,1,4);}}
     for (const fish of ocean.visibleFish()) {
       const s = ocean.sprites[fish.index];
       const bottom=ocean.isBottom(fish.index),bob=bottom?0:Math.round(Math.sin((ocean.parade?.elapsed??ocean.time) * 0.55 + fish.phase) * 2);

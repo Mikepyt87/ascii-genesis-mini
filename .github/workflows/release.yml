@@ -29,6 +29,8 @@ jobs:
           test "$GITHUB_REF" = refs/heads/main
           node -e 'if(!/^\d{1,5}\.\d{1,5}\.\d{1,5}$/.test(process.env.VERSION)||process.env.VERSION.split(".").some(n=>Number(n)>65535))process.exit(1)'
           printf '%s' "$VERSION" > firmware/release-version.txt
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/celebration-check.c -lm -o /tmp/celebration-check && /tmp/celebration-check
+      - run: node preview/celebration-check.mjs
       - run: node preview/check.mjs && node preview/network-check.mjs
       - run: node tools/generate-assets.mjs --check && node tools/generate-scenes.mjs --check && node tools/build-scenes-tour.mjs --check
       - run: node tools/check-docs.mjs

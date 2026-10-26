@@ -40,6 +40,7 @@ const descriptions=[
   'A copper-toned lionfish with pale stripes and spread-out spines. The fins are drawn into the sprite rather than animated separately.',
   'A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. Its feet follow the seabed without swimming bob; it does not punch, hunt, or dig a burrow.'
 ];
+descriptions.push('A teal angelfish with balanced, wing-shaped fins. Its entrance sends out a soft ring of teal and pale-green sparks.','A blue marlin with a long bill, gold fins, and carefully spaced body stripes. A gold fan of sparks marks its entrance.','An orange wrasse with violet fins and diagonal markings. Violet and orange sparks spiral outward when it enters.');
 if(descriptions.length*2!==sprites.length)throw Error('Add a catalog description for each design');
 const escape=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 // Canvas-compatible rectangle/clip recorder: render() supplies every ocean pixel.
@@ -65,7 +66,7 @@ for(const [name,setup] of [
   ['coral',o=>{o.time=135;o.scroll=135*3.6;o.habitat=3;o.controls=false;}]
 ]){const ocean=new MiniOcean(sprites),r=recorder();setup(ocean);render(r.ctx,ocean,globalThis.MiniFont);files.set(`docs/images/${name}.svg`,documentSvg(320,172,r.finish(),`ASCII Genesis - Mini ${name} preview`));}
 const cardWidth=Math.max(240,Math.ceil((Math.max(...sprites.flatMap(s=>s.rows.map(r=>r.length)))*6+24)/24)*24),collectionWidth=cardWidth*4;
-let lineup=`<rect width="${collectionWidth}" height="840" fill="#020c14"/>`;
+let lineup=`<rect width="${collectionWidth}" height="960" fill="#020c14"/>`;
 for(let i=0;i<sprites.length;i+=2){const s=sprites[i],x=(i/2%4)*cardWidth,y=Math.floor(i/8)*120;
   lineup+=`<text x="${x+12}" y="${y+18}" fill="#bde9e6" font-family="monospace" font-size="12">${i/2+1}. ${escape(s.name)}</text>`;
   const r=recorder();for(let row=0;row<s.rows.length;row++)for(let col=0;col<s.rows[row].length;col++){
@@ -73,16 +74,16 @@ for(let i=0;i<sprites.length;i+=2){const s=sprites[i],x=(i/2%4)*cardWidth,y=Math
     for(let c=0;c<5;c++)for(let bit=0;bit<8;bit++)if(globalThis.MiniFont[code*5+c]&(1<<bit))r.ctx.fillRect(x+12+col*6+c,y+30+row*8+bit,1,1);
   }lineup+=r.finish();
 }
-files.set('docs/images/collection.svg',documentSvg(collectionWidth,840,lineup,'All 28 Mini creature and vehicle designs'));
+files.set('docs/images/collection.svg',documentSvg(collectionWidth,960,lineup,'All 31 Mini creature and vehicle designs'));
 let library=`# Mini Ocean Library
 
 The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 320 × 172 ESP32 ocean. This page describes the Mini’s implementation. The [Raspberry Pi library](https://github.com/Mikepyt87/ascii-genesis/blob/main/docs/OCEAN-LIBRARY.md) describes a different program.
 
-There are **28 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **56 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
+There are **31 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **62 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
 
 The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md) and [balanced creature proportions](CREATURE-SIZES.md).
 
-![All 28 Mini designs](images/collection.svg)
+![All 31 Mini designs](images/collection.svg)
 
 ## Find a design
 
@@ -103,7 +104,7 @@ library+=`
 
 ## Creature parade
 
-Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors and creatures sharing the bottom lane take turns so nothing overlaps. The full lineup lasts **114 seconds (1 minute 54 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
+Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors and creatures sharing the bottom lane take turns so nothing overlaps. The full lineup lasts **123 seconds (2 minutes 3 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
 
 The normal world is held in place, including its random state, then resumes when the parade finishes or you tap Return. Pause freezes the parade too. New World cancels it and starts a fresh ocean. See [Controls](CONTROLS.md) for button behavior.
 
@@ -128,9 +129,9 @@ The journey occasionally rises to a visible waterline, then returns to deeper wa
 
 Castles and submerged ruins belong to fixed world coordinates, so they move with the seabed. These new landmarks stay in the bottom third of the screen. They are background scenery rather than extra swimmers. The sea monster uses two poses adapted from the original Asciiquarium drawing; the compact boat, whale, spout, castle, and ruins are ASCII Genesis additions. See the repository credits for authors and licenses.
 
-The surface visitors and landmarks are separate from the 28 regular creature and vehicle designs. They do not add entries to the parade. Pause freezes the scene; New World starts a new journey. During the parade, the surface scenes are hidden and their normal-world clock is held, then resumes afterward.
+The surface visitors and landmarks are separate from the 31 regular creature and vehicle designs. They do not add entries to the parade. Pause freezes the scene; New World starts a new journey. During the parade, the surface scenes are hidden and their normal-world clock is held, then resumes afterward.
 
-The new castles and ruins stay in the bottom third; the Mini uses compact drawings so they do not crowd the open water. Surface visitors, scenery, and ordinary bubbles are hidden during the parade. They do not change the 28-design lineup. See the [illustrated surface scenes guide](SURFACE-SCENES.md).
+The new castles and ruins stay in the bottom third; the Mini uses compact drawings so they do not crowd the open water. Surface visitors, scenery, and ordinary bubbles are hidden during the parade. They do not change the 31-design lineup. See the [illustrated surface scenes guide](SURFACE-SCENES.md).
 
 ## Creature drawings
 
