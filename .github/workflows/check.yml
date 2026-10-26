@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: gcc -std=c11 -Wall -Wextra -Werror tools/celebration-check.c -lm -o /tmp/celebration-check && /tmp/celebration-check
+      - run: node preview/celebration-check.mjs
       - run: node preview/check.mjs
       - run: node preview/network-check.mjs
       - run: node tools/generate-assets.mjs --check && node tools/generate-scenes.mjs --check && node tools/build-scenes-tour.mjs --check

@@ -26,7 +26,7 @@ export function checkParade(api,sprites){
   starts.add(JSON.stringify({fish:ocean.fish,time:ocean.time}));
   const saved=JSON.stringify({fish:ocean.fish,time:ocean.time,scroll:ocean.scroll,bubbles:ocean.bubbles,seed:ocean.seed,pending:ocean.pendingSpawn});
   ocean.toggleParade();const firstOrder=ocean.parade.order.join(','),duration=ocean.parade.duration;
-  assert.deepEqual(ocean.parade.order,Array.from({length:28},(_,i)=>i));assert.ok(duration>=87&&duration<224);
+  assert.deepEqual(ocean.parade.order,Array.from({length:31},(_,i)=>i));assert.ok(duration>=87&&duration<224);
   const seen=new Set(),exited=new Set();let pairFrames=0;
   for(let frame=0;frame<Math.round(duration*20);frame++){
    assert.ok(ocean.parade);
@@ -40,12 +40,12 @@ export function checkParade(api,sprites){
    ocean.step(.05);
   }
   if(ocean.parade)ocean.step(.001);
-  assert.equal(ocean.parade,null);assert.equal(seen.size,28);assert.equal(exited.size,28);assert.ok(pairFrames>0);
+  assert.equal(ocean.parade,null);assert.equal(seen.size,31);assert.equal(exited.size,31);assert.ok(pairFrames>0);
   assert.equal(JSON.stringify({fish:ocean.fish,time:ocean.time,scroll:ocean.scroll,bubbles:ocean.bubbles,seed:ocean.seed,pending:ocean.pendingSpawn}),saved);
   ocean.toggleParade();assert.equal(ocean.parade.order.join(','),firstOrder,'Parade keeps the original collection order');
   ocean.paused=true;const frozen=JSON.stringify(ocean);ocean.step(.2);assert.equal(JSON.stringify(ocean),frozen);ocean.paused=false;
   ocean.toggleParade();assert.equal(ocean.parade,null);
  }
  assert.equal(starts.size,40);
- console.log('PASS: 40 randomized starts and ordered parades; each shows all 28 once, at most two, faster crossings, safe bands, full exits, pause, and preserved ocean.');
+ console.log('PASS: 40 randomized starts and ordered parades; each shows all 31 once, at most two, faster crossings, safe bands, full exits, pause, and preserved ocean.');
 }

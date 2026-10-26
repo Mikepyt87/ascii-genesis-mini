@@ -2,11 +2,11 @@
 
 The complete artwork and behavior reference for **ASCII Genesis - Mini**, the 320 × 172 ESP32 ocean. This page describes the Mini’s implementation. The [Raspberry Pi library](https://github.com/Mikepyt87/ascii-genesis/blob/main/docs/OCEAN-LIBRARY.md) describes a different program.
 
-There are **28 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **56 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
+There are **31 creature and vehicle designs**, with a left-facing and right-facing drawing for each: **62 sprites**. The yellow submarine is included in that total. Every drawing below comes directly from the bundled artwork, including its spaces, color masks, and dimensions.
 
 The surface boat, spouting whale, two-pose sea monster, castles, and ruins use separate drawings outside this regular collection. See the [illustrated surface scene guide](SURFACE-SCENES.md) and [balanced creature proportions](CREATURE-SIZES.md).
 
-![All 28 Mini designs](images/collection.svg)
+![All 31 Mini designs](images/collection.svg)
 
 ## Find a design
 
@@ -40,6 +40,9 @@ The surface boat, spouting whale, two-pose sea monster, castles, and ruins use s
 | 26 | [yellow submarine](#yellow-submarine) | 27 × 6 characters | ASCII Genesis original |
 | 27 | [lionfish](#lionfish) | 22 × 9 characters | ASCII Genesis original |
 | 28 | [peacock mantis shrimp](#peacock-mantis-shrimp) | 16 × 4 characters | ASCII Genesis original |
+| 29 | [balance angelfish](#balance-angelfish) | 15 × 5 characters | ASCII Genesis original |
+| 30 | [steadfast marlin](#steadfast-marlin) | 22 × 5 characters | ASCII Genesis original |
+| 31 | [spark wrasse](#spark-wrasse) | 16 × 5 characters | ASCII Genesis original |
 
 ## Shared swimming behavior
 
@@ -52,7 +55,7 @@ The surface boat, spouting whale, two-pose sea monster, castles, and ruins use s
 
 ## Creature parade
 
-Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors and creatures sharing the bottom lane take turns so nothing overlaps. The full lineup lasts **114 seconds (1 minute 54 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
+Parade keeps the table’s original order, facing right, with **up to two designs at a time** in separate bands. Each crosses in six seconds; the next enters after three seconds when both drawings fit. Tall neighbors and creatures sharing the bottom lane take turns so nothing overlaps. The full lineup lasts **123 seconds (2 minutes 3 seconds)**. Creature names appear at the top right, on separate lines matching their bands. The normal swimming speed does not control parade speed.
 
 The normal world is held in place, including its random state, then resumes when the parade finishes or you tap Return. Pause freezes the parade too. New World cancels it and starts a fresh ocean. See [Controls](CONTROLS.md) for button behavior.
 
@@ -77,9 +80,9 @@ The journey occasionally rises to a visible waterline, then returns to deeper wa
 
 Castles and submerged ruins belong to fixed world coordinates, so they move with the seabed. These new landmarks stay in the bottom third of the screen. They are background scenery rather than extra swimmers. The sea monster uses two poses adapted from the original Asciiquarium drawing; the compact boat, whale, spout, castle, and ruins are ASCII Genesis additions. See the repository credits for authors and licenses.
 
-The surface visitors and landmarks are separate from the 28 regular creature and vehicle designs. They do not add entries to the parade. Pause freezes the scene; New World starts a new journey. During the parade, the surface scenes are hidden and their normal-world clock is held, then resumes afterward.
+The surface visitors and landmarks are separate from the 31 regular creature and vehicle designs. They do not add entries to the parade. Pause freezes the scene; New World starts a new journey. During the parade, the surface scenes are hidden and their normal-world clock is held, then resumes afterward.
 
-The new castles and ruins stay in the bottom third; the Mini uses compact drawings so they do not crowd the open water. Surface visitors, scenery, and ordinary bubbles are hidden during the parade. They do not change the 28-design lineup. See the [illustrated surface scenes guide](SURFACE-SCENES.md).
+The new castles and ruins stay in the bottom third; the Mini uses compact drawings so they do not crowd the open water. Surface visitors, scenery, and ordinary bubbles are hidden during the parade. They do not change the 31-design lineup. See the [illustrated surface scenes guide](SURFACE-SCENES.md).
 
 ## Creature drawings
 
@@ -89,7 +92,7 @@ The sizes below are **columns × rows of characters**. The bitmap cell is 6 × 8
 
 A broad body with a swept upper fin, forked tail, and small eye near the nose.
 
-- **Parade position:** 1 of 28.
+- **Parade position:** 1 of 31.
 - **Drawing size:** right 14 × 6; left 14 × 6 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -121,7 +124,7 @@ Facing left:
 
 A compact reef-fish outline with pointed fins and a round eye. Its short silhouette leaves plenty of open water around it.
 
-- **Parade position:** 2 of 28.
+- **Parade position:** 2 of 31.
 - **Drawing size:** right 7 × 5; left 7 × 5 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -151,7 +154,7 @@ Facing left:
 
 Dense colon markings fill a long body, surrounded by layered slash fins and a forked tail.
 
-- **Parade position:** 3 of 28.
+- **Parade position:** 3 of 31.
 - **Drawing size:** right 16 × 5; left 16 × 5 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -181,7 +184,7 @@ Facing left:
 
 A three-line fish with a little outlined body and a crossed tail. It is one of the smallest drawings in the collection.
 
-- **Parade position:** 4 of 28.
+- **Parade position:** 4 of 31.
 - **Drawing size:** right 5 × 3; left 5 × 3 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -207,7 +210,7 @@ Facing left:
 
 A low, rounded body with short fins and a small forked tail.
 
-- **Parade position:** 5 of 28.
+- **Parade position:** 5 of 31.
 - **Drawing size:** right 9 × 3; left 9 × 3 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -233,7 +236,7 @@ Facing left:
 
 A broad diamond-shaped silhouette with tall fins above and below the body.
 
-- **Parade position:** 6 of 28.
+- **Parade position:** 6 of 31.
 - **Drawing size:** right 6 × 5; left 6 × 5 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -263,7 +266,7 @@ Facing left:
 
 A small angular fish made from a few sloping lines. The pointed outline contrasts with the rounder reef fish.
 
-- **Parade position:** 7 of 28.
+- **Parade position:** 7 of 31.
 - **Drawing size:** right 5 × 3; left 5 × 3 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -289,7 +292,7 @@ Facing left:
 
 A compact, box-shaped body with a blunt face and small fins.
 
-- **Parade position:** 8 of 28.
+- **Parade position:** 8 of 31.
 - **Drawing size:** right 5 × 3; left 5 × 3 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -315,7 +318,7 @@ Facing left:
 
 An ornate fish with curled fin details and a larger outline than the tiny reef drawings.
 
-- **Parade position:** 9 of 28.
+- **Parade position:** 9 of 31.
 - **Drawing size:** right 10 × 7; left 10 × 7 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -349,7 +352,7 @@ Facing left:
 
 A long, roomy ocean-fish drawing with an extended body and prominent fins.
 
-- **Parade position:** 10 of 28.
+- **Parade position:** 10 of 31.
 - **Drawing size:** right 23 × 8; left 23 × 8 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -385,7 +388,7 @@ _/ (o)        '.  .' /
 
 A narrow, pointed silhouette that suggests a fast cruising fish.
 
-- **Parade position:** 11 of 28.
+- **Parade position:** 11 of 31.
 - **Drawing size:** right 16 × 5; left 16 × 5 characters.
 - **Palette:** `#81d8d0`, `#69bde5`, `#f2b677`, `#fff4c9`, `#c6e8e4`.
 - **Origin:** Adapted Asciiquarium artwork; see [credits](../CREDITS.md).
@@ -415,7 +418,7 @@ Facing left:
 
 A round golden puffer with little spikes above and below its body. Warm fins frame the pale eye.
 
-- **Parade position:** 12 of 28.
+- **Parade position:** 12 of 31.
 - **Drawing size:** right 16 × 5; left 16 × 5 characters.
 - **Palette:** `#edc46b`, `#cf9558`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -445,7 +448,7 @@ Facing left:
 
 A pale bannerfish with vertical markings and a tall trailing fin. It uses eight character rows, making it one of the taller designs.
 
-- **Parade position:** 13 of 28.
+- **Parade position:** 13 of 31.
 - **Drawing size:** right 19 × 8; left 19 × 8 characters.
 - **Palette:** `#c9dbe4`, `#e2b961`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -481,7 +484,7 @@ Facing left:
 
 A silver-blue hunter-shaped fish with a long pointed bill. In the Mini it cruises like the other designs; it does not hunt.
 
-- **Parade position:** 14 of 28.
+- **Parade position:** 14 of 31.
 - **Drawing size:** right 23 × 5; left 23 × 5 characters.
 - **Palette:** `#8fcbdc`, `#659abf`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -511,7 +514,7 @@ Facing left:
 
 A copper-colored eel with an elongated, gently bent body. It is a regular swimmer here rather than an eel peeking from scenery.
 
-- **Parade position:** 15 of 28.
+- **Parade position:** 15 of 31.
 - **Drawing size:** right 21 × 4; left 21 × 4 characters.
 - **Palette:** `#d5a17e`, `#bb795e`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -539,7 +542,7 @@ Facing left:
 
 A violet ray with broad wings, a narrow tail, and a small eye. Its drawing glides sideways using the shared swimming motion.
 
-- **Parade position:** 16 of 28.
+- **Parade position:** 16 of 31.
 - **Drawing size:** right 19 × 5; left 19 × 5 characters.
 - **Palette:** `#b2a0da`, `#857fb8`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -569,7 +572,7 @@ Facing left:
 
 A blue-green fish with a light-like stalk above its head and a pale eye. The lure is part of the static artwork.
 
-- **Parade position:** 17 of 28.
+- **Parade position:** 17 of 31.
 - **Drawing size:** right 16 × 6; left 16 × 6 characters.
 - **Palette:** `#7fbbb9`, `#63989e`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -601,7 +604,7 @@ Facing left:
 
 A rose-colored squid with a pointed mantle and tentacles trailing behind. Its whole drawing moves together.
 
-- **Parade position:** 18 of 28.
+- **Parade position:** 18 of 31.
 - **Drawing size:** right 15 × 5; left 15 × 5 characters.
 - **Palette:** `#d39b9e`, `#b87b8c`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -631,7 +634,7 @@ Facing left:
 
 A violet octopus with two eyes and curling arms below a rounded head. It follows the scrolling seabed with its arms grounded and no swimming bob.
 
-- **Parade position:** 19 of 28.
+- **Parade position:** 19 of 31.
 - **Drawing size:** right 16 × 7; left 16 × 7 characters.
 - **Palette:** `#ba9dce`, `#997caf`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -665,7 +668,7 @@ Facing left:
 
 A green turtle with a patterned shell, four flippers, and a small head. The shell markings use the artwork color masks.
 
-- **Parade position:** 20 of 28.
+- **Parade position:** 20 of 31.
 - **Drawing size:** right 21 × 5; left 21 × 5 characters.
 - **Palette:** `#8bb58a`, `#66957b`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -695,7 +698,7 @@ Facing left:
 
 A pale jellyfish with a rounded bell and trailing tentacles. The Mini moves the complete drawing sideways with a gentle bob; it has no separate pulse animation.
 
-- **Parade position:** 21 of 28.
+- **Parade position:** 21 of 31.
 - **Drawing size:** right 6 × 4; left 6 × 4 characters.
 - **Palette:** `#a8c9e8`, `#8e9fc9`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -723,7 +726,7 @@ Facing left:
 
 A small shore crab with claws and low legs. Its visible feet follow the scrolling floor without swimming bob, including during the parade.
 
-- **Parade position:** 22 of 28.
+- **Parade position:** 22 of 31.
 - **Drawing size:** right 11 × 4; left 11 × 4 characters.
 - **Palette:** `#d69a76`, `#b87359`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -751,7 +754,7 @@ Facing left:
 
 A reef lobster with an extended body, legs, and claws. Like the crab, it follows the seabed in the ordinary ocean and parade.
 
-- **Parade position:** 23 of 28.
+- **Parade position:** 23 of 31.
 - **Drawing size:** right 15 × 5; left 15 × 5 characters.
 - **Palette:** `#cf8175`, `#a96159`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -781,7 +784,7 @@ Facing left:
 
 A shark silhouette with a high dorsal fin, pointed nose, and forked tail. It is decorative here and never eats other fish.
 
-- **Parade position:** 24 of 28.
+- **Parade position:** 24 of 31.
 - **Drawing size:** right 31 × 6; left 31 × 6 characters.
 - **Palette:** `#91adbf`, `#688598`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -813,7 +816,7 @@ __/      o    ---    \__/  \
 
 A broad whale drawing with flippers and a long back. It uses the same lane-spacing rules as the smaller designs.
 
-- **Parade position:** 25 of 28.
+- **Parade position:** 25 of 31.
 - **Drawing size:** right 41 × 6; left 41 × 6 characters.
 - **Palette:** `#91b8c9`, `#6e91aa`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -845,7 +848,7 @@ Facing left:
 
 A yellow submarine with a raised periscope and hull details. It is the collection’s decorative vehicle, not an animal.
 
-- **Parade position:** 26 of 28.
+- **Parade position:** 26 of 31.
 - **Drawing size:** right 27 × 6; left 27 × 6 characters.
 - **Palette:** `#d3bc72`, `#aa9461`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -877,7 +880,7 @@ Facing left:
 
 A copper-toned lionfish with pale stripes and spread-out spines. The fins are drawn into the sprite rather than animated separately.
 
-- **Parade position:** 27 of 28.
+- **Parade position:** 27 of 31.
 - **Drawing size:** right 22 × 9; left 22 × 9 characters.
 - **Palette:** `#d6a080`, `#b96f53`, `#fff1c8`, `#e4dfc5`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -915,7 +918,7 @@ Facing left:
 
 A peacock mantis shrimp with raised eyes, a green body, blue legs, and orange striking clubs. Its feet follow the seabed without swimming bob; it does not punch, hunt, or dig a burrow.
 
-- **Parade position:** 28 of 28.
+- **Parade position:** 28 of 31.
 - **Drawing size:** right 16 × 4; left 16 × 4 characters.
 - **Palette:** `#54c992`, `#59aedd`, `#f4a365`, `#fff1c8`, `#ed8875`, `#b6d96f`.
 - **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
@@ -937,6 +940,96 @@ Facing left:
  /='-. _ _ _/\_ 
 <(_  _|=|=<_  _>
 [)[)_/\_\_\ \/  
+```
+
+### balance angelfish
+
+A teal angelfish with balanced, wing-shaped fins. Its entrance sends out a soft ring of teal and pale-green sparks.
+
+- **Parade position:** 29 of 31.
+- **Drawing size:** right 15 × 5; left 15 × 5 characters.
+- **Palette:** `#75d8ca`, `#72a8d4`, `#fff1c8`, `#e4dfc5`.
+- **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
+- **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
+
+Facing right:
+
+```text
+         /|    
+    /\ .' |__  
+   <  >| :  o)>
+    \/ '. |--' 
+         \|    
+```
+
+Facing left:
+
+```text
+    |\         
+  __| '. /\    
+<(o  : |<  >   
+ '--| .' \/    
+    |/         
+```
+
+### steadfast marlin
+
+A blue marlin with a long bill, gold fins, and carefully spaced body stripes. A gold fan of sparks marks its entrance.
+
+- **Parade position:** 30 of 31.
+- **Drawing size:** right 22 × 5; left 22 × 5 characters.
+- **Palette:** `#79b9e5`, `#dfb96c`, `#fff1c8`, `#e4dfc5`.
+- **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
+- **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
+
+Facing right:
+
+```text
+           /|         
+   /\ ____/ |___      
+  <  <  ===   o \====>
+   \/ '---.___./      
+           \|         
+```
+
+Facing left:
+
+```text
+         |\           
+      ___| \____ /\   
+<====/ o   ===  >  >  
+      \.___.---' \/   
+         |/           
+```
+
+### spark wrasse
+
+An orange wrasse with violet fins and diagonal markings. Violet and orange sparks spiral outward when it enters.
+
+- **Parade position:** 31 of 31.
+- **Drawing size:** right 16 × 5; left 16 × 5 characters.
+- **Palette:** `#eeab70`, `#b79ae0`, `#fff1c8`, `#e4dfc5`.
+- **Origin:** Original ASCII Genesis drawing in [original-fish.mjs](../art/original-fish.mjs).
+- **Motion:** [Shared swimming behavior](#shared-swimming-behavior); no individual hunting or feeding rules.
+
+Facing right:
+
+```text
+       .-^^^^-. 
+   /\ / / /  o\ 
+  <  >|/ / /   >
+   \/ '.___..-' 
+         \_/    
+```
+
+Facing left:
+
+```text
+ .-^^^^-.       
+ /o  \ \ \ /\   
+<   \ \ \|<  >  
+ '-..___.' \/   
+    \_/         
 ```
 
 ## Sources and maintenance

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "network.h"
+#include "edition.h"
 #include "update_policy.h"
 #include "portal_access.h"
 #include <stdlib.h>
@@ -92,7 +93,7 @@ static esp_err_t portal_get(httpd_req_t *req) {
       "<form method='post' action='/wifi'><input type='hidden' name='token' value='%s'>"
       "<label>Wi-Fi name<input name='ssid' maxlength='32' required autocomplete='off'></label>"
       "<label>Wi-Fi password<input name='password' type='password' maxlength='64' autocomplete='off'></label>"
-      "<button>Save and connect</button></form>",token);
+      "<button>Save and connect</button></form><p><a href='/edition'>Install a personal edition</a></p>",token);
     httpd_resp_set_hdr(req,"Cache-Control","no-store");
     httpd_resp_set_hdr(req,"Content-Security-Policy","default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'");
     return httpd_resp_sendstr(req,page);
@@ -118,6 +119,30 @@ static esp_err_t portal_post(httpd_req_t *req) {
     httpd_resp_set_hdr(req,"Cache-Control","no-store");
     return httpd_resp_sendstr(req,"Saved for connection. Rejoin your usual Wi-Fi and check the ocean screen. If connection fails, reopen Wi-Fi setup on the ocean.");
 }
+static esp_err_t edition_get(httpd_req_t *req){
+    if(!portal_on_setup_network(req))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
+    char page[1800];snprintf(page,sizeof(page),
+      "<!doctype html><meta name='viewport' content='width=device-width,initial-scale=1'><title>Personal edition</title>"
+      "<style>body{font:20px system-ui;max-width:28em;margin:auto;padding:1em}textarea,button{width:100%%;font:inherit;margin:1em 0}</style>"
+      "<h1>Your personal edition</h1><p>Paste the complete private profile supplied with your gift. It stays on this device. This does not change your Wi-Fi settings.</p>"
+      "<form method='post' action='/edition'><input type='hidden' name='token' value='%s'><label>Private profile<textarea name='profile' rows='10' maxlength='700' required></textarea></label><button>Save personal edition</button></form><a href='/'>Back to Wi-Fi setup</a>",token);
+    httpd_resp_set_hdr(req,"Cache-Control","no-store");
+    httpd_resp_set_hdr(req,"Content-Security-Policy","default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'");
+    return httpd_resp_sendstr(req,page);
+}
+static esp_err_t edition_post(httpd_req_t *req){
+    if(!portal_on_setup_network(req))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
+    if(req->content_len<=0||req->content_len>2400)return httpd_resp_send_err(req,HTTPD_400_BAD_REQUEST,"Invalid profile size");
+    char *body=calloc(1,req->content_len+1),*raw=calloc(1,2401),*profile=calloc(1,801);char submitted[17];
+    if(!body||!raw||!profile){free(body);free(raw);free(profile);return httpd_resp_send_err(req,HTTPD_500_INTERNAL_SERVER_ERROR,"Try again");}
+    int used=0;bool okay=true;while(used<req->content_len){int n=httpd_req_recv(req,body+used,req->content_len-used);if(n<=0){okay=false;break;}used+=n;}
+    okay=okay&&httpd_query_key_value(body,"token",submitted,sizeof(submitted))==ESP_OK&&!strcmp(token,submitted)&&
+        httpd_query_key_value(body,"profile",raw,2401)==ESP_OK&&decode(raw,profile,801)&&edition_save_json(profile);
+    free(body);free(raw);free(profile);
+    httpd_resp_set_hdr(req,"Cache-Control","no-store");
+    if(!okay)return httpd_resp_send_err(req,HTTPD_400_BAD_REQUEST,"Profile not saved. Check the complete JSON, name (1-12 characters), dedication (1-320 printable ASCII characters), and fish (0, 1, or 2).");
+    return httpd_resp_sendstr(req,"Personal edition saved. On the device, return to the ocean. Open Settings and tap Dedication to read your message. New World starts your signature fish. Normal wireless updates preserve this profile.");
+}
 static void close_portal(void) {
     if(portal){httpd_stop(portal);portal=NULL;}
     esp_wifi_set_mode(WIFI_MODE_STA);
@@ -140,6 +165,9 @@ static void open_portal(void) {
     httpd_uri_t post={.uri="/wifi",.method=HTTP_POST,.handler=portal_post};
     ESP_ERROR_CHECK(httpd_register_uri_handler(portal,&get));ESP_ERROR_CHECK(httpd_register_uri_handler(portal,&post));
     xSemaphoreTake(lock,portMAX_DELAY);status.setup=true;strlcpy(status.ap_name,ap_name,sizeof(status.ap_name));strlcpy(status.ap_password,ap_pass,sizeof(status.ap_password));xSemaphoreGive(lock);
+    httpd_uri_t gift_get={.uri="/edition",.method=HTTP_GET,.handler=edition_get};
+    httpd_uri_t gift_post={.uri="/edition",.method=HTTP_POST,.handler=edition_post};
+    ESP_ERROR_CHECK(httpd_register_uri_handler(portal,&gift_get));ESP_ERROR_CHECK(httpd_register_uri_handler(portal,&gift_post));
     portal_until=esp_timer_get_time()+600000000LL;message("Phone: join setup Wi-Fi, open 192.168.4.1");
 }
 static const char *json_string(cJSON *root,const char *name) {cJSON *v=cJSON_GetObjectItemCaseSensitive(root,name);return cJSON_IsString(v)?v->valuestring:NULL;}

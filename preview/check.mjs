@@ -8,7 +8,7 @@ import './network.js';
 const {MiniOcean, render, bandsClear} = globalThis.MiniAquarium;
 const sprites = globalThis.AsciiquariumSprites;
 const ocean = new MiniOcean(sprites);
-assert.equal(sprites.length, 56);
+assert.equal(sprites.length, 62);
 
 assert.equal(ocean.fish.length, 3);
 for(const fish of ocean.fish)assert.ok(fish.speed>=9&&fish.speed<18,'Regular swimmers use the faster 9–18 px/s range');

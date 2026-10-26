@@ -1,4 +1,4 @@
-idf_component_register(SRCS "main.c" "network.c" "board.c"
+idf_component_register(SRCS "main.c" "edition.c" "network.c" "board.c"
     INCLUDE_DIRS "."
     REQUIRES esp_wifi esp_event esp_netif esp_http_server esp_http_client
     app_update nvs_flash mbedtls json esp_lcd esp_driver_gpio esp_driver_spi

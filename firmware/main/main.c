@@ -18,6 +18,9 @@
 #include "ocean_geometry.h"
 #include "parade.h"
 #include "ocean_scenes.h"
+#include "celebration.h"
+#include "edition.h"
+static edition_t edition;
 static uint16_t *fb;
 static float time_s,controls_until=8;
 static bool paused;
@@ -28,6 +31,8 @@ static int screen; // 0 ocean, 1 settings, 2 phone setup
 typedef struct {int art,dir;float x,y,speed,phase;bool active;} swimmer_t;
 static swimmer_t fish[3];
 static int pending_art=-1,pending_dir;
+static celebration_t entrances[3];
+static bool fish_seen[3],parade_seen[MINI_PARADE_COUNT];
 static uint32_t scene_seed;
 static float bubble_x[2],bubble_y[2],next_bubble;
 static bool bubble_active[2];
@@ -50,23 +55,28 @@ static void text_parade(const char *s,int x,int y,uint16_t c){
             if(mini_font[n*5+col*2/3]&(1<<(row*2/3)))pixel(x+i*MINI_PARADE_NAME_ADVANCE+col,y+row,c);}
 }
 static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
-static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=9+rnd()*9,.phase=rnd()*6.28f,.active=true};}
+static void spawn(int slot,int index,int dir,float x,float y){fish_seen[slot]=false;fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=9+rnd()*9,.phase=rnd()*6.28f,.active=true};}
 static int free_y(int art);
 static void new_world(void){
+    memset(entrances,0,sizeof(entrances));memset(fish_seen,0,sizeof(fish_seen));
+    edition_snapshot(&edition);
     scene_seed=esp_random();time_s=rnd()*270;pending_art=-1;parade_active=false;parade_elapsed=0;memset(fish,0,sizeof(fish));
     for(int slot=0;slot<3;slot++){
-        int first=esp_random()%(MINI_SPRITE_COUNT/2),band=(MINI_SWIM_BOTTOM-MINI_SWIM_TOP)/3;
+        int first=esp_random()%(MINI_SPRITE_COUNT/2);
+        if(slot==0&&edition.name[0])for(int i=0;i<MINI_SPRITE_COUNT;i+=2)if(celebration_kind(mini_sprites[i].name)==edition.fish)first=i/2;
+        int band=(MINI_SWIM_BOTTOM-MINI_SWIM_TOP)/3;
         for(int attempt=0;attempt<MINI_SPRITE_COUNT/2;attempt++){
             int art=((first+attempt)%(MINI_SPRITE_COUNT/2))*2,height=mini_sprites[art].height*8;
             if(mini_sprites[art].bottom&&slot<2)continue;
             int room=band-height-2*MINI_BOB-MINI_GAP,y=mini_sprites[art].bottom?MINI_SWIM_BOTTOM+4-height:room>=0?MINI_SWIM_TOP+slot*band+MINI_BOB+(int)(rnd()*(room+1)):-1;
+            if(slot==0&&attempt==0&&edition.name[0])y=MINI_SWIM_TOP+MINI_BOB;
             for(int j=0;j<3;j++)if(fish[j].active&&!mini_bands_clear(y,height,fish[j].y,mini_sprites[fish[j].art].height*8))y=-1;
             if(y>=0){int dir=rnd()<.5f?-1:1;float width=mini_sprites[art].width*6;spawn(slot,art,dir,MINI_SAFE_X+rnd()*(320-2*MINI_SAFE_X-width),y);break;}
         }
     }
     memset(bubble_active,0,sizeof(bubble_active));next_bubble=time_s+5+rnd()*5;paused=false;
 }
-static void toggle_parade(void){parade_active=!parade_active;parade_elapsed=0;if(parade_active)mini_parade_init(&parade_plan);}
+static void toggle_parade(void){memset(entrances,0,sizeof(entrances));memset(parade_seen,0,sizeof(parade_seen));parade_active=!parade_active;parade_elapsed=0;if(parade_active)mini_parade_init(&parade_plan);}
 static int free_y(int art){
     const mini_sprite_t *s=&mini_sprites[art];int height=s->height*8;
     if(s->bottom){int y=MINI_SWIM_BOTTOM+4-height;if(y<scene_arrival_top())return -1;
@@ -81,9 +91,32 @@ static int free_y(int art){
     }
     return chosen;
 }
+static void entrance_start(int art,float x,float y,int dir,bool *seen){
+    const mini_sprite_t *s=&mini_sprites[art];int kind=celebration_kind(s->name);
+    if(*seen||kind<0||x+s->width*6<=18||x>=302)return;
+    *seen=true;int slot=0;for(int i=0;i<3;i++)if(!entrances[i].active||entrances[i].age>entrances[slot].age)slot=i;
+    entrances[slot]=(celebration_t){.active=true,.kind=kind,.x=fminf(276,fmaxf(44,dir>0?x+s->width*6:x)),.y=fminf(120,fmaxf(52,y+s->height*4)),.age=0};
+}
+static void advance_entrances(float dt){
+    for(int i=0;i<3;i++)if(entrances[i].active){entrances[i].age+=dt;if(entrances[i].age>=3)entrances[i].active=false;}
+    if(parade_active){for(int i=0;i<MINI_PARADE_COUNT;i++)if(mini_parade_visible(&parade_plan,parade_elapsed,i)){
+        int art=parade_plan.order[i]*2;entrance_start(art,mini_parade_x(&parade_plan,parade_elapsed,i,mini_sprites[art].width*6),mini_parade_y(i,mini_sprites[art].height*8),1,&parade_seen[i]);}}
+    else for(int i=0;i<3;i++)if(fish[i].active)entrance_start(fish[i].art,fish[i].x,fish[i].y,fish[i].dir,&fish_seen[i]);
+}
+static bool entrance_clear(int x,int y){
+    if(x<12||x+3>=308||y<22||y+3>=138)return false;
+    if(parade_active){for(int i=0;i<MINI_PARADE_COUNT;i++)if(mini_parade_visible(&parade_plan,parade_elapsed,i)){
+        const mini_sprite_t *s=&mini_sprites[parade_plan.order[i]*2];float fx=mini_parade_x(&parade_plan,parade_elapsed,i,s->width*6),fy=mini_parade_y(i,s->height*8);
+        if(x+3>=fx-3&&x<=fx+s->width*6+3&&y+3>=fy-3&&y<=fy+s->height*8+3)return false;}}
+    else for(int i=0;i<3;i++)if(fish[i].active){const swimmer_t *f=&fish[i];const mini_sprite_t *s=&mini_sprites[f->art];
+        if(x+3>=f->x-3&&x<=f->x+s->width*6+3&&y+3>=f->y-3&&y<=f->y+s->height*8+3)return false;}
+    return true;
+}
+static void draw_entrances(void){for(int i=0;i<3;i++)if(entrances[i].active)for(int n=0;n<20;n++){
+    int x,y,size;unsigned color;if(celebration_point(&entrances[i],n,&x,&y,&size,&color)&&entrance_clear(x,y)){rect(x,y,size,size,rgb(color));if(size==2){rect(x-1,y+1,4,1,rgb(color));rect(x+1,y-1,1,4,rgb(color));}}}}
 static void simulate(float dt){
     if(paused)return;
-    if(parade_active){parade_elapsed+=dt;if(parade_elapsed>=parade_plan.duration)parade_active=false;return;}
+    if(parade_active){parade_elapsed+=dt;advance_entrances(dt);if(parade_elapsed>=parade_plan.duration){parade_active=false;memset(entrances,0,sizeof(entrances));}return;}
     time_s+=dt;
     for(int i=0;i<3;i++){
         swimmer_t *f=&fish[i];if(!f->active)continue;f->x+=f->dir*f->speed*dt;const mini_sprite_t *s=&mini_sprites[f->art];
@@ -95,6 +128,7 @@ static void simulate(float dt){
         if(y>=0){spawn(i,pending_art,pending_dir,pending_dir>0?-a->width*6-2:322,y);pending_art=-1;}
         break;
     }
+    advance_entrances(dt);
     if(time_s>=next_bubble){
         for(int b=0;b<2;b++)if(!bubble_active[b]){
             int emitter=esp_random()%3;swimmer_t *f=&fish[emitter];
@@ -160,7 +194,7 @@ static void draw_ocean(bool controls){
         for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){
             const char *name=mini_sprites[parade_plan.order[slot]*2].name;text_parade(name,mini_parade_name_x(name),mini_parade_name_y(slot),pale);
         }
-    }else{text("ASCII GENESIS - MINI",20,8,pale);const char *habitat=habitats[((int)(time_s/45))%6];text(habitat,300-strlen(habitat)*6,8,muted);}
+    }else{char title[28];snprintf(title,sizeof(title),"%s EDITION",edition.name);text(edition.name[0]?title:"ASCII GENESIS - MINI",20,8,pale);const char *habitat=habitats[((int)(time_s/45))%6];text(habitat,300-strlen(habitat)*6,8,muted);}
     float scroll=time_s*MINI_SCROLL_SPEED;
     for(int i=(int)floorf(scroll/6)-1;i*6<scroll+326;i++){float world_x=i*6;int x=mini_screen_x(world_x,scroll),ground=mini_ground_y(world_x);glyph(i%4==0?':':'.',x,ground+1,sand);glyph('_',x,ground-6,sand);}
     for(int p=(int)floorf((scroll-22)/57)-1;p*57+22<scroll+332;p++){
@@ -172,6 +206,7 @@ static void draw_ocean(bool controls){
     if(!parade_active){draw_scene_landmarks(scroll);draw_scene_surface();
         for(int i=0;i<2;i++)if(bubble_active[i])glyph(bubble_y[i]<scene_water_top()+20?'.':'o',bubble_x[i],bubble_y[i],muted);
     }
+    draw_entrances();
     if(parade_active){for(int slot=0;slot<MINI_PARADE_COUNT;slot++)if(mini_parade_visible(&parade_plan,parade_elapsed,slot)){int art=parade_plan.order[slot]*2;const mini_sprite_t *s=&mini_sprites[art];draw_swimmer(art,mini_parade_x(&parade_plan,parade_elapsed,slot,s->width*6),mini_parade_y(slot,s->height*8),parade_elapsed,0);}}
     else for(int i=0;i<3;i++){swimmer_t *f=&fish[i];if(f->active)draw_swimmer(f->art,f->x,f->y,time_s,f->phase);}
     if(controls){rect(0,140,320,32,rgb(0x102631));text(paused?"RESUME":"PAUSE",34,153,pale);text("NEW WORLD",96,153,pale);text(parade_active?"RETURN":"PARADE",179,153,pale);text("SETTINGS",247,153,pale);}
@@ -179,7 +214,14 @@ static void draw_ocean(bool controls){
 static void draw_settings(net_status_t *n){
     const uint16_t c=rgb(0xbde9e6),m=rgb(0x73c9ff);char line[54];
     for(int i=0;i<320*172;i++)fb[i]=rgb(0x020c14);
-    if(screen==2){text("CONNECT WITH YOUR PHONE",20,8,c);if(n->setup){text("Join this Wi-Fi network:",20,24,c);text_large(n->ap_name,20,40,m);text("Password:",20,64,c);text_large(n->ap_password,20,78,m);text("Open http://192.168.4.1",20,108,c);text("Setup closes after 10 minutes",20,124,c);}else text(n->message,20,44,c);}
+    if(screen==3){
+        text("A NOTE OF THANKS",20,8,c);text_large(edition.name,20,24,m);
+        const char *at=edition.note;
+        for(int row=0;row<8&&*at;row++){
+            int len=strlen(at);if(len>46){len=46;while(len>0&&at[len]!=' ')len--;if(!len)len=46;}
+            char wrapped[47];memcpy(wrapped,at,len);wrapped[len]=0;text(wrapped,20,48+row*11,c);at+=len;while(*at==' ')at++;
+        }
+    }else if(screen==2){text("CONNECT WITH YOUR PHONE",20,8,c);if(n->setup){text("Join this Wi-Fi network:",20,24,c);text_large(n->ap_name,20,40,m);text("Password:",20,64,c);text_large(n->ap_password,20,78,m);text("Open http://192.168.4.1",20,108,c);text("Setup closes after 10 minutes",20,124,c);}else text(n->message,20,44,c);}
     else {text("SETTINGS",20,8,c);snprintf(line,sizeof(line),"v%s  %s",esp_app_get_description()->version,n->online?"Wi-Fi online":"Offline");text(line,20,22,m);text(n->message,20,38,c);
       rect(0,58,320,32,rgb(0x102631));text("SET UP WI-FI WITH PHONE",20,70,c);
       rect(0,98,320,32,rgb(0x102631));
@@ -187,18 +229,19 @@ static void draw_settings(net_status_t *n){
       else if(n->available){snprintf(line,sizeof(line),"INSTALL v%s & RESTART",n->version);text(line,20,110,c);}
       else text("CHECK FOR UPDATES",20,110,c);
     }
-    rect(0,140,320,32,rgb(0x102631));text("BACK TO OCEAN",118,153,c);
+    rect(0,140,320,32,rgb(0x102631));if(screen==1&&edition.name[0]){text("BACK",52,153,c);text("DEDICATION",198,153,m);}else text("BACK TO OCEAN",118,153,c);
 }
 void app_main(void){
     esp_err_t err=nvs_flash_init();if(err==ESP_ERR_NVS_NO_FREE_PAGES||err==ESP_ERR_NVS_NEW_VERSION_FOUND){ESP_ERROR_CHECK(nvs_flash_erase());err=nvs_flash_init();}ESP_ERROR_CHECK(err);
+    edition_init();edition_snapshot(&edition);
     fb=heap_caps_malloc(320*172*2,MALLOC_CAP_SPIRAM);assert(fb&&esp_psram_is_initialized());
     board_init();network_start();new_world();
     ESP_ERROR_CHECK(esp_task_wdt_add(NULL));
     int64_t start=esp_timer_get_time(),last=start,last_press=0;bool held=false,validated=false;
     while(true){int64_t now=esp_timer_get_time();float dt=fminf((now-last)/1000000.0f,.1f);last=now;simulate(dt);float uptime=(now-start)/1000000.0f;
-        net_status_t n;network_status(&n);int x,y;bool pressed=board_touch(&x,&y);
+        edition_snapshot(&edition);net_status_t n;network_status(&n);int x,y;bool pressed=board_touch(&x,&y);
         if(pressed&&!held&&now-last_press>350000){last_press=now;
-            if(screen){if(y>=140){if(n.setup)network_command(NET_CLOSE_SETUP);screen=0;}else if(!n.busy&&screen==1){if(y>=58&&y<90){network_command(NET_SETUP);screen=2;}else if(y>=98&&y<130)network_command(n.available?NET_INSTALL:NET_CHECK);}}
+            if(screen){if(y>=140){if(screen==1&&edition.name[0]&&x>=160){screen=3;}else{if(n.setup)network_command(NET_CLOSE_SETUP);screen=0;}}else if(!n.busy&&screen==1){if(y>=58&&y<90){network_command(NET_SETUP);screen=2;}else if(y>=98&&y<130)network_command(n.available?NET_INSTALL:NET_CHECK);}}
             else if((uptime<controls_until||paused)&&y>=140){if(x<86)paused=!paused;else if(x<160)new_world();else if(x<234)toggle_parade();else screen=1;}
             controls_until=uptime+8;
         }
